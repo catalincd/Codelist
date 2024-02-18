@@ -16,8 +16,12 @@ body {
 }
 
 .mainLayout {
+	margin: 1.5rem 0rem;
 	width: calc(min(70rem, 75vw));
+	min-height: calc(100vh - 3rem);
 	display: grid;
+	grid-template-rows: auto 1fr auto;
+	grid-gap: 1.5rem;
 	justify-items: center;
 }
 
@@ -25,16 +29,50 @@ body {
 	width: 100%;
 	display: grid;
 	justify-items: center;
+	align-content: center;
 }
 
+.pageFiller {
+	min-height: calc(100vh - 27rem);
+}
 
 .navbar {
+	height: 4.5rem;
     display: grid;
     grid-template-columns: 7rem 1fr 7rem;
     justify-items: center;
     align-items: center;
 
-    a.login {
+	.logElement {
+		align-items: center;
+		align-content: right;
+		width: 10rem;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-gap: 1rem;
+
+		p {
+			
+		}
+	}
+
+	button.logout {
+		cursor: pointer;
+		font-size: 1rem;
+		color: white;
+		border: none;
+		outline: none;
+		padding: 0.75rem 0.5rem;
+        border-radius: 0.35rem;
+		background-color: #1e3772;
+
+		&:hover {
+            text-decoration: none;
+            background-color: #0BC9CD;
+        }
+	}	
+
+    a.login, a.signup {
         color: white;
         text-decoration: none;
 
@@ -42,6 +80,10 @@ body {
             text-decoration: underline;
         }
     }
+}
+
+.footer { 
+	height: 4.5rem;
 }
 
 nav {
@@ -58,7 +100,7 @@ nav {
         border-radius: 0.35rem;
         
         &.active {
-            background-color: rgb(16, 127, 131);
+            background-color: #107f83;
         }
 
         &:hover {
@@ -68,10 +110,68 @@ nav {
     }
 }
 
+.loginContainer {
+	padding: 3.25rem 2.75rem !important;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+
+	.inputContainer {
+		width: calc(min(70%, 25rem));
+		display: grid;
+		grid-template-columns: 6rem 1fr;
+		grid-gap: 1rem;
+		align-items: center;
+		margin: 1rem 0rem;
+	
+		input {
+			height: 2rem;
+			font-size: 1.05rem;
+			color: white;
+			background-color: #112244;
+			border-radius: 0.35rem;
+			padding: 0.5rem 1rem;
+			border: none;
+			/* transition: all 0.3s ease 0s; */
+		
+			&:focus, &:active {
+				outline: none;
+				background-color: #0BC9CD;
+			}
+			
+		}
+	}
+
+	button {
+		cursor: pointer;
+		color: white;
+		font-size: 1.05rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+		padding: 0.75rem 4rem;
+		outline: none;
+		border: none;
+		border-radius: 0.35rem;
+		background-color: #1e3772;
+
+		&:hover {
+			background-color: #0BC9CD;
+		}
+	}
+
+	.errorMessage {
+		color: red;
+		height: 1rem;
+	}
+}
+
+
+
 .tile {
 	width: 90%;
 	padding: 1.25rem 2.75rem;
-	margin: 1rem;
 	background: #1e3772;
 	border-radius: 0.85rem;
 	text-align: justify;
