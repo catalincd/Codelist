@@ -10,7 +10,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/user', async (req, res) => {
+router.post('/user', jwtDecoder, async (req, res) => {
     const { username } = req.body
 
         const user = await User.findOne({ username })
@@ -18,9 +18,9 @@ router.post('/user', async (req, res) => {
             return res.status(401).json({ error: 'USER_NOT_FOUND' })
         }
 
-        
+        // filter out password here
 
-        res.status(201).json(user)
+        res.status(200).json(user)
 })
 
 

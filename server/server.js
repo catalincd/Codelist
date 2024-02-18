@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const auth = require('./routes/auth')
 const data = require('./routes/data')
+const problems = require('./routes/problems')
 
 const app = express()
 const port = 8080
@@ -27,6 +28,7 @@ app.use(function(req, res, next) {
 
 app.use('/data', data)
 app.use('/auth', auth)
+app.use('/problems', problems)
 
 
 

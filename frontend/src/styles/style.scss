@@ -5,7 +5,7 @@ body {
 	background: #112244;
 	font-family: "Montserrat", sans-serif;
 	color: #fffcff;
-    margin: 0;
+	margin: 0;
 }
 
 
@@ -38,10 +38,10 @@ body {
 
 .navbar {
 	height: 4.5rem;
-    display: grid;
-    grid-template-columns: 7rem 1fr 7rem;
-    justify-items: center;
-    align-items: center;
+	display: grid;
+	grid-template-columns: 7rem 1fr 7rem;
+	justify-items: center;
+	align-items: center;
 
 	.logElement {
 		align-items: center;
@@ -51,9 +51,7 @@ body {
 		grid-template-columns: auto 1fr;
 		grid-gap: 1rem;
 
-		p {
-			
-		}
+		p {}
 	}
 
 	button.logout {
@@ -63,51 +61,52 @@ body {
 		border: none;
 		outline: none;
 		padding: 0.75rem 0.5rem;
-        border-radius: 0.35rem;
+		border-radius: 0.35rem;
 		background-color: #1e3772;
 
 		&:hover {
-            text-decoration: none;
-            background-color: #0BC9CD;
-        }
-	}	
+			text-decoration: none;
+			background-color: #0BC9CD;
+		}
+	}
 
-    a.login, a.signup {
-        color: white;
-        text-decoration: none;
+	a.login,
+	a.signup {
+		color: white;
+		text-decoration: none;
 
-        &:hover {
-            text-decoration: underline;
-        }
-    }
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 }
 
-.footer { 
+.footer {
 	height: 4.5rem;
 }
 
 nav {
-    width: 30rem;
-    display: flex;
-    gap: 0.5rem;
-    justify-content: space-evenly;
-    align-items: center;
-    
-    a {
-        color: white;
-        text-decoration: none;
-        padding: 0.75rem 2rem;
-        border-radius: 0.35rem;
-        
-        &.active {
-            background-color: #107f83;
-        }
+	width: 30rem;
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-evenly;
+	align-items: center;
 
-        &:hover {
-            text-decoration: none;
-            background-color: #0BC9CD;
-        }
-    }
+	a {
+		color: white;
+		text-decoration: none;
+		padding: 0.75rem 2rem;
+		border-radius: 0.35rem;
+
+		&.active {
+			background-color: #107f83;
+		}
+
+		&:hover {
+			text-decoration: none;
+			background-color: #0BC9CD;
+		}
+	}
 }
 
 .loginContainer {
@@ -125,7 +124,7 @@ nav {
 		grid-gap: 1rem;
 		align-items: center;
 		margin: 1rem 0rem;
-	
+
 		input {
 			height: 2rem;
 			font-size: 1.05rem;
@@ -135,12 +134,13 @@ nav {
 			padding: 0.5rem 1rem;
 			border: none;
 			/* transition: all 0.3s ease 0s; */
-		
-			&:focus, &:active {
+
+			&:focus,
+			&:active {
 				outline: none;
 				background-color: #0BC9CD;
 			}
-			
+
 		}
 	}
 
@@ -180,6 +180,7 @@ nav {
 		letter-spacing: 0.05rem;
 		line-height: 1.65rem;
 		font-weight: 300;
+
 		span {
 			color: orange;
 			font-weight: 500;
@@ -228,4 +229,91 @@ nav {
 		font-size: 1.15rem;
 		font-weight: 500;
 	}
+}
+
+
+.problem {
+	font-family: 'Montserrat', sans-serif;
+	color: #FFFCFF;
+	border-radius: 0.85rem;
+	border: 3px solid #004FFF;
+	padding: 1rem 1.25rem;
+	background-color: #1E3772;
+	width: 50rem;
+	height: 12.5rem;
+	display: grid;
+	grid-template-rows: 1.75rem 1fr 1.75rem;
+	grid-gap: 0.25rem;
+	box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
+
+	.problem-top {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-content: center;
+		/* padding-left: 2rem; */
+		padding-right: 1rem;
+		font-weight: 600;
+		font-size: 1.25rem;
+
+		.problem-name p span {
+			font-weight: 400;
+			font-size: 1rem;
+		}
+
+		.problem-stars-container {
+			display: grid;
+			grid-template-columns: repeat(5, 1fr) auto;
+			grid-gap: 0.5rem;
+			align-items: center;
+			font-size: 1rem;
+
+			.problem-star-filled {
+				font-variation-settings:
+					'FILL' 1,
+					'wght' 400,
+					'GRAD' 0,
+					'opsz' 24;
+			}
+		}
+	}
+
+	.problem-content {
+		display: grid;
+		align-content: center;
+
+		p {
+			text-align: justify;
+		}
+	}
+
+	.problem-bottom {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 2fr;
+		align-content: center;
+		font-weight: 600;
+		/* justify-items: center; */
+
+		p {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			align-items: center;
+		}
+
+		.problem-like-container {
+			display: grid;
+			align-items: center;
+			justify-items: end;
+			padding-right: 0.5rem;
+
+			p span {
+				font-size: 2rem;
+			}
+		}
+
+		.problem-icon {
+			margin: 0.25rem;
+		}
+
+	}
+
 }

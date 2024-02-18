@@ -5,6 +5,7 @@ import Cookies from 'universal-cookie';
 import Home from "../pages/Home"
 import Login from "../pages/Login"
 import Signup from "../pages/Signup"
+import Problems from "../pages/Problems"
 
 import { UserContext } from "./UserContext";
 
@@ -27,6 +28,7 @@ const Root = (props) => {
           <Route exact path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="problems" element={<Problems />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
