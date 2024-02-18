@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+body {
+  background: #112244;
+  font-family: "Montserrat", sans-serif;
+  color: #fffcff;
+  margin: 0;
+}
+
+.mainContainer {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.mainLayout {
+  width: min(70rem, 75vw);
+  display: grid;
+  justify-items: center;
+}
+
+.mainLayoutContent {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.navbar {
+  display: grid;
+  grid-template-columns: 7rem 1fr 7rem;
+  justify-items: center;
+  align-items: center;
+}
+.navbar a.login {
+  color: white;
+  text-decoration: none;
+}
+.navbar a.login:hover {
+  text-decoration: underline;
+}
+
+nav {
+  width: 30rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  align-items: center;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+  border-radius: 0.35rem;
+}
+nav a.active {
+  background-color: rgb(16, 127, 131);
+}
+nav a:hover {
+  text-decoration: none;
+  background-color: #0BC9CD;
+}
+
+.tile {
+  width: 90%;
+  padding: 1.25rem 2.75rem;
+  margin: 1rem;
+  background: #1e3772;
+  border-radius: 0.85rem;
+  text-align: justify;
+}
+.tile p {
+  letter-spacing: 0.05rem;
+  line-height: 1.65rem;
+  font-weight: 300;
+}
+.tile p span {
+  color: orange;
+  font-weight: 500;
+}
+.tile p span:hover {
+  text-decoration: underline;
+}
+.tile .top-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: center;
+}
+.tile .top-bar .stars-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) auto;
+  grid-gap: 0.5rem;
+  align-items: center;
+  font-size: 1rem;
+}
+.tile .top-bar .stars-container p span {
+  color: white;
+}
+.tile .top-bar .stars-container .problem-star-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.tile h3 {
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+.tile h3 span {
+  font-weight: 300;
+  font-size: 1rem;
+}
+.tile h4 {
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=style.css.map */
