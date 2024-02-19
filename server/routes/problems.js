@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 
 router.post('/create', jwtDecoder, async (req, res) => {
     try {
-        const { name, preview, text, tests } = req.body
+        const { name, preview, text, tests, examples, creator } = req.body
 
         const searchedProblem = await Problem.findOne({ name })
         if (searchedProblem) {
@@ -24,7 +24,7 @@ router.post('/create', jwtDecoder, async (req, res) => {
         const id = await ConfigManager.GetNewProblemId()
 
 
-        const problem = new Problem({id, name, preview, text, tests})
+        const problem = new Problem({id, name, preview, text, tests, examples, creator})
         await problem.save()
 
         res.status(201).json({ message: 'PROBLEM_REGISTER_SUCCESS' })

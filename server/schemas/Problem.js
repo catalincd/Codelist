@@ -8,9 +8,11 @@ const Problem = new mongo.Schema({
     views: { type: Number, required: true, default: 0 },
     solved: { type: Number, required: true, default: 0 },
     solveTries: { type: Number, required: true, default: 0 },
-    rating: { type: Number, required: true, default: 0 },
+    rating: { type: Number, required: true, default: 0.0 },
     ratingsCount: { type: Number, required: true, default: 0 },
-    tests: { type: Object, required: true, default: {}},
-});
+    examples: { type: Object, required: true, default: []},
+    tests: { type: Object, required: true, default: []},
+    creator: { type: String, required: true }
+}, {timestamps: true});
 
 module.exports = mongo.model('Problem', Problem);

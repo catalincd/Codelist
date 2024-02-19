@@ -1,46 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 
-const Problem = (props) => {
-
-    const [errorMessage, setErrorMessage] = useState('')
-    const [problemData, setProblemData] = useState(null)
-
-
-
-    useEffect(() => {
-        if (props.cancelFetch) {
-            return
-        }
-        const fetchProblemData = async () => {
-            fetch(`http://localhost:8080/problems/details?id=${props.id}`,
-                {
-                    method: "GET"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        setErrorMessage(data.error)
-                        return
-                    }
-                    setProblemData(data)
-                    console.log(data)
-                })
-                .catch(error => console.error(error));
-
-            console.log("FETCHED FROM PROBLEM")
-        }
-
-        if (!problemData)
-            fetchProblemData()
-    }, [])
-
-
-    return (
-        <ProblemElement id={props.id} data={problemData}/>
-    )
-}
-
 const ProblemElement = (props) => {
 
     const problemData = props.data
@@ -48,9 +8,9 @@ const ProblemElement = (props) => {
     return (
         <div className="problem">
             <div className="problem-top">
-                <Link to={`/solver?id=${problemData?.id}`} className="problem-name">
+                <div className="problem-name">
                     <p>{problemData?.name} <span>#{problemData?.id}</span></p>
-                </Link>
+                </div>
                 <div className="problem-stars-container">
 
                     {GetStarsFromRating(problemData?.rating)}
@@ -58,9 +18,9 @@ const ProblemElement = (props) => {
                     <p>{parseFloat(problemData?.rating / 10).toFixed(1)}</p>
                 </div>
             </div>
-            <Link to={`/solver?id=${problemData?.id}`} className="problem-content">
+            <div className="problem-content">
                 <p>{problemData?.preview}</p>
-            </Link>
+            </div>
             <div className="problem-bottom">
                 <p>{problemData?.views} <span className="material-symbols-outlined problem-icon">visibility</span></p>
                 <p>{GetSolveRating(problemData)}% <span className="material-symbols-outlined problem-icon">trending_up</span></p>
@@ -94,4 +54,4 @@ const GetStarsFromRating = (rating) => {
 
 const GetSolveRating = (problemData) => (problemData?.solved / Math.max(1, problemData?.solveTries))
 
-export default Problem
+export default ProblemElement

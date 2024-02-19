@@ -6,6 +6,7 @@ import Home from "../pages/Home"
 import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import Problems from "../pages/Problems"
+import Solver from "../pages/Solver"
 
 import { UserContext } from "./UserContext";
 
@@ -29,6 +30,7 @@ const Root = (props) => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
+          <Route path="solver" element={<Solver />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

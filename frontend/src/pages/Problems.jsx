@@ -11,7 +11,9 @@ const Problems = (props) => {
     return (
         <div className="mainContainer">
             <Layout>
-                <Problem id="10" />
+                <Problem id="1" />
+                <Problem id="2" />
+                <Problem id="2" />
             </Layout>
         </div>
     );

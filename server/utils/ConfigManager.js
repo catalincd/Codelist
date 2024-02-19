@@ -1,11 +1,14 @@
 const Config = require('../schemas/Config')
-const CONFIG_ID = 2
+const CONFIG_ID = 1
 
 
 const GetConfigVar = async (varName) => {
     const configId = CONFIG_ID
 
-    const thisConfig = await Config.findOne({ configId })
+    const thisConfig = await Config.findOneAndUpdate({ configId }, {}, {
+        new: true,
+        upsert: true
+    });
 
     return thisConfig[varName]
 }
@@ -25,5 +28,12 @@ const GetNewProblemId = async () => {
     return problemId
 }
 
+const GetNewSolutionId = async () => {
+    const solutionId = await GetConfigVar("solutionsCount") + 1
+    await SetConfigVar({solutionsCount: solutionId})
+    return solutionId
+}
 
-module.exports = {GetConfigVar, SetConfigVar, GetNewProblemId}
+
+
+module.exports = {GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId}
