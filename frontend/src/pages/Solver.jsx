@@ -133,7 +133,7 @@ const Solver = (props) => {
               <h4>Rezultate</h4>
             </div>
             <div className="resultsTable">
-              {GetResultElements(results)}
+              {GetResultElements(results).reverse()}
               {showLoadingResult && GetLoadingResultElement(results)}
             </div>
           </div>
