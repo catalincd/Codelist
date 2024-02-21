@@ -45,6 +45,16 @@ body {
 	grid-gap: 2rem;
 }
 
+.problemsPageContainer {
+	width: 100%;
+	min-height: calc(100vh - 21rem);
+	display: grid;
+	justify-items: center;
+	align-content: first baseline;
+	grid-gap: 2rem;
+}
+
+
 .navbar {
 	height: 4.5rem;
 	display: grid;

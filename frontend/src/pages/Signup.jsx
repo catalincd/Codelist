@@ -31,7 +31,7 @@ const Signup = (props) => {
     }
 
 
-    fetch(`${global.config.fullhost}/auth/register`,
+    fetch(`${process.env.REACT_APP_HOSTNAME}/auth/register`,
     {
       method: "POST",
       headers: {'Content-Type': 'application/json'},

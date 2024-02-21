@@ -6,6 +6,8 @@ const data = require('./routes/data')
 const problems = require('./routes/problems')
 const solutions = require('./routes/solutions')
 
+const path = require("path");
+
 const app = express()
 const port = parseInt(require('fs').readFileSync('./server/port').toString()) || 8080
 
@@ -16,11 +18,11 @@ mongoose.connect('mongodb://localhost:27017/codelist', {
     autoIndex: true
 })
 
-app.use('/', express.static('server/build'))
+
 
 app.use(express.json())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*'); // very unsafe
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
@@ -35,7 +37,10 @@ app.use('/problems', problems)
 app.use('/solutions', solutions)
 
 
-
+app.use('/', express.static('server/build'))
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
+});
 
 
 

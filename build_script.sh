@@ -3,10 +3,8 @@
 set -ex
 
 echo $1 > server/hostname
-echo $1 > frontend/hostname
-
 echo $2 > server/port
-echo $2 > frontend/port
+echo "REACT_APP_HOSTNAME=$3" > frontend/.env
 
 cd frontend
 npm run build
