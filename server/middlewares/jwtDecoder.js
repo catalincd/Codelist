@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const JWT_KEY = require('fs').readFileSync('./keys/jwt_key')
+const JWT_KEY = require('fs').readFileSync('/keys/jwt_key')
 
 const jwtDecoder = (req, res, next) => {
     const token = req.header('Authorization')

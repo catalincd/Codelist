@@ -7,7 +7,7 @@ const problems = require('./routes/problems')
 const solutions = require('./routes/solutions')
 
 const app = express()
-const port = 8080
+const port = parseInt(require('fs').readFileSync('./server/port').toString()) || 8080
 
 
 
@@ -15,6 +15,8 @@ mongoose.connect('mongodb://localhost:27017/codelist', {
     serverSelectionTimeoutMS: 1000,
     autoIndex: true
 })
+
+app.use('/', express.static('server/build'))
 
 app.use(express.json())
 
@@ -34,10 +36,7 @@ app.use('/solutions', solutions)
 
 
 
-app.get('/hello', (req, res) => {
-    console.log(req.body)
-    res.send('Hello World!')
-})
+
 
 
 app.listen(port, () => {

@@ -24,7 +24,7 @@ const Solver = (props) => {
     setShowLoadingResult(true)
 
     try {
-      const response = await fetch('http://localhost:8080/solutions/send',
+      const response = await fetch(`${global.config.fullhost}/solutions/send`,
         {
           method: "POST",
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
@@ -55,7 +55,7 @@ const Solver = (props) => {
 
   useEffect(() => {
     const fetchProblemData = async () => {
-      fetch(`http://localhost:8080/problems/details?id=${id}`,
+      fetch(`${global.config.fullhost}/problems/details?id=${id}`,
         {
           method: "GET"
         })
@@ -79,7 +79,7 @@ const Solver = (props) => {
       return
 
     const fetchProblemData = async () => {
-      fetch(`http://localhost:8080/solutions/getUserSolutions?username=${user.username}`,
+      fetch(`${global.config.fullhost}/solutions/getUserSolutions?username=${user.username}`,
         {
           method: "GET"
         })

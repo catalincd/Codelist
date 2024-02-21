@@ -17,7 +17,7 @@ const Login = (props) => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const onLogin = (e) => {
-    fetch('http://localhost:8080/auth/login',
+    fetch(`${global.config.fullhost}/auth/login`,
     {
       method: "POST",
       headers: {'Content-Type': 'application/json'},

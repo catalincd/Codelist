@@ -11,12 +11,11 @@ var CONTAINERS = {}
 const OnSetup = async () => {
     console.log('Setting up containers...\n')
 
-    // ContainerManager.CreateImages(RUNNERS)
+    // await ContainerManager.CreateImages(RUNNERS)
 
     CONTAINERS = await ContainerManager.AssignImages()
 
-
-    const res = await Run("gxx", "#include<iostream>\n#include<fstream>\nusing namespace std;ofstream fout(\"output.txt\");int main(){std::cout<<\"Hello World!\"<<std::endl;fout<<\"Hello World!\"<<std::endl;fout.close();return 0;}", [{inputName: "input.txt", inputValue: "5", outputName: "output.txt", outputValue: "15"}])
+    const test = await Run("gxx", "#include<iostream>\n#include<fstream>\nusing namespace std;ofstream fout(\"output.txt\");int main(){std::cout<<\"Hello World!\"<<std::endl;fout<<\"Hello World!\"<<std::endl;fout.close();return 0;}", [{inputName: "input.txt", inputValue: "5", outputName: "output.txt", outputValue: "15"}])
 }
 
 
@@ -31,7 +30,7 @@ const Run = async (language, code, problemTests) => {
         const testResult = await RunSwitch(language, code, problemTests[i])
         error = (error || testResult.compileError || testResult.runtimeError) // change this sometime...
 
-        console.log(`!${Retrim(testResult.testOutput)}!`, `!${Retrim(problemTests[i].outputValue)}!`)
+        // console.log(`!${Retrim(testResult.testOutput)}!`, `!${Retrim(problemTests[i].outputValue)}!`)
 
         tests.push(Retrim(testResult.testOutput) == Retrim(problemTests[i].outputValue))
 

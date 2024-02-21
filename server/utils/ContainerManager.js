@@ -12,8 +12,9 @@ const exec_async = (code) => {
 const CreateImages = async (IMAGES) => {
     const SPECIFIC_IMAGES = IMAGES.map(image => `codelist_${image}`)
 
-    const {stdin, stdout, stderr} = await exec_async("docker ps --format json")
+    const {stdin, stdout, stderr} = await exec_async("docker ps -a --format json")
     const allContainers = stdout.split('\n').filter(container => container != '').map(container => JSON.parse(container))
+    const verbose = true
 
     console.log("Deleting old containers...")
 
@@ -22,7 +23,8 @@ const CreateImages = async (IMAGES) => {
         const container = allContainers[i]
         if(SPECIFIC_IMAGES.indexOf(container.Image) != -1)
         {
-            await exec_async(`docker stop ${container.ID} && docker remove ${container.ID}`)
+            const {stdout, stderr} = await exec_async(`docker stop ${container.ID} && docker remove ${container.ID}`)
+            verbose && console.log(stdout, stderr)
         }
     }
 
@@ -32,6 +34,7 @@ const CreateImages = async (IMAGES) => {
     {
         const image = IMAGES[i]
         const {stdout, stderr} = await exec_async(`docker image rm codelist_${image}`)
+        verbose && console.log(stdout, stderr)
     }
 
     console.log("Creating new images...")
@@ -40,6 +43,7 @@ const CreateImages = async (IMAGES) => {
     {
         const image = IMAGES[i]
         const {stdout, stderr} = await exec_async(`docker build server/containers/${image} -t codelist_${image}`)
+        verbose && console.log(stdout, stderr)
     }
 
     console.log("Creating new containers...")
@@ -48,6 +52,7 @@ const CreateImages = async (IMAGES) => {
     {
         const image = IMAGES[i]
         const {stdout, stderr} = await exec_async(`docker run -d --name codelist_${image}_1 codelist_${image} sleep infinity`)
+        verbose && console.log(stdout, stderr)
     }
 
 }

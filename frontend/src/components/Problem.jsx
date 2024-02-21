@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 
+
 const Problem = (props) => {
 
     const [errorMessage, setErrorMessage] = useState('')
@@ -13,7 +14,7 @@ const Problem = (props) => {
             return
         }
         const fetchProblemData = async () => {
-            fetch(`http://localhost:8080/problems/details?id=${props.id}`,
+            fetch(`${global.config.fullhost}/problems/details?id=${props.id}`,
                 {
                     method: "GET"
                 })

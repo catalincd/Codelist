@@ -31,7 +31,7 @@ const Signup = (props) => {
     }
 
 
-    fetch('http://localhost:8080/auth/register',
+    fetch(`${global.config.fullhost}/auth/register`,
     {
       method: "POST",
       headers: {'Content-Type': 'application/json'},

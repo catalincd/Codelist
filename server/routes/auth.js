@@ -4,7 +4,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const JWT_KEY = require('fs').readFileSync('./keys/jwt_key')
+const JWT_KEY = require('fs').readFileSync('/keys/jwt_key')
 const User = require('../schemas/User')
 
 router.use((req, res, next) => {
