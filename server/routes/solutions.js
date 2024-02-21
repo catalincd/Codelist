@@ -8,7 +8,7 @@ const jwtDecoder = require('../middlewares/jwtDecoder')
 const Solution = require('../schemas/Solution')
 
 router.use((req, res, next) => {
-    console.log('Data Req: ', Date.now())
+    // console.log('Data Req: ', Date.now())
     next()
 })
 

@@ -6,7 +6,7 @@ const User = require('../schemas/User')
 const jwtDecoder = require('../middlewares/jwtDecoder')
 
 router.use((req, res, next) => {
-    console.log('Data Req: ', Date.now())
+    // console.log('Data Req: ', Date.now())
     next()
 })
 

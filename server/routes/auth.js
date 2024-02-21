@@ -8,7 +8,7 @@ const JWT_KEY = require('fs').readFileSync('/keys/jwt_key')
 const User = require('../schemas/User')
 
 router.use((req, res, next) => {
-    console.log('Auth Req: ', Date.now())
+    // console.log('Auth Req: ', Date.now())
     next()
 })
 
