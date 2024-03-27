@@ -8,12 +8,12 @@ DOMAIN="http://89.45.83.185"
 PORT="80"
 
 mkdir -p server/keys
-echo $1 > server/keys/mongo_key
-echo $2 > server/keys/jwt_key
+echo -n $1 > server/keys/mongo_key
+echo -n $2 > server/keys/jwt_key
 
-echo $DOMAIN > server/hostname
-echo "REACT_APP_HOSTNAME=$DOMAIN" > ./frontend/.env
-echo $PORT > server/port
+echo -n $DOMAIN > server/hostname
+echo -n "REACT_APP_HOSTNAME=$DOMAIN" > ./frontend/.env
+echo -n $PORT > server/port
 
 cd frontend
 npm install
