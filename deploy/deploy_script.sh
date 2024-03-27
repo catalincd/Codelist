@@ -13,8 +13,9 @@ PORT="443"                      # 80
 mkdir -p server/keys
 echo -n $1 > server/keys/mongo_key
 echo -n $2 > server/keys/jwt_key
-echo -n $3 > server/keys/ssl_cert
-echo -n $4 > server/keys/ssl_key
+cp /keys/ssl_cert server/keys/ssl_cert
+cp /keys/ssl_key server/keys/ssl_key
+cp /keys/ssl_ca server/keys/ssl_ca
 
 echo -n $DOMAIN > server/hostname
 echo -n "REACT_APP_HOSTNAME=$FULL_HOST" > ./frontend/.env
