@@ -1,3 +1,4 @@
+const https = require('https')
 const express = require('express')
 const mongoose = require('mongoose')
 
@@ -11,7 +12,10 @@ const fs = require('fs')
 
 const app = express()
 const port = parseInt(fs.readFileSync('./server/port').toString()) || 8080
+
 const mongo_key = fs.readFileSync('./server/keys/mongo_key').toString()
+const ssl_cert = fs.readFileSync('./server/keys/ssl_cert').toString()
+const ssl_key = fs.readFileSync('./server/keys/ssl_key').toString()
 
 console.log(`KEY:|${mongo_key}|`)
 
@@ -49,6 +53,9 @@ app.use((req, res, next) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Started running on ${port}`)
-})
+// app.listen(port, () => { console.log(`Started running on ${port}`)})
+    
+https.createServer({
+    key: ssl_key,
+    cert: ssl_cert
+}, app).listen(port);
