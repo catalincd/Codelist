@@ -12,9 +12,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./workflows
     steps:
       - name: Run deploy script
         run: ./deploy-script.sh ${{ secrets.CODELIST_SERVER_KEY }} ${{ secrets.JWT_KEY }} ${{ secrets.MONGO_KEY }}
