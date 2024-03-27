@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #112244;
   font-family: "Montserrat", sans-serif;
@@ -259,7 +263,7 @@ nav a:hover {
 
 .ide-textarea {
   padding: 1rem 2.75rem;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   display: grid;
   grid-gap: 1rem;
   justify-items: center;
@@ -315,6 +319,86 @@ nav a:hover {
   width: calc(100% - 3.75rem);
 }
 
+.ide-runtime .ide-runtime-title {
+  width: calc(100% - 0.5rem);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.ide-runtime .ide-runtime-title .diagnostic-success {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+.ide-runtime .ide-runtime-title .diagnostic-success .diagnostic-sub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+}
+.ide-runtime .ide-runtime-title .diagnostic-success .diagnostic-sub.cpu svg {
+  color: lime;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.ide-runtime .ide-runtime-title .diagnostic-success .diagnostic-sub.memory svg {
+  color: yellow;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.ide-runtime .ide-runtime-title .diagnostic-error {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+}
+.ide-runtime .ide-runtime-title .diagnostic-error svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: red;
+}
+.ide-runtime .ide-runtime-grid {
+  display: grid;
+  padding-bottom: 2rem;
+  width: 100%;
+  grid-template-rows: 1fr;
+}
+.ide-runtime .ide-runtime-grid textarea {
+  font-family: monospace;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  width: calc(100% - 2rem);
+  resize: none;
+  background-color: #282c34;
+  color: white;
+}
+
+.ide-solutions .ide-content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-gap: 0.5rem;
+  align-items: center;
+}
+.ide-solutions .ide-content .login,
+.ide-solutions .ide-content .signup {
+  width: 6rem;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0.35rem;
+  background-color: #1e3772;
+  text-decoration: none;
+}
+.ide-solutions .ide-content .login:hover,
+.ide-solutions .ide-content .signup:hover {
+  background-color: #5674ba;
+}
 .ide-solutions .resultsTable {
   display: grid;
   grid-gap: 1.75rem;
@@ -439,6 +523,83 @@ nav a:hover {
 }
 .problem .problem-bottom .problem-icon {
   margin: 0.25rem;
+}
+
+.ide-container {
+  padding: 1rem;
+  padding-top: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-gap: 1rem;
+}
+.ide-container .command-bar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.ide-container .command-bar .languageSelector {
+  width: 7rem;
+}
+.ide-container .command-bar .command-container {
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+}
+.ide-container .command-bar .command-container .commands-left,
+.ide-container .command-bar .command-container .commands-right {
+  display: flex;
+  flex-direction: row;
+}
+.ide-container .code-container {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.dropdown select {
+  appearance: none;
+  border: none;
+}
+
+.iconbutton {
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  height: 2rem;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  grid-gap: 0.35rem;
+  align-items: center;
+  border-radius: 0.35rem;
+  color: white;
+}
+.iconbutton svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.25rem;
+  padding-left: 0;
+}
+.iconbutton:hover {
+  background-color: #5674ba;
+}
+
+.textbutton {
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  height: 2rem;
+  border-radius: 0.35rem;
+  color: white;
+  font-size: 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+.textbutton:hover {
+  background-color: #5674ba;
+}
+
+.languageMenuItem {
+  background-color: green;
 }
 
 /*# sourceMappingURL=style.css.map */

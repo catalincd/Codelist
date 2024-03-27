@@ -10,12 +10,18 @@ const RunnerManager = require('./RunnerManager')
 
 const GetTests = async (id) => (await Problem.findOne({ id })).tests
 
-const RunCode = async (problemId, code) => {
+const RunSolutionCode = async (problemId, code, language) => {
     const problemTests = await GetTests(problemId)
 
-    const {runtime, memory, error, tests, output} = await RunnerManager.Run("gxx", code, problemTests)
+    const {time, memory, error, tests, output} = await RunnerManager.RunProblem(language, code, problemTests)
 
-    return {runtime, memory, error, tests, output}
+    return {time, memory, error, tests, output}
 }
 
-module.exports = {RunCode}
+
+const RunCode = async (code, language) => {
+    const results = await RunnerManager.RunCode(language, code)
+    return results
+}
+
+module.exports = {RunCode, RunSolutionCode}

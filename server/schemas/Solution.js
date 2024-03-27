@@ -5,7 +5,7 @@ const Solution = new mongo.Schema({
     problemId: { type: Number, required: true },
     username: { type: String, required: true },
     code: { type: String, required: true },
-    runtime: { type: Number, default: 0 },
+    time: { type: Number, default: 0 },
     memory: { type: Number, default: 0 },
     error: { type: Boolean, default: false },
     output: { type: String, default: ""},

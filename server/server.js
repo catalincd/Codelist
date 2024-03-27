@@ -37,11 +37,11 @@ app.use('/problems', problems)
 app.use('/solutions', solutions)
 
 
-app.use('/', express.static('server/build'))
+/* app.use('/', express.static('server/build'))
 app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
 });
-
+*/
 
 
 app.listen(port, () => {

@@ -1,10 +1,19 @@
-import React, { useState, useEffect, useContext } from "react"
-import { useSearchParams } from "react-router-dom"
+import React, { useState, useEffect, useContext, useRef } from "react"
+import { Link, useSearchParams } from "react-router-dom"
 
 import Layout from "../components/Layout";
 import ProblemElement from "../components/ProblemElement";
 
 import { UserContext } from "../utils/UserContext";
+
+import CodeEditor from "../components/CodeEditor"
+
+import { BiErrorCircle } from "react-icons/bi";
+import { BsMemory } from "react-icons/bs";
+import { BsCpu } from "react-icons/bs";
+
+
+
 
 const Solver = (props) => {
 
@@ -14,15 +23,37 @@ const Solver = (props) => {
   const id = searchParams.get("id")
 
   const [showLoadingResult, setShowLoadingResult] = useState(false)
+  const [showLoadingRuntime, setShowLoadingRuntime] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [problemData, setProblemData] = useState(null)
   const [results, setResults] = useState([])
+  const [runtime, setRuntime] = useState(null)
 
-  const [code, setCode] = useState('');
+  const runtimeRef = useRef(null)
 
-  const checkSolution = async () => {
+
+  const scrollToRuntime = () => {
+    const runtimeElement = document.getElementById("ide-runtime")
+    if(runtimeElement)
+      runtimeElement.scrollIntoView({ behavior: 'smooth', block: "center" });
+    else
+      setTimeout(scrollToRuntime, 50)
+  }
+
+  const scrollToLastResult = () => {
+    const resultsElement = document.getElementById("ide-results")
+    if(resultsElement)
+      resultsElement.scrollIntoView({ behavior: 'smooth', block: "end" });
+    else
+      setTimeout(scrollToLastResult, 50)
+  }
+
+  const onSubmitHandle = async (code, language) => {
+    setRuntime({loading: true})
+    setShowLoadingRuntime(true)
     setShowLoadingResult(true)
-
+    scrollToRuntime()
+    
     try {
       const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/send`,
         {
@@ -31,25 +62,64 @@ const Solver = (props) => {
           body: JSON.stringify({
             problemId: id,
             username: user.username,
-            code: code
+            code: code,
+            language
           })
         })
 
-        if(!response.ok)
-        {
-          setErrorMessage("ERROR REQ FAILED")
-          return
-        }
-        
-        const data = await response.json()
-        console.log(data)
-        setResults([...results, data])
+      if (!response.ok) {
+        setErrorMessage("ERROR REQ FAILED")
+        return
+      }
+
+      const data = await response.json()
+      console.log(data)
+      setResults([...results, data])
+      setRuntime(data)
     }
     catch (error) {
       setErrorMessage(error)
     }
     finally {
       setShowLoadingResult(false)
+      setShowLoadingRuntime(false)
+      scrollToLastResult()
+    }
+  }
+
+  const onRunHandle = async (code, language) => {
+    setShowLoadingRuntime(true)
+    setRuntime({loading: true})
+    scrollToRuntime()
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/run`,
+        {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
+          body: JSON.stringify({
+            username: user.username,
+            code: code,
+            language
+          })
+        })
+
+      if (!response.ok) {
+        setErrorMessage("ERROR REQ FAILED")
+        return
+      }
+
+      const data = await response.json()
+      console.log(data)
+      setRuntime(data)
+      //setResults([...results, data])
+      //set runtime output here
+    }
+    catch (error) {
+      setErrorMessage(error)
+    }
+    finally {
+      setShowLoadingRuntime(false)
     }
   }
 
@@ -118,25 +188,46 @@ const Solver = (props) => {
             </div>
           </div>
           <div className="ide-textarea tile">
-            <div className="ide-title">
-              <h4>Soluție</h4>
-            </div>
-            <div className="ide-controls">
-              <button className="language">C++</button>
-              <p></p>
-              <button className="submit" onClick={() => checkSolution()}>Submit</button>
-            </div>
-            <textarea spellCheck="false" className="" value={code} onChange={e => setCode(e.target.value)} rows="30" />
+            <CodeEditor enableRun={user != null} onRun={onRunHandle} onSubmit={onSubmitHandle} cookieId={id} />
           </div>
-          <div className="ide-solutions tile">
-            <div className="ide-title">
-              <h4>Rezultate</h4>
+          {(runtime || showLoadingRuntime) &&
+            <div id="ide-runtime" className="ide-runtime tile">
+              <div className="ide-runtime-title">
+                <h4>Execuție</h4>
+                {GetExecutionTimeElement(runtime, showLoadingRuntime)}
+              </div>
+              {showLoadingRuntime &&
+                <div className="ide-runtime-grid">
+                  <textarea disabled rows={1} value="Loading..." />
+                </div>
+              }
+              {!showLoadingRuntime &&
+                <div className="ide-runtime-grid">
+                  <textarea disabled rows={runtime.output?.split('\n').length} value={runtime.output} />
+                </div>
+              }
             </div>
-            <div className="resultsTable">
-              {GetResultElements(results).reverse()}
-              {showLoadingResult && GetLoadingResultElement(results)}
+          }
+          {user && results.length > 0 &&
+            <div className="ide-solutions tile">
+              <div className="ide-title">
+                <h4>Rezultate</h4>
+              </div>
+              <div id="ide-results" className="resultsTable">
+                {GetResultElements(results)}
+                {showLoadingResult && GetLoadingResultElement(results)}
+              </div>
             </div>
-          </div>
+          }
+          {!user &&
+            <div className="ide-solutions tile">
+              <div className="ide-content">
+                <h4>Intră în cont pentru a putea trimite soluții pentru probleme</h4>
+                <Link className="login" to="/login">Log in</Link>
+                <Link className="signup" to="/signup">Sign up</Link>
+              </div>
+            </div>
+          }
         </div>
       </Layout>
     </div>
@@ -152,6 +243,44 @@ const GetProgressBar = (tests, message = null) => {
     <div className="progress-bar-container">
       <div className="progress-bar" style={{ width: widthString }}></div>
       {message ? <p>{message}</p> : <p>{ratio}% ({passed}/{tests.length})</p>}
+    </div>
+  )
+}
+
+const GetMemString = (mem) => {
+  var units = ["B", "KB", "MB", "GB"]
+  var unitId = 0
+
+  while(mem > 1000)
+  {
+    unitId++
+    mem /= 1000
+  }
+
+  return `${mem.toFixed(1)}${units[unitId]}`
+}
+
+const GetExecutionTimeElement = (runtime, loading) => {
+  if (loading) return (<div></div>)
+
+  if (runtime.error)
+    return (
+      <div className="diagnostic-error">
+        <h4>Error</h4>
+        <BiErrorCircle />
+      </div>
+    )
+
+  return (
+    <div className="diagnostic-success">
+      <div className="diagnostic-sub cpu">
+        <BsCpu />
+        <h4>{`${parseFloat(runtime.time).toFixed(1)}s`}</h4>
+      </div>
+      <div className="diagnostic-sub memory">
+        <BsMemory />
+        <h4>{GetMemString(parseFloat(runtime.memory))}</h4>
+      </div>
     </div>
   )
 }

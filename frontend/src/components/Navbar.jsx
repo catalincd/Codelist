@@ -14,6 +14,7 @@ const Navbar = (props) => {
         cookies.remove('username', { path: '/' });
         cookies.remove('token', { path: '/' });
         setUser(null)
+        window.location.reload()
     }
 
     const loggedElement = <div className="logElement">

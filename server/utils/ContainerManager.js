@@ -51,13 +51,16 @@ const CreateImages = async (IMAGES) => {
     for(var i=0;i<IMAGES.length;i++)
     {
         const image = IMAGES[i]
-        const {stdout, stderr} = await exec_async(`docker run -d --name codelist_${image}_1 codelist_${image} sleep infinity`)
+        const {stdout, stderr} = await exec_async(`docker run -d --security-opt seccomp=server/containers/permissions.json --name codelist_${image}_1 codelist_${image} sleep infinity`)
         verbose && console.log(stdout, stderr)
     }
 
 }
 
 const AssignImages = async () => {
+
+    console.log("Assigning containers...")
+
     const {stdin, stdout, stderr} = await exec_async("docker ps --format json")
     const allContainers = stdout.split('\n').filter(container => container != '').map(container => JSON.parse(container))
 

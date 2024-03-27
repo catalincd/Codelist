@@ -13,18 +13,47 @@ router.use((req, res, next) => {
 })
 
 router.post('/send', jwtDecoder, async (req, res) => {
-    const { problemId, username, code } = req.body
+    
+    console.log("Received solution")
+    console.log(req.body.language)
+    console.log(req.body.code)
 
-    const {runtime, memory, error, tests, output} = await CodeRunner.RunCode(problemId, code)
 
-    const id = await ConfigManager.GetNewSolutionId()
-    const solution = new Solution({ id, problemId, username, code, runtime, memory, error, tests, output })
-    await solution.save()
+    const { problemId, username, code, language } = req.body
 
-    res.status(201).json(solution)
-    return
+        const { time, memory, error, tests, output } = await CodeRunner.RunSolutionCode(problemId, code, language)
+
+        const id = await ConfigManager.GetNewSolutionId()
+        const solution = new Solution({ id, problemId, username, code, time, memory, error, tests, output })
+        await solution.save()
+
+        res.status(201).json(solution)
+        return
 
     try {
+        
+    }
+    catch (error) {
+        res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })
+    }
+})
+
+router.post('/run', jwtDecoder, async (req, res) => {
+    
+    console.log("Received run request")
+    console.log(req.body.language)
+    console.log(req.body.code)
+
+
+    const { username, code, language } = req.body
+
+        const runResults = await CodeRunner.RunCode(code, language)
+
+        res.status(201).json(runResults)
+        return
+
+    try {
+        
     }
     catch (error) {
         res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })
