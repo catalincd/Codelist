@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export PATH="$PATH:/root/.nvm/versions/node/v18.19.1/bin"
+export PATH="$PATH:/root/.nvm/versions/node/v21.6.2/bin"
+
+echo "Node version: $(node --version)"
 
 cd Codelist
 
