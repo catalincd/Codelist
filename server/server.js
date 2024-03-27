@@ -7,15 +7,20 @@ const problems = require('./routes/problems')
 const solutions = require('./routes/solutions')
 
 const path = require("path");
+const fs = require('fs')
 
 const app = express()
-const port = parseInt(require('fs').readFileSync('./server/port').toString()) || 8080
+const port = parseInt(fs.readFileSync('./server/port').toString()) || 8080
+const mongo_key = fs.readFileSync('./server/keys/mongo_key').toString()
 
+console.log(`KEY:|${mongo_key}|`)
 
-
-mongoose.connect('mongodb://localhost:27017/codelist', {
+mongoose.connect('mongodb://localhost:27017', {
     serverSelectionTimeoutMS: 1000,
-    autoIndex: true
+    autoIndex: true,
+    user: "user",
+    pass: mongo_key,
+    dbName: "codelist"
 })
 
 
