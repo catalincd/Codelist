@@ -7,6 +7,9 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import Problems from "../pages/Problems"
 import Solver from "../pages/Solver"
+import Confirmation from "../pages/Confirmation"
+import PasswordReset from "../pages/PasswordReset"
+import ForgotPassword from "../pages/ForgotPassword"
 
 import { UserContext } from "./UserContext";
 
@@ -31,6 +34,9 @@ const Root = (props) => {
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="solver" element={<Solver />} />
+          <Route path="confirmation" element={<Confirmation />} />
+          <Route path="password" element={<PasswordReset />} />
+          <Route path="forgot" element={<ForgotPassword />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

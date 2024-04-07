@@ -13,6 +13,7 @@ PORT="443"                      # 80
 mkdir -p server/keys
 echo -n $1 > server/keys/mongo_key
 echo -n $2 > server/keys/jwt_key
+echo -n $3 > server/keys/noreply_password
 cp /keys/ssl_cert server/keys/ssl_cert
 cp /keys/ssl_key server/keys/ssl_key
 cp /keys/ssl_ca server/keys/ssl_ca

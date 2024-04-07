@@ -22,7 +22,7 @@ const Login = (props) => {
       method: "POST",
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        username: username,
+        useroremail: username,
         password: password
       })
     })
@@ -35,13 +35,17 @@ const Login = (props) => {
       } 
       
       const cookies = new Cookies()
-
-      cookies.set('username', username, { path: '/' })
+      cookies.set('username', data.username, { path: '/' })
+      cookies.set('email', data.email, { path: '/' })
       cookies.set('token', data.token, { path: '/' })
-      setUser({username: username, token: data.token})
+      setUser({username: data.username, token: data.token})
       navigate("/");
     })
     .catch(error => console.error(error));
+  }
+
+  const onForgot = () => {
+    navigate("/forgot");
   }
 
   return (
@@ -67,7 +71,10 @@ const Login = (props) => {
               className={'passwordInput'}
             />
           </div>
-          <button onClick={() => onLogin()}>Login</button>
+          <div className="formButtonStack">
+            <button onClick={() => onForgot()}>Resetare parola</button>
+            <button onClick={() => onLogin()}>Login</button>
+          </div>
           <p className="errorMessage">{errorMessage}</p>
         </div>
       </Layout>
