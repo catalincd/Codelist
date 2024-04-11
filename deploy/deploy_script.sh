@@ -28,7 +28,7 @@ npm run build
 cd ..
 rm -rf server/build
 cp -r frontend/build server/build
-
+mkdir -p server/build/images
 
 cd server
 npm install
