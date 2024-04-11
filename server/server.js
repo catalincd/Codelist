@@ -41,21 +41,19 @@ app.use('/problems', problems)
 app.use('/solutions', solutions)
 
 
-/*
-app.use('/', express.static('server/build'))
-app.use((req, res, next) => {
-    res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
-});
-*/
-
-
 if(debug)
 {
+    app.use('/images', express.static('server/build/images'))
     console.log("RUNNING IN DEBUG MODE")
     app.listen(port);
 }
 else
 {
+    app.use('/', express.static('server/build'))
+    app.use((req, res, next) => {
+        res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
+    });
+
     https.createServer({
         key: ssl_key,
         cert: ssl_cert,

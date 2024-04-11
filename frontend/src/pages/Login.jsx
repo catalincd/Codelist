@@ -18,30 +18,30 @@ const Login = (props) => {
 
   const onLogin = (e) => {
     fetch(`${process.env.REACT_APP_HOSTNAME}/auth/login`,
-    {
-      method: "POST",
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        useroremail: username,
-        password: password
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.error)
       {
-        setErrorMessage(data.error)
-        return
-      } 
-      
-      const cookies = new Cookies()
-      cookies.set('username', data.username, { path: '/' })
-      cookies.set('email', data.email, { path: '/' })
-      cookies.set('token', data.token, { path: '/' })
-      setUser({username: data.username, token: data.token})
-      navigate("/");
-    })
-    .catch(error => console.error(error));
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          useroremail: username,
+          password: password
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          setErrorMessage(data.error)
+          return
+        }
+
+        const cookies = new Cookies()
+        cookies.set('username', data.username, { path: '/' })
+        cookies.set('email', data.email, { path: '/' })
+        cookies.set('token', data.token, { path: '/' })
+        cookies.set('picture', data.picture, { path: '/' })
+        setUser({ username: data.username, token: data.token, email: data.email, picture: data.picture })
+        navigate("/");
+      })
+      .catch(error => console.error(error));
   }
 
   const onForgot = () => {

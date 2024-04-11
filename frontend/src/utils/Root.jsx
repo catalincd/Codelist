@@ -10,6 +10,7 @@ import Solver from "../pages/Solver"
 import Confirmation from "../pages/Confirmation"
 import PasswordReset from "../pages/PasswordReset"
 import ForgotPassword from "../pages/ForgotPassword"
+import Profile from "../pages/Profile"
 
 import { UserContext } from "./UserContext";
 
@@ -18,9 +19,11 @@ const Root = (props) => {
   const cookies = new Cookies()
 
   const usernameCookie = cookies.get("username")
+  const emailCookie = cookies.get("email")
+  const profileCookie = cookies.get("picture")
   const tokenCookie = cookies.get("token")
     
-  const newUser = (usernameCookie && tokenCookie)? {username: usernameCookie, token: tokenCookie}:null
+  const newUser = (usernameCookie && tokenCookie)? {username: usernameCookie, token: tokenCookie, email: emailCookie, picture: profileCookie}:null
   
   const [user, setUser] = useState(newUser)
 
@@ -37,6 +40,7 @@ const Root = (props) => {
           <Route path="confirmation" element={<Confirmation />} />
           <Route path="password" element={<PasswordReset />} />
           <Route path="forgot" element={<ForgotPassword />} />
+          <Route exact path="/user/:name" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

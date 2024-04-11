@@ -11,7 +11,7 @@ var CONTAINERS = {}
 const OnSetup = async () => {
     console.log('Setting up containers...\n')
 
-    await ContainerManager.CreateImages(RUNNERS)
+    // await ContainerManager.CreateImages(RUNNERS)
 
     CONTAINERS = await ContainerManager.AssignImages()
 

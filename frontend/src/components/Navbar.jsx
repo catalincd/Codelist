@@ -1,25 +1,19 @@
 import React, { useContext, useState, useEffect } from "react"
 import { UserContext } from "../utils/UserContext";
 import { Link, NavLink } from "react-router-dom";
-import Cookies from 'universal-cookie';
 
 const Navbar = (props) => {
 
     const { user, setUser } = useContext(UserContext);
 
-    const cookies = new Cookies()
+    const userProfileHref = `/user/${user?.username}`
+    const userProfilePicture = `${process.env.REACT_APP_HOSTNAME}/images/${user && user.picture || "default.png"}`
 
-    const onLogout = () => {
-        console.log("LOGIN OUT")
-        cookies.remove('username', { path: '/' });
-        cookies.remove('token', { path: '/' });
-        setUser(null)
-        window.location.reload()
-    }
-
-    const loggedElement = <div className="logElement">
-                            <p className="username">{user?.username}</p>
-                            <button className="logout" onClick={() => onLogout()}>Log Out</button>
+    const loggedElement = <div className="logElement in">
+                            <Link to={userProfileHref} className="username">
+                                {user?.username}
+                                <img src={userProfilePicture} />
+                            </Link>
                         </div>
 
     const loginElement = <div className="logElement">
@@ -29,11 +23,15 @@ const Navbar = (props) => {
 
     return (
         <div className="tile navbar">
-            <h3>CODELIST</h3>
+            <Link className="home" to="/"><h3>CODELIST</h3></Link>
             <nav>
-                <NavLink to="/" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Home</NavLink>
                 <NavLink to="/problems" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Probleme</NavLink>
-                <NavLink to="/articole" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Articole</NavLink>
+                <NavLink to="/articles" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Articole</NavLink>
+                <NavLink to="/users" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Utilizatori</NavLink>
+                {
+                    user &&
+                    <NavLink to="/newpost" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Postează</NavLink>
+                }
             </nav>
             {
                 user ? loggedElement : loginElement

@@ -48,9 +48,10 @@ const PasswordReset = (props) => {
                 console.log(data)
                 const cookies = new Cookies()
                 cookies.set('username', data.username, { path: '/' })
-                cookies.set('email', data.username, { path: '/' })
+                cookies.set('email', data.email, { path: '/' })
                 cookies.set('token', data.token, { path: '/' })
-                setUser({ username: data.username, token: data.token })
+                cookies.set('picture', data.picture, { path: '/' })
+                setUser({ username: data.username, token: data.token, email: data.email, picture: data.picture})
                 navigate("/");
             })
             .catch(error => console.error(error));

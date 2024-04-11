@@ -9,6 +9,9 @@ import { MdFullscreenExit } from "react-icons/md";
 import { LuSave } from "react-icons/lu";
 import { RiZoomInLine } from "react-icons/ri";
 import { RiZoomOutLine } from "react-icons/ri";
+import { PiPasswordLight } from "react-icons/pi";
+import { IoLogInOutline } from "react-icons/io5";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const IconMap = {
     run: FaRegCirclePlay,
@@ -19,16 +22,19 @@ const IconMap = {
     zoomin: RiZoomInLine,
     zoomout: RiZoomOutLine,
     fullscreen: MdFullscreen,
-    exitFullscreen: MdFullscreenExit
+    exitFullscreen: MdFullscreenExit,
+    password: PiPasswordLight,
+    login: IoLogInOutline,
+    logout: IoLogOutOutline,
 }
 
 
-const IconButton = ({text, icon, onClickHandle}) => {
+const IconButton = ({text, icon, onClickHandle, reverse}) => {
     
     const IconElement = IconMap[icon] || IconMap["button"]
 
     return (
-        <div className="iconbutton" onClick={() => {onClickHandle()}}>
+        <div className={reverse? "iconbutton reverse" : "iconbutton"} onClick={() => {onClickHandle()}}>
             <IconElement />
             {text}
         </div>

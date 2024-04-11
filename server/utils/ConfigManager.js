@@ -22,6 +22,12 @@ const SetConfigVar = async (updateObject) => {
     });
 }
 
+const GetNewUserId = async () => {
+    const userId = await GetConfigVar("problemsCount") + 1
+    await SetConfigVar({usersCount: userId})
+    return userId
+}
+
 const GetNewProblemId = async () => {
     const problemId = await GetConfigVar("problemsCount") + 1
     await SetConfigVar({problemsCount: problemId})
@@ -36,4 +42,4 @@ const GetNewSolutionId = async () => {
 
 
 
-module.exports = {GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId}
+module.exports = {GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId, GetNewUserId}

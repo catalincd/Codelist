@@ -71,7 +71,7 @@ const Signup = (props) => {
               <input
                 value={username}
                 placeholder="john123"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value.replace(/[^A-Za-z0-9\-_]/g, ''))} //disable . for .. vulnerability
                 className={'usernameInput'}
               />
             </div>
