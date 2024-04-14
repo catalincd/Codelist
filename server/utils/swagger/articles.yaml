@@ -1,0 +1,42 @@
+paths:
+  /articles/create:
+    post:
+      security:
+        - ApiKeyAuth: []
+      summary: Create a new article. 
+      description: Creates a new article on the website, requiring the creator's token.
+      requestBody:
+          description: Article componenets
+          required: true
+          example: {"name": "The A* Algorithm", "preview": "A* is amazing", "text": "Details on A*..."}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "The A* Algorithm"
+                  preview:
+                    type: string
+                    example: "A* is amazing"
+                  text:
+                    type: string
+                    example: "Details on A*..."
+      responses:
+        201:
+          description: Created the article successfully.
+        401:
+          description: Authorization token failed.
+        409:
+          description: An article with the submitted name already exists.
+        500:
+          description: Internal server error. 
+
+
+components:
+  securitySchemes:
+    ApiKeyAuth:      
+      type: apiKey
+      in: header       
+      name: Authorization

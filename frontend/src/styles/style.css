@@ -6,6 +6,10 @@
 
 html {
   scroll-behavior: smooth;
+  letter-spacing: -0.5px;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -29,11 +33,32 @@ body {
   grid-template-rows: auto 1fr auto;
   grid-gap: 1.5rem;
   justify-items: center;
+  position: relative;
 }
 
 .mainLayoutContent {
   width: 100%;
   display: grid;
+  justify-items: center;
+  align-content: center;
+}
+
+.errorOverlay {
+  top: -2rem;
+  width: calc(100vw - 1rem);
+  height: calc(100% + 4rem);
+  position: fixed;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5333333333);
+  display: grid;
+  justify-items: center;
+  align-content: center;
+}
+.errorOverlay .errorMessageContainer {
+  width: 30%;
+  height: 10rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
   justify-items: center;
   align-content: center;
 }
@@ -58,6 +83,149 @@ body {
   justify-items: center;
   align-content: first baseline;
   grid-gap: 2rem;
+}
+
+.pageContainer {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: first baseline;
+  grid-gap: 2rem;
+}
+
+.newArticleContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+}
+.newArticleContainer .newArticleTop {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.newArticleContainer .articlePreview {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+}
+.newArticleContainer .articlePreview .noElementFiller {
+  min-height: 20rem;
+  display: grid;
+  align-items: center;
+}
+.newArticleContainer .articleForm {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 2rem;
+}
+.newArticleContainer .articleForm .markdownCodeContainer {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding-bottom: 2rem;
+}
+.newArticleContainer .articleForm .markdownCodeContainer p {
+  font-size: 1.15rem;
+}
+.newArticleContainer .articleForm .markdownCodeContainer .code-container {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.newArticleContainer .articleForm .textareaContainer {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding-bottom: 2rem;
+}
+.newArticleContainer .articleForm .textareaContainer p {
+  font-size: 1.15rem;
+}
+.newArticleContainer .articleForm .textareaContainer textarea {
+  resize: none;
+  font-size: 1.05rem;
+  color: white;
+  background-color: #282c34;
+  border-radius: 0.35rem;
+  padding: 0.5rem 1rem;
+  border: none;
+}
+.newArticleContainer .articleForm .textareaContainer textarea:focus, .newArticleContainer .articleForm .textareaContainer textarea:active {
+  outline: none;
+  background-color: #5674ba;
+}
+.newArticleContainer .articleForm .textareaContainer textarea:focus::placeholder, .newArticleContainer .articleForm .textareaContainer textarea:active::placeholder {
+  color: #5674ba;
+}
+.newArticleContainer .articleForm .inputContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  align-items: center;
+  word-wrap: nowrap;
+  grid-gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0rem;
+}
+.newArticleContainer .articleForm .inputContainer p {
+  font-size: 1.15rem;
+}
+.newArticleContainer .articleForm .inputContainer input {
+  height: 2rem;
+  font-size: 1.05rem;
+  color: white;
+  background-color: #282c34;
+  border-radius: 0.35rem;
+  padding: 0.5rem 1rem;
+  border: none;
+}
+.newArticleContainer .articleForm .inputContainer input:focus, .newArticleContainer .articleForm .inputContainer input:active {
+  outline: none;
+  background-color: #5674ba;
+}
+.newArticleContainer .articleForm .inputContainer input:focus::placeholder, .newArticleContainer .articleForm .inputContainer input:active::placeholder {
+  color: #5674ba;
+}
+.newArticleContainer .articleSubmitter {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.labelswitch {
+  max-width: 20rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+}
+
+.newPostContainer {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: center;
+  align-items: center;
+}
+.newPostContainer .newPostButtonsContainer {
+  width: 75%;
+  height: 40%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  padding: 1rem 0rem 4rem 0rem;
+}
+.newPostContainer .newPostButtonsContainer button {
+  cursor: pointer;
+  outline: none;
+  font-size: 2rem;
+  border: 3px solid #5674ba;
+  border-radius: 0.25rem;
+  background-color: #1E3772;
+  color: white;
+}
+.newPostContainer .newPostButtonsContainer button:hover {
+  background-color: #5674ba;
 }
 
 .tile.pageFiller.profilePageContainer {
@@ -93,7 +261,8 @@ body {
   border-radius: 50%;
   z-index: 0;
 }
-.tile.pageFiller.profilePageContainer .profileTop .profilePicture.editablePicture form, .tile.pageFiller.profilePageContainer .profileTop .profilePicture.editablePicture input {
+.tile.pageFiller.profilePageContainer .profileTop .profilePicture.editablePicture form,
+.tile.pageFiller.profilePageContainer .profileTop .profilePicture.editablePicture input {
   display: none;
 }
 .tile.pageFiller.profilePageContainer .profileTop .profilePicture.editablePicture .pictureControls {
@@ -256,7 +425,7 @@ nav a:hover {
   height: 2rem;
   font-size: 1.05rem;
   color: white;
-  background-color: #112244;
+  background-color: #282c34;
   border-radius: 0.35rem;
   padding: 0.5rem 1rem;
   border: none;
@@ -265,6 +434,9 @@ nav a:hover {
 .loginContainer .inputContainer input:focus, .loginContainer .inputContainer input:active {
   outline: none;
   background-color: #5674ba;
+}
+.loginContainer .inputContainer input:focus::placeholder, .loginContainer .inputContainer input:active::placeholder {
+  color: #5674ba;
 }
 .loginContainer button {
   cursor: pointer;
@@ -557,7 +729,6 @@ nav a:hover {
   font-family: "Montserrat", sans-serif;
   color: #FFFCFF;
   border-radius: 0.85rem;
-  /* border: 3px solid #004FFF; */
   padding: 2.75rem 2.75rem;
   background-color: #1E3772;
   width: 100%;
@@ -636,6 +807,91 @@ nav a:hover {
   font-size: 2rem;
 }
 .problem .problem-bottom .problem-icon {
+  margin: 0.25rem;
+}
+
+.article {
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  color: #FFFCFF;
+  border-radius: 0.85rem;
+  padding: 2.75rem 2.75rem;
+  background-color: #1E3772;
+  width: 100%;
+  height: 15rem;
+  display: grid;
+  grid-template-rows: 1.75rem 1fr 1.75rem;
+  grid-gap: 0.25rem;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease 0s;
+}
+.article.submit-element {
+  height: 6rem;
+}
+.article:hover {
+  filter: brightness(110%);
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.25), 4px 4px 8px 4px rgba(0, 0, 0, 0.35);
+}
+.article a {
+  color: #FFFCFF;
+  text-decoration: none;
+}
+.article .article-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-content: center;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.article .article-top .article-name p span {
+  font-weight: 400;
+  font-size: 1rem;
+}
+.article .article-top a.article-name {
+  cursor: pointer;
+}
+.article .article-top .article-stars-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr) auto;
+  grid-gap: 0.5rem;
+  align-items: center;
+  font-size: 1rem;
+}
+.article .article-top .article-stars-container .article-star-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.article a.article-content {
+  cursor: pointer;
+}
+.article .article-content {
+  display: grid;
+  align-content: center;
+}
+.article .article-content p {
+  text-align: justify;
+}
+.article .article-bottom {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-content: center;
+  font-weight: 600;
+}
+.article .article-bottom p {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+.article .article-bottom .article-like-container {
+  display: grid;
+  align-items: center;
+  justify-items: end;
+  padding-right: 0.5rem;
+}
+.article .article-bottom .article-like-container p span {
+  font-size: 2rem;
+}
+.article .article-bottom .article-icon {
   margin: 0.25rem;
 }
 
@@ -827,6 +1083,47 @@ nav a:hover {
 }
 .uploadElement .viewsContainer .problem-star-filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.articleContentContainer {
+  min-height: 28.5rem;
+  padding: 2.5rem 4rem;
+}
+
+.markdown {
+  line-height: 1.5;
+  font-weight: 400;
+}
+.markdown p {
+  line-height: 1.75;
+}
+.markdown a {
+  font-weight: 600;
+  color: #ffa500;
+  text-decoration: none;
+}
+.markdown a:hover {
+  text-decoration: underline;
+}
+.markdown pre {
+  padding: 0.75rem 1.15rem;
+  outline: 1px white solid;
+  background-color: rgba(255, 255, 255, 0.1882352941);
+  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.35), 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  color: #adff98;
+  border-radius: 0.35rem;
+}
+.markdown pre code {
+  line-height: 2.25;
+}
+.markdown ul,
+.markdown ol {
+  margin-bottom: 3rem;
+}
+.markdown ul li,
+.markdown ol li {
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
 @media only screen and (max-width: 1500px) {

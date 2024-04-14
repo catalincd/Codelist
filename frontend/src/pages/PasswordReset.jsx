@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
-import Cookies from 'universal-cookie';
 import { Link, useSearchParams } from "react-router-dom"
 import { UserContext } from "../utils/UserContext";
 import { useNavigate } from "react-router-dom"
+import Requests from "../utils/Requests"
+import Cookies from 'universal-cookie'
 
 const PasswordReset = (props) => {
 
@@ -11,6 +12,7 @@ const PasswordReset = (props) => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [errorMessage, setErrorMessage] = useState('')
+    const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
 
     const username = searchParams.get("username")
     const token = searchParams.get("token")
@@ -46,12 +48,8 @@ const PasswordReset = (props) => {
                 }
 
                 console.log(data)
-                const cookies = new Cookies()
-                cookies.set('username', data.username, { path: '/' })
-                cookies.set('email', data.email, { path: '/' })
-                cookies.set('token', data.token, { path: '/' })
-                cookies.set('picture', data.picture, { path: '/' })
-                setUser({ username: data.username, token: data.token, email: data.email, picture: data.picture})
+                //cookies.set("USER_COOKIE", JSON.stringify(data))
+                setUser(data)
                 navigate("/");
             })
             .catch(error => console.error(error));

@@ -28,11 +28,15 @@ npm run build
 cd ..
 rm -rf server/build
 cp -r frontend/build server/build
+
 mkdir -p server/build/images
+echo "0" > server/keys/debug
 
 cd server
 npm install
 cd ..
+
+docker start mongodb
 
 pm2 kill
 pm2 start server/server.js

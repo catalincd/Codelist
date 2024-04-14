@@ -5,11 +5,16 @@ const mongoose = require('mongoose')
 const auth = require('./routes/auth')
 const data = require('./routes/data')
 const problems = require('./routes/problems')
+const articles = require('./routes/articles')
 const solutions = require('./routes/solutions')
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerConfig = require('./utils/swagger/config');
 
 const path = require("path");
 const fs = require('fs')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1 || false
@@ -34,16 +39,21 @@ mongoose.connect('mongodb://localhost:27017', {
 
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 app.use('/data', data)
 app.use('/auth', auth)
 app.use('/problems', problems)
+app.use('/articles', articles)
 app.use('/solutions', solutions)
+
 
 
 if(debug)
 {
     app.use('/images', express.static('server/build/images'))
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
+    
     console.log("RUNNING IN DEBUG MODE")
     app.listen(port);
 }
@@ -53,6 +63,7 @@ else
     app.use((req, res, next) => {
         res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
     });
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 
     https.createServer({
         key: ssl_key,

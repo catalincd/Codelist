@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router"
 
 import Title from 'reactjs-title'
-import Cookies from 'universal-cookie';
+import Requests from "../utils/Requests"
+import Cookies from 'universal-cookie'
 
 import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
@@ -34,7 +35,9 @@ const Profile = (props) => {
     const imageFormRef = useRef(null)
     const { name } = useParams();
     const editable = user ? (user.username == name) : false
-    const cookies = new Cookies()
+
+    const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -68,19 +71,13 @@ const Profile = (props) => {
     }, [])
 
     const onLogout = () => {
-        console.log("LOGIN OUT")
-        cookies.remove('username', { path: '/' });
-        cookies.remove('token', { path: '/' });
-        cookies.remove('email', { path: '/' });
-
-        if (user)
-            setUser(null)
-
+        cookies.remove("USER_COOKIE")
+        user && setUser(null)
         window.location.reload()
     }
 
     const onResetProfilePicture = async () => {
-        cookies.set('picture', "default.png", { path: '/' })
+        //cookies.set("USER_COOKIE", JSON.parse({ ...user, picture: "default.png" }))
 
         setPictureName(`${process.env.REACT_APP_HOSTNAME}/images/default.png`)
         setUser({ ...user, picture: "default.png" })
@@ -140,7 +137,8 @@ const Profile = (props) => {
     const onUploadProfilePictureButton = async (file) => {
         const pictureName = `${user.username}.${file.name.split(".").splice(-1)}`
         setUser({ ...user, picture: pictureName })
-        cookies.set('picture', pictureName, { path: '/' })
+
+        //cookies.set("USER_COOKIE", JSON.parse({ ...user, picture: pictureName }))
 
         setPictureName(URL.createObjectURL(file));
         imageFormRef.current.click()

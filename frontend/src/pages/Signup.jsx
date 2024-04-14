@@ -54,7 +54,7 @@ const Signup = (props) => {
 
   return (
     <div className="mainContainer">
-      <Layout>
+      <Layout error={errorMessage} setError={setErrorMessage}>
         { !success &&
           <div className="tile pageFiller loginContainer">
             <div className={'inputContainer'}>
@@ -96,7 +96,6 @@ const Signup = (props) => {
               />
             </div>
             <button onClick={() => onSignup()}>Sign up</button>
-            <p className="errorMessage">{errorMessage}</p>
           </div>
         }
         {

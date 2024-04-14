@@ -18,8 +18,8 @@ router.post('/send', jwtDecoder, async (req, res) => {
     console.log(req.body.language)
     console.log(req.body.code)
 
-
-    const { problemId, username, code, language } = req.body
+    try {
+        const { problemId, username, code, language } = req.body
 
         const { time, memory, error, tests, output } = await CodeRunner.RunSolutionCode(problemId, code, language)
 
@@ -28,10 +28,6 @@ router.post('/send', jwtDecoder, async (req, res) => {
         await solution.save()
 
         res.status(201).json(solution)
-        return
-
-    try {
-        
     }
     catch (error) {
         res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })
@@ -44,16 +40,12 @@ router.post('/run', jwtDecoder, async (req, res) => {
     console.log(req.body.language)
     console.log(req.body.code)
 
-
-    const { username, code, language } = req.body
+    try {
+        const { username, code, language } = req.body
 
         const runResults = await CodeRunner.RunCode(code, language)
 
         res.status(201).json(runResults)
-        return
-
-    try {
-        
     }
     catch (error) {
         res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })

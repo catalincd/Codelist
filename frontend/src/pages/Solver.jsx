@@ -188,7 +188,7 @@ const Solver = (props) => {
             </div>
           </div>
           <div className="ide-textarea tile">
-            <CodeEditor enableRun={user != null} onRun={onRunHandle} onSubmit={onSubmitHandle} cookieId={id} />
+            <CodeEditor enableRun={user != null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
           </div>
           {(runtime || showLoadingRuntime) &&
             <div id="ide-runtime" className="ide-runtime tile">

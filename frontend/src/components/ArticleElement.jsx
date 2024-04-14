@@ -1,14 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { Link } from "react-router-dom";
 
-const Article = ({id, name, rating, preview, views}) => {
-
-    const navigate = useNavigate()
-
-    const handleNavigate = () => {
-        navigate(`/article/${id}`)
-    }
+const ArticleElement = ({id, name, rating, preview, views}) => {
 
     const handleLike = (e) => {
         e.stopPropagation()
@@ -16,7 +8,7 @@ const Article = ({id, name, rating, preview, views}) => {
     }
 
     return (
-        <div onClick={handleNavigate} className="article">
+        <div className="article">
             <div className="article-top">
                 <div className="article-name">
                     <p>{name} <span>#{id}</span></p>
@@ -60,4 +52,4 @@ const GetStarsFromRating = (rating) => {
     return stars
 }
 
-export default Article
+export default ArticleElement

@@ -1,19 +1,18 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
-import Problem from "../components/Problem";
-import ProblemElement from "../components/ProblemElement";
+import Article from "../components/Article";
 
 import { UserContext } from "../utils/UserContext";
 
-const Problems = (props) => {
+const Articles = (props) => {
 
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
-    const [problemList, setProblemList] = useState([]);
+    const [articlesList, setArticlesList] = useState([]);
 
     useEffect(() => {
         const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/problems/homescreen`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/articles/homescreen`,
                 {
                     method: "GET"
                 })
@@ -24,28 +23,26 @@ const Problems = (props) => {
                         setErrorMessage(data.error)
                         return
                     }
-                    setProblemList(data)
+                    setArticlesList(data)
                     console.log(data)
                 })
                 .catch(error => console.error(error));
 
-            console.log("FETCHED FROM PROBLEM")
+            console.log("FETCHED ARTICLES")
         }
 
         fetchProblemData()
     }, [])
 
-    var keyIterator = 0
-
     return (
         <div className="mainContainer">
             <Layout>
                 <div className="problemsPageContainer">
-                    {problemList.map(problem => <Problem key={problem.id} id={problem.id}/>)}
+                    {articlesList.map(problem => <Article key={problem.id} {...problem} />)}
                 </div>
             </Layout>
         </div>
     );
 }
 
-export default Problems;
+export default Articles;

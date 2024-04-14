@@ -14,7 +14,6 @@ const SubmitProblems = (props) => {
             <Layout>
                 <div className="problemsPageContainer">
                     <ProblemSubmitElement />
-                    {problemList.map(problem => <Problem id={problem.id}/>)}
                 </div>
             </Layout>
         </div>

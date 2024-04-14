@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom"
 import Title from 'reactjs-title'
 import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
-import Cookies from 'universal-cookie';
+import Requests from "../utils/Requests"
+import Cookies from 'universal-cookie'
 
 
 const Login = (props) => {
@@ -13,8 +14,8 @@ const Login = (props) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
-  const [errorMessage, setErrorMessage] = useState('')
+  const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
+  const [errorMessage, setErrorMessage] = useState("")
 
   const onLogin = (e) => {
     fetch(`${process.env.REACT_APP_HOSTNAME}/auth/login`,
@@ -33,12 +34,9 @@ const Login = (props) => {
           return
         }
 
-        const cookies = new Cookies()
-        cookies.set('username', data.username, { path: '/' })
-        cookies.set('email', data.email, { path: '/' })
-        cookies.set('token', data.token, { path: '/' })
-        cookies.set('picture', data.picture, { path: '/' })
-        setUser({ username: data.username, token: data.token, email: data.email, picture: data.picture })
+
+        //cookies.set("USER_COOKIE", JSON.stringify(data))
+        setUser(data)
         navigate("/");
       })
       .catch(error => console.error(error));
@@ -50,7 +48,7 @@ const Login = (props) => {
 
   return (
     <div className="mainContainer">
-      <Layout>
+      <Layout error={errorMessage} setError={setErrorMessage}>
         <div className="tile pageFiller loginContainer">
           <div className={'inputContainer'}>
             <p>Username</p>
@@ -75,7 +73,6 @@ const Login = (props) => {
             <button onClick={() => onForgot()}>Resetare parola</button>
             <button onClick={() => onLogin()}>Login</button>
           </div>
-          <p className="errorMessage">{errorMessage}</p>
         </div>
       </Layout>
     </div>

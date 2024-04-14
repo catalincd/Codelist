@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"
 import Title from 'reactjs-title'
 import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
-import Cookies from 'universal-cookie';
 
 
 const Login = (props) => {

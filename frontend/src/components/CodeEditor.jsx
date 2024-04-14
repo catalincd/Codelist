@@ -36,14 +36,14 @@ const GetHelloWordApp = {
     js: `console.log("Hello World!")\n`
 }
 
-const LoadCode = (cookieId, defaultCode) => localStorage.getItem(cookieId) || defaultCode;
+const LoadCode = (codeId, defaultCode) => localStorage.getItem(codeId) || defaultCode;
 
 
-const CodeEditor = ({ enableRun, onRun, onSubmit, cookieId, onFullscreen, onExitFullscreen }) => {
+const CodeEditor = ({ enableRun, onRun, onSubmit, codeId, onFullscreen, onExitFullscreen }) => {
 
     const [language, setLanguage] = useState("gxx");            // TO-DO: SET THIS TO USER PREFERENCE ITEM
     const [languageName, setLanguageName] = useState("C++");
-    const [code, setCode] = useState(LoadCode(cookieId, GetHelloWordApp["gxx"]))
+    const [code, setCode] = useState(LoadCode(codeId, GetHelloWordApp["gxx"]))
     const [isFullscreen, setFullscreen] = useState(false);
     const [fontSize, setFontSize] = useState(16)
 
@@ -54,7 +54,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, cookieId, onFullscreen, onExit
     }
 
     const onCodeMod = (newCode) => {
-        localStorage.setItem(cookieId, newCode)
+        localStorage.setItem(codeId, newCode)
         setCode(newCode)
     }
 

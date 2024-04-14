@@ -6,11 +6,12 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const fileUpload = require('express-fileupload');
 const ConfigManager = require('../utils/ConfigManager')
+const jwtDecoder = require('../middlewares/jwtDecoder')
 
 const JWT_KEY = fs.readFileSync('/keys/jwt_key')
 const User = require('../schemas/User')
 const mailer = require('../utils/accounts/mailer')
-const debug = fs.readFileSync('./server/keys/debug').toString() ? true : false
+const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1
 
 router.use(fileUpload())
 
@@ -28,7 +29,7 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne(email == "" ? { username } : { email })
 
         if (!user) {
-            res.status(401).json({ error: 'USER_NOT_FOUND' })
+            res.status(401).json({ error: (email == "" ? 'USER_NOT_FOUND' : 'EMAIL_NOT_FOUND') })
             return
         }
 
@@ -44,7 +45,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id }, JWT_KEY, {
-            expiresIn: '12h',
+            expiresIn: '7d',
         })
 
 
@@ -159,7 +160,7 @@ router.post('/confirmation/:token', async (req, res) => {
         await user.save()
 
         const token = jwt.sign({ userId: user._id }, JWT_KEY, {
-            expiresIn: '12h',
+            expiresIn: '7d',
         })
 
         res.status(201).json({ message: 'USER_ACTIVATION_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture  })
@@ -208,7 +209,7 @@ router.post('/passwordreset/:token', async (req, res) => {
         await user.save()
 
         const token = jwt.sign({ userId: user._id }, JWT_KEY, {
-            expiresIn: '12h',
+            expiresIn: '7d',
         })
 
         res.status(201).json({ message: 'PASSWORD_RESET_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture })
@@ -218,7 +219,17 @@ router.post('/passwordreset/:token', async (req, res) => {
     }
 })
 
-
+router.post('/validatetoken', jwtDecoder, async (req, res) => {
+    try {
+        const searchedUser = await User.findOne({ _id: req.body.userId })
+        if (searchedUser) {
+            return res.status(201).json({ message: 'VALIDATE_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture })
+        }
+    }
+    catch (error) {
+        res.status(500).json({ error: 'VALIDATE_ERROR' })
+    }
+})
 
 
 module.exports = router
