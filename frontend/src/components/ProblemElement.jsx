@@ -1,33 +1,62 @@
 import React, { useContext, useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import { UserContext } from "../utils/UserContext";
 
-const ProblemElement = (props) => {
+const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink}) => {
 
-    const problemData = props.data
+    const { user, setUser } = useContext(UserContext);
+    const [liked, setLiked] = useState(user?.likedProblems?.includes(id) || false)
+    const navigate = useNavigate()
+
+    const handleNavigate = () => {
+        disableLink || navigate(`/problem/${id}`)
+    }
+
+    const handleLike = (e) => {
+        e.stopPropagation()
+        const newArticles = liked ? user.likedProblems.filter(_id => _id != id) : [...user.likedProblems, id]
+        setUser({ ...user, likedProblems: newArticles })
+
+        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/interact`,
+            {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
+                body: JSON.stringify({
+                    id,
+                    type: "PROBLEM_LIKE",
+                    action: liked ? "REMOVE" : "ADD"
+                })
+            })
+
+        setLiked(!liked)
+    }
 
     return (
-        <div className="problem">
+        <div onClick={handleNavigate} className="problem">
             <div className="problem-top">
                 <div className="problem-name">
-                    <p>{problemData?.name} <span>#{problemData?.id}</span></p>
+                    <p>{name} <span>#{id}</span></p>
                 </div>
                 <div className="problem-stars-container">
 
-                    {GetStarsFromRating(problemData?.rating)}
+                    {GetStarsFromRating(rating)}
 
-                    <p>{parseFloat(problemData?.rating / 10).toFixed(1)}</p>
+                    <p>{parseFloat(rating / 10).toFixed(1)}</p>
                 </div>
             </div>
             <div className="problem-content">
-                <p>{problemData?.preview}</p>
+                <p>{preview}</p>
             </div>
             <div className="problem-bottom">
-                <p>{problemData?.views} <span className="material-symbols-outlined problem-icon">visibility</span></p>
-                <p>{GetSolveRating(problemData)}% <span className="material-symbols-outlined problem-icon">trending_up</span></p>
-                <p>{problemData?.solved} <span className="material-symbols-outlined problem-icon">task_alt</span></p>
-                <div className="problem-like-container">
-                    <p><span className="material-symbols-outlined">favorite</span></p>
-                </div>
+                <p>{views} <span className="material-symbols-outlined problem-icon">visibility</span></p>
+                <p>{GetSolveRating(solved, solveTries)}% <span className="material-symbols-outlined problem-icon">trending_up</span></p>
+                <p>{solved} <span className="material-symbols-outlined problem-icon">task_alt</span></p>
+                {
+                    user &&
+                    <div onClick={handleLike} className={liked ? "problem-like-container liked" : "problem-like-container"}>
+                        <p><span className="material-symbols-outlined">favorite</span></p>
+                    </div>
+                }
             </div>
         </div>)
 }
@@ -52,6 +81,6 @@ const GetStarsFromRating = (rating) => {
     return stars
 }
 
-const GetSolveRating = (problemData) => (problemData?.solved / Math.max(1, problemData?.solveTries))
+const GetSolveRating = (solved, solveTries) => (solved / Math.max(1, solveTries))
 
 export default ProblemElement

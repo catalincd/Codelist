@@ -3,7 +3,7 @@ const router = express.Router()
 
 const User = require('../schemas/User')
 
-const jwtDecoder = require('../middlewares/jwtDecoder')
+const apiAuth = require('../middlewares/apiAuth')
 
 router.use((req, res, next) => {
     // console.log('Data Req: ', Date.now())

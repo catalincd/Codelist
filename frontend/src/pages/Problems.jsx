@@ -41,7 +41,7 @@ const Problems = (props) => {
         <div className="mainContainer">
             <Layout>
                 <div className="problemsPageContainer">
-                    {problemList.map(problem => <Problem key={problem.id} id={problem.id}/>)}
+                    {problemList.map(problem => <ProblemElement key={problem.id} {...problem}/>)}
                 </div>
             </Layout>
         </div>

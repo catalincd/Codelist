@@ -24,7 +24,7 @@ import { UserContext } from "./UserContext";
 const Root = (props) => {
 
   const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
-  const [user, setUser] = useState(cookies.get("USER_COOKIE"))
+  const [user, setUser] = useState(cookies.get("USER_COOKIE") || null)
 
   useEffect(() => {
     user && cookies.set("USER_COOKIE", JSON.stringify(user))
@@ -39,13 +39,13 @@ const Root = (props) => {
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="articles" element={<Articles />} />
-          <Route path="solver" element={<Solver />} />
           <Route path="confirmation" element={<Confirmation />} />
           <Route path="password" element={<PasswordReset />} />
           <Route path="forgot" element={<ForgotPassword />} />
           <Route path="newpost" element={<NewPost />} />
           <Route path="newarticle" element={<SubmitArticle />} />
           <Route path="newproblem" element={<SubmitProblem />} />
+          <Route exact path="/problem/:id" element={<Solver />} />
           <Route exact path="/article/:id" element={<Reader />} />
           <Route exact path="/user/:name" element={<Profile />} />
         </Routes>

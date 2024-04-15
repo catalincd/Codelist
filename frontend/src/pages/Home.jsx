@@ -40,7 +40,7 @@ const Home = (props) =>{
         <div className="mainContainer">
             <Layout>
                 <div className="problemsPageContainer">
-                    {problemList.map(problem => <Problem id={problem.id}/>)}
+                    {problemList.map(problem => <ProblemElement {...problem}/>)}
                 </div>
             </Layout>
         </div>

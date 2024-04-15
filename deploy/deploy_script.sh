@@ -1,10 +1,14 @@
 #!/bin/bash
 
 export PATH="$PATH:/root/.nvm/versions/node/v21.6.2/bin"
-
 echo "Node version: $(node --version)"
 
-cd Codelist
+pm2 kill
+cd /opt/mailcow-dockerized/
+docker compose down
+
+mkdir -p /root/Codelist
+cd /root/Codelist
 
 DOMAIN="codelist.ro"            # http://89.45.83.185
 FULL_HOST="https://$DOMAIN"     # http://89.45.83.185
@@ -30,6 +34,8 @@ rm -rf server/build
 cp -r frontend/build server/build
 
 mkdir -p server/build/images
+mkdir -p server/logs
+
 echo "0" > server/keys/debug
 
 cd server
@@ -38,5 +44,6 @@ cd ..
 
 docker start mongodb
 
-pm2 kill
 pm2 start server/server.js
+cd /opt/mailcow-dockerized/
+docker compose up -d

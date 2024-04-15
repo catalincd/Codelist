@@ -43,6 +43,7 @@ const SubmitArticle = (props) => {
             .then(data => {
                 if (data.error) {
                     setErrorMessage("ERROR REQ FAILED")
+                    setUploading(false)
                     return
                 }
                 navigate(`/article/${data.id}`)

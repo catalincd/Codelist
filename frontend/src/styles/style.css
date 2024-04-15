@@ -110,7 +110,7 @@ body {
   grid-gap: 2rem;
 }
 .newArticleContainer .articlePreview .noElementFiller {
-  min-height: 20rem;
+  min-height: calc(100vh - 37rem);
   display: grid;
   align-items: center;
 }
@@ -726,6 +726,7 @@ nav a:hover {
 }
 
 .problem {
+  cursor: pointer;
   font-family: "Montserrat", sans-serif;
   color: #FFFCFF;
   border-radius: 0.85rem;
@@ -805,6 +806,9 @@ nav a:hover {
 }
 .problem .problem-bottom .problem-like-container p span {
   font-size: 2rem;
+}
+.problem .problem-bottom .problem-like-container.liked {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 .problem .problem-bottom .problem-icon {
   margin: 0.25rem;
@@ -887,6 +891,9 @@ nav a:hover {
   align-items: center;
   justify-items: end;
   padding-right: 0.5rem;
+}
+.article .article-bottom .article-like-container.liked {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 .article .article-bottom .article-like-container p span {
   font-size: 2rem;

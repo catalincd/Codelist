@@ -1,18 +1,16 @@
 import React, { useContext, useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom";
+import { UserContext } from "../utils/UserContext";
 
 
 const Problem = (props) => {
 
+    
     const [errorMessage, setErrorMessage] = useState('')
     const [problemData, setProblemData] = useState(null)
 
-
-
     useEffect(() => {
-        if (props.cancelFetch) {
-            return
-        }
         const fetchProblemData = async () => {
             fetch(`${process.env.REACT_APP_HOSTNAME}/problems/details?id=${props.id}`,
                 {
@@ -38,18 +36,31 @@ const Problem = (props) => {
 
 
     return (
-        <ProblemElement id={props.id} data={problemData}/>
+        <ProblemElement id={props.id} data={problemData} />
     )
 }
 
 const ProblemElement = (props) => {
 
+    const { user, setUser } = useContext(UserContext);
+
     const problemData = props.data
 
+    const navigate = useNavigate()
+
+    const handleNavigate = () => {
+        navigate(`/solver?id=${problemData?.id}`)
+    }
+
+    const handleLike = (e) => {
+        e.stopPropagation()
+        console.log(handleLike)
+    }
+
     return (
-        <div className="problem">
+        <div onClick={handleNavigate} className="problem">
             <div className="problem-top">
-                <Link to={`/solver?id=${problemData?.id}`} className="problem-name">
+                <Link className="problem-name">
                     <p>{problemData?.name} <span>#{problemData?.id}</span></p>
                 </Link>
                 <div className="problem-stars-container">
@@ -59,16 +70,19 @@ const ProblemElement = (props) => {
                     <p>{parseFloat(problemData?.rating / 10).toFixed(1)}</p>
                 </div>
             </div>
-            <Link to={`/solver?id=${problemData?.id}`} className="problem-content">
+            <Link className="problem-content">
                 <p>{problemData?.preview}</p>
             </Link>
             <div className="problem-bottom">
                 <p>{problemData?.views} <span className="material-symbols-outlined problem-icon">visibility</span></p>
                 <p>{GetSolveRating(problemData)}% <span className="material-symbols-outlined problem-icon">trending_up</span></p>
                 <p>{problemData?.solved} <span className="material-symbols-outlined problem-icon">task_alt</span></p>
-                <div className="problem-like-container">
-                    <p><span className="material-symbols-outlined">favorite</span></p>
-                </div>
+                {
+                    user &&
+                    <div onClick={handleLike} className="problem-like-container">
+                        <p><span className="material-symbols-outlined">favorite</span></p>
+                    </div>
+                }
             </div>
         </div>)
 }

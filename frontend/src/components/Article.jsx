@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom";
+import { UserContext } from "../utils/UserContext";
 
-const Article = ({id, name, rating, preview, views}) => {
+const Article = ({ id, name, rating, preview, views }) => {
 
+    const { user, setUser } = useContext(UserContext);
+    const [liked, setLiked] = useState(user?.likedArticles?.includes(id) || false)
     const navigate = useNavigate()
 
     const handleNavigate = () => {
@@ -12,7 +15,23 @@ const Article = ({id, name, rating, preview, views}) => {
 
     const handleLike = (e) => {
         e.stopPropagation()
-        console.log(handleLike)
+        const newArticles = liked ? user.likedArticles.filter(_id => _id != id) : [...user.likedArticles, id]
+        setUser({ ...user, likedArticles: newArticles })
+
+        console.log("FETCHING")
+
+        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/interact`,
+            {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
+                body: JSON.stringify({
+                    id,
+                    type: "ARTICLE_LIKE",
+                    action: liked ? "REMOVE" : "ADD"
+                })
+            })
+
+        setLiked(!liked)
     }
 
     return (
@@ -33,9 +52,12 @@ const Article = ({id, name, rating, preview, views}) => {
             </div>
             <div className="article-bottom">
                 <p>{views} <span className="material-symbols-outlined article-icon">visibility</span></p>
-                <div onClick={handleLike} className="article-like-container">
-                    <p><span className="material-symbols-outlined">favorite</span></p>
-                </div>
+                {
+                    user &&
+                    <div onClick={handleLike} className={liked ? "article-like-container liked" : "article-like-container"}>
+                        <p><span className="material-symbols-outlined">favorite</span></p>
+                    </div>
+                }
             </div>
         </div>)
 }

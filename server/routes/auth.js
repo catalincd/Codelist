@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const fileUpload = require('express-fileupload');
 const ConfigManager = require('../utils/ConfigManager')
-const jwtDecoder = require('../middlewares/jwtDecoder')
+const apiAuth = require('../middlewares/apiAuth')
 
 const JWT_KEY = fs.readFileSync('/keys/jwt_key')
 const User = require('../schemas/User')
@@ -48,8 +48,8 @@ router.post('/login', async (req, res) => {
             expiresIn: '7d',
         })
 
-
-        res.status(200).json({ username: user.username, email: user.email, token, picture: user.picture })
+        const userObj = user.toObject()
+        res.status(200).json({ ...userObj, password: "-", token })
     }
     catch (error) {
         res.status(500).json({ error: 'USER_SERVER_ERROR' })
@@ -133,6 +133,28 @@ router.post('/newpicture', async (req, res) => {
     }
 })
 
+router.post('/interact', apiAuth, async (req, res) => {
+    try {
+        if(req.body.type == "PROBLEM_LIKE")
+            req.user.likedProblems = (req.body.action == "ADD"? [...req.user.likedProblems, req.body.id] : req.user.likedProblems.filter(_id => _id != req.body.id))
+
+        if(req.body.type == "ARTICLE_LIKE") {
+            req.user.likedArticles = (req.body.action == "ADD"? [...req.user.likedArticles, req.body.id] : req.user.likedArticles.filter(_id => _id != req.body.id))
+            console.log("ARTICLES", [...req.user.likedArticles, req.body.id])
+        }
+
+        console.log(req.body)
+        console.log(req.user)
+        await req.user.save()
+
+        return res.status(201).send()
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'USER_SERVER_ERROR' })
+    }
+})
+
 router.post('/resetpicture', async (req, res) => {
     try {
         const decoded = jwt.verify(req.body.userToken, JWT_KEY)
@@ -163,7 +185,8 @@ router.post('/confirmation/:token', async (req, res) => {
             expiresIn: '7d',
         })
 
-        res.status(201).json({ message: 'USER_ACTIVATION_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture  })
+        const userObj = user.toObject()
+        res.status(201).json({ message: 'USER_ACTIVATION_SUCCESS', ...userObj, password: "-", token })
     }
     catch (error) {
         res.status(500).json({ error: 'USER_SERVER_ERROR' })
@@ -212,18 +235,20 @@ router.post('/passwordreset/:token', async (req, res) => {
             expiresIn: '7d',
         })
 
-        res.status(201).json({ message: 'PASSWORD_RESET_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture })
+        const userObj = user.toObject()
+        res.status(201).json({ message: 'PASSWORD_RESET_SUCCESS', ...userObj, password: "-", token })
     }
     catch (error) {
         res.status(500).json({ error: 'USER_SERVER_ERROR' })
     }
 })
 
-router.post('/validatetoken', jwtDecoder, async (req, res) => {
+router.post('/validatetoken', apiAuth, async (req, res) => {
     try {
         const searchedUser = await User.findOne({ _id: req.body.userId })
         if (searchedUser) {
-            return res.status(201).json({ message: 'VALIDATE_SUCCESS', username: user.username, email: user.email, token: token, picture: user.picture })
+            const userObj = user.toObject()
+            return res.status(201).json({ message: 'VALIDATE_SUCCESS', ...userObj, password: "-", token })
         }
     }
     catch (error) {

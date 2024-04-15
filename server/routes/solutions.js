@@ -4,7 +4,7 @@ const router = express.Router()
 const ConfigManager = require('../utils/ConfigManager')
 const CodeRunner = require('../utils/CodeRunner')
 
-const jwtDecoder = require('../middlewares/jwtDecoder')
+const apiAuth = require('../middlewares/apiAuth')
 const Solution = require('../schemas/Solution')
 
 router.use((req, res, next) => {
@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/send', jwtDecoder, async (req, res) => {
+router.post('/send', apiAuth, async (req, res) => {
     
     console.log("Received solution")
     console.log(req.body.language)
@@ -34,7 +34,7 @@ router.post('/send', jwtDecoder, async (req, res) => {
     }
 })
 
-router.post('/run', jwtDecoder, async (req, res) => {
+router.post('/run', apiAuth, async (req, res) => {
     
     console.log("Received run request")
     console.log(req.body.language)

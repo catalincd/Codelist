@@ -5,7 +5,10 @@ import TextButton from "../components/TextButton"
 
 const Layout = (props) => {
 
-    useEffect(() => props.setError && clearTimeout(setTimeout(() => props.setError(null), 10000)), [props.error])
+    useEffect(() => {
+        const timeoutId = (props.setError? setTimeout(() => props.setError(null), 3000) : -1)
+        return () => clearTimeout(timeoutId)
+    }, [props.error])
 
     const errorOverlay = (
         <div className="errorOverlay">

@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
 const JWT_KEY = require('fs').readFileSync('/keys/jwt_key')
+const User = require('../schemas/User')
 
-const jwtDecoder = (req, res, next) => {
+const apiAuth = async (req, res, next) => {
     const token = req.header('Authorization')
 
     if (!token) {
@@ -11,7 +12,11 @@ const jwtDecoder = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, JWT_KEY)
-        req.userId = decoded.userId
+
+        const searchedUser = await User.findOne({ _id: decoded.userId})
+        if(!searchedUser) throw new Error("USER_NOT_FOUND_IN_DB"); 
+
+        req.user = searchedUser
         next()
     }
     catch (error) {
@@ -19,4 +24,4 @@ const jwtDecoder = (req, res, next) => {
     }
 }
 
-module.exports = jwtDecoder
+module.exports = apiAuth

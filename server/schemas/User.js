@@ -8,6 +8,8 @@ const User = new mongo.Schema({
     password: { type: String, required: true },
     picture: { type: String, default: "default.png" },
     description: { type: String, default: "Codelist user" },
+    likedArticles: { type: Array, required: true, default: []},
+    likedProblems: { type: Array, required: true, default: []}
 }, {timestamps: true});
 
 module.exports = mongo.model('User', User);

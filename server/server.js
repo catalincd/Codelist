@@ -8,13 +8,14 @@ const problems = require('./routes/problems')
 const articles = require('./routes/articles')
 const solutions = require('./routes/solutions')
 
+const logger = require('./utils/logs/LogManager')
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerConfig = require('./utils/swagger/config');
 
 const path = require("path");
 const fs = require('fs')
 const cors = require('cors')
-const cookieParser = require('cookie-parser')
 
 const app = express()
 const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1 || false
@@ -39,7 +40,6 @@ mongoose.connect('mongodb://localhost:27017', {
 
 app.use(express.json())
 app.use(cors())
-app.use(cookieParser())
 
 app.use('/data', data)
 app.use('/auth', auth)
@@ -59,6 +59,7 @@ if(debug)
 }
 else
 {
+    logger.onInit()
     app.use('/', express.static('server/build'))
     app.use((req, res, next) => {
         res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));

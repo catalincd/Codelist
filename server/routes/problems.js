@@ -4,7 +4,7 @@ const router = express.Router()
 const User = require('../schemas/User')
 const ConfigManager = require('../utils/ConfigManager')
 
-const jwtDecoder = require('../middlewares/jwtDecoder')
+const apiAuth = require('../middlewares/apiAuth')
 const Problem = require('../schemas/Problem')
 
 router.use((req, res, next) => {
@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/create', jwtDecoder, async (req, res) => {
+router.post('/create', apiAuth, async (req, res) => {
     try {
         const { name, preview, text, tests, examples, creator } = req.body
 
@@ -58,7 +58,7 @@ router.get('/homescreen', async (req, res) => {
     try {
         var searchedProblems = (await Problem.find({}).limit(5)) || []
 
-        searchedProblems = searchedProblems.flatMap(problem => [problem, problem, problem])
+        // searchedProblems = searchedProblems.flatMap(problem => [problem, problem, problem])
 
         res.status(200).json(searchedProblems)
     }

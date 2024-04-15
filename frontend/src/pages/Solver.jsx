@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
-import { Link, useSearchParams } from "react-router-dom"
-
+import { Link } from "react-router-dom"
+import { useParams } from "react-router"
 import Layout from "../components/Layout";
 import ProblemElement from "../components/ProblemElement";
 
@@ -19,8 +19,7 @@ const Solver = (props) => {
 
   const { user, setUser } = useContext(UserContext);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const id = searchParams.get("id")
+  const { id } = useParams()
 
   const [showLoadingResult, setShowLoadingResult] = useState(false)
   const [showLoadingRuntime, setShowLoadingRuntime] = useState(false)
@@ -174,7 +173,7 @@ const Solver = (props) => {
     <div className="mainContainer">
       <Layout>
         <div className="solverContainer">
-          <ProblemElement id={id} data={problemData} cancelFetch={true} />
+          <ProblemElement id={id} {...problemData} disableLink={true}/>
           <div className="ide-examples-container tile">
             <div className="top-bar">
               <div className="example-name">

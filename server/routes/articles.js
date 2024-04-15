@@ -7,7 +7,7 @@ const dompurify = require('dompurify')
 const User = require('../schemas/User')
 const ConfigManager = require('../utils/ConfigManager')
 
-const jwtDecoder = require('../middlewares/jwtDecoder')
+const apiAuth = require('../middlewares/apiAuth')
 const Article = require('../schemas/Article')
 
 router.use((req, res, next) => {
@@ -15,7 +15,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/create', jwtDecoder, async (req, res) => {
+router.post('/create', apiAuth, async (req, res) => {
     try {
         const { name, preview, text } = req.body
 

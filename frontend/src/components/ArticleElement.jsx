@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from "react"
+import { UserContext } from "../utils/UserContext";
 
-const ArticleElement = ({id, name, rating, preview, views}) => {
+const ArticleElement = ({ id, name, rating, preview, views }) => {
+
+    const { user, setUser } = useContext(UserContext);
 
     const handleLike = (e) => {
         e.stopPropagation()
@@ -25,9 +28,12 @@ const ArticleElement = ({id, name, rating, preview, views}) => {
             </div>
             <div className="article-bottom">
                 <p>{views} <span className="material-symbols-outlined article-icon">visibility</span></p>
-                <div onClick={handleLike} className="article-like-container">
-                    <p><span className="material-symbols-outlined">favorite</span></p>
-                </div>
+                {
+                    user &&
+                    <div onClick={handleLike} className="article-like-container">
+                        <p><span className="material-symbols-outlined">favorite</span></p>
+                    </div>
+                }
             </div>
         </div>)
 }
