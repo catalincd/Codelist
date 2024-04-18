@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 
 router.post('/create', apiAuth, async (req, res) => {
     try {
-        const { name, preview, text, tests, examples, creator } = req.body
+        const { name, preview, text, files, tests, examples } = req.body
 
         const searchedProblem = await Problem.findOne({ name })
         if (searchedProblem) {
@@ -24,10 +24,10 @@ router.post('/create', apiAuth, async (req, res) => {
         const id = await ConfigManager.GetNewProblemId()
 
 
-        const problem = new Problem({id, name, preview, text, tests, examples, creator})
+        const problem = new Problem({id, name, preview, text, tests, examples, files, creator: req.user.username})
         await problem.save()
 
-        res.status(201).json({ message: 'PROBLEM_REGISTER_SUCCESS' })
+        res.status(201).json({ message: 'PROBLEM_REGISTER_SUCCESS', id})
     }
     catch (error) {
         res.status(500).json({ error: 'PROBLEM_SERVER_ERROR' })

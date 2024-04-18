@@ -19,7 +19,7 @@ const sendConfirmationEmail = async (username, recepient, token) => {
         from: 'noreply@codelist.ro',
         to: recepient,
         subject: `Confirmare cont ${username}`,
-        html: `<h3>Bine ai venit pe codelist.ro!</h3><p>Acceseaza link-ul urmator pentru a activa contul ${username}: <a href="https://${domain}/confirmation/?token=${token}">Activeaza</a></p>`
+        html: `<h3>Bine ai venit pe codelist.ro!</h3><p>Acceseaza link-ul urmator pentru a activa contul ${username}: <a href="https://${domain}/confirmation/${token}">Activeaza</a></p>`
     }
     
     transporter.sendMail(mailOptions, (error, info) => {
@@ -37,7 +37,7 @@ const sendResetPasswordEmail = async (username, recepient, token) => {
         from: 'noreply@codelist.ro',
         to: recepient,
         subject: `Resetare parola ${username}`,
-        html: `<h3>Bine ai revenit pe codelist.ro!</h3><p>Acceseaza link-ul urmator pentru a schimba parola contului ${username}: <a href="https://${domain}/password/?username=${username}&token=${token}">Schimba parola</a></p>`
+        html: `<h3>Bine ai revenit pe codelist.ro!</h3><p>Acceseaza link-ul urmator pentru a schimba parola contului ${username}: <a href="https://${domain}/password/${username}/${token}">Schimba parola</a></p>`
     }
     
     transporter.sendMail(mailOptions, (error, info) => {

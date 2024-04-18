@@ -19,12 +19,12 @@ router.post('/send', apiAuth, async (req, res) => {
     console.log(req.body.code)
 
     try {
-        const { problemId, username, code, language } = req.body
+        const { problemId, code, language } = req.body
 
         const { time, memory, error, tests, output } = await CodeRunner.RunSolutionCode(problemId, code, language)
 
         const id = await ConfigManager.GetNewSolutionId()
-        const solution = new Solution({ id, problemId, username, code, time, memory, error, tests, output })
+        const solution = new Solution({ id, problemId, username: req.user.username, code, time, memory, error, tests, output })
         await solution.save()
 
         res.status(201).json(solution)
@@ -41,13 +41,16 @@ router.post('/run', apiAuth, async (req, res) => {
     console.log(req.body.code)
 
     try {
-        const { username, code, language } = req.body
+        //username: req.user.username
+        
+        const { code, language } = req.body
 
         const runResults = await CodeRunner.RunCode(code, language)
 
         res.status(201).json(runResults)
     }
     catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })
     }
 })

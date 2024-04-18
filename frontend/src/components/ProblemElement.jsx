@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { UserContext } from "../utils/UserContext";
 
-const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink}) => {
+const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
 
     const { user, setUser } = useContext(UserContext);
     const [liked, setLiked] = useState(user?.likedProblems?.includes(id) || false)
@@ -52,7 +52,7 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                 <p>{GetSolveRating(solved, solveTries)}% <span className="material-symbols-outlined problem-icon">trending_up</span></p>
                 <p>{solved} <span className="material-symbols-outlined problem-icon">task_alt</span></p>
                 {
-                    user &&
+                    user && (!disableLike) &&
                     <div onClick={handleLike} className={liked ? "problem-like-container liked" : "problem-like-container"}>
                         <p><span className="material-symbols-outlined">favorite</span></p>
                     </div>

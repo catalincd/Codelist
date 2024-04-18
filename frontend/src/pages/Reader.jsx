@@ -31,7 +31,7 @@ const Reader = (props) => {
 
   return (
     <div className="mainContainer">
-      <Layout>
+      <Layout error={errorMessage} setError={setErrorMessage}>
         <div className="problemsPageContainer">
           {
             articleData &&

@@ -14,7 +14,7 @@ const Layout = (props) => {
         <div className="errorOverlay">
             <div className="errorMessageContainer">
                 <p>{props.error}</p>
-                <TextButton text="OK" width={3.25} onClickHandle={() => props.setError(null)} />
+                <TextButton text="OK" styled={true} onClickHandle={() => props.setError(null)} />
             </div>
         </div>
     )

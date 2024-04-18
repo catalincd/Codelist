@@ -9,7 +9,7 @@ const LabelSwitch = ({leftLabel, rightLabel, checked, setChecked}) => {
     return (
         <div className="labelswitch">
             <p>{leftLabel}</p>
-            <Switch color="warning" checked={checked} onChange={handleOnChange} inputProps={{ 'aria-label': 'controlled' }} />
+            <Switch color="warning" checked={checked} onChange={handleOnChange} />
             <p>{rightLabel}</p>
         </div>)
 }

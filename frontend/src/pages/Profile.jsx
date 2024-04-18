@@ -85,10 +85,7 @@ const Profile = (props) => {
         fetch(`${process.env.REACT_APP_HOSTNAME}/auth/resetpicture`,
             {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userToken: user.token
-                })
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token }
             })
     }
 
@@ -96,7 +93,7 @@ const Profile = (props) => {
         fetch(`${process.env.REACT_APP_HOSTNAME}/auth/sendpasswordreset`,
             {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
                 body: JSON.stringify({
                     email: user.email
                 })
@@ -115,15 +112,14 @@ const Profile = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("ON SUBMIT")
-        console.log(e)
         var data = new FormData()
         data.append("profilePicture", e.target[0].files[0])
-        data.append("userToken", user.token)
+
 
         fetch(`${process.env.REACT_APP_HOSTNAME}/auth/newpicture`,
             {
                 method: "POST",
+                headers: { 'Authorization': user.token },
                 body: data
             })
 
@@ -189,7 +185,7 @@ const Profile = (props) => {
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
                 {
                     userData &&
                     <div className="profilePageContainer tile pageFiller">

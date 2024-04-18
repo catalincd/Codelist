@@ -1,6 +1,8 @@
 paths:
   /articles/create:
     post:
+      tags:
+        - Articles
       security:
         - ApiKeyAuth: []
       summary: Create a new article. 

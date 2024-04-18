@@ -7,20 +7,21 @@ import { UserContext } from "../utils/UserContext";
 const NewPost = (props) => {
 
     const { user, setUser } = useContext(UserContext);
+    const [errorMessage, setErrorMessage] = useState('')
 
     const navigate = useNavigate()
 
     const handleNewProblem = () => {
-        navigate(`/newproblem`)
+        navigate(`/new/problem`)
     }
 
     const handleNewArticle = () => {
-        navigate(`/newarticle`)
+        navigate(`/new/article`)
     }
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="tile newPostContainer pageFiller">
                     <h3>Postare nouă</h3>
                     <div className="newPostButtonsContainer">

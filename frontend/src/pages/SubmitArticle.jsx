@@ -14,7 +14,7 @@ const SubmitArticle = (props) => {
 
     const { user, setUser } = useContext(UserContext)
     const [preview, setPreview] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("WE HAVE PROBLEM")
+    const [errorMessage, setErrorMessage] = useState("")
     const [uploading, setUploading] = useState(false)
 
     const [name, setName] = useState('')
@@ -116,7 +116,7 @@ const SubmitArticle = (props) => {
                 </div>
             }
             {
-                (name && previewText) || text || noInputElement
+                ((name && previewText) || text) && noInputElement
             }
         </div>
     )

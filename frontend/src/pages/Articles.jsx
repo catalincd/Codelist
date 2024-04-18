@@ -36,7 +36,7 @@ const Articles = (props) => {
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="problemsPageContainer">
                     {articlesList.map(problem => <Article key={problem.id} {...problem} />)}
                 </div>

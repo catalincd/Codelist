@@ -15,11 +15,6 @@ const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1
 
 router.use(fileUpload())
 
-router.use((req, res, next) => {
-    // console.log('Auth Req: ', Date.now())
-    next()
-})
-
 router.post('/login', async (req, res) => {
     try {
         const { useroremail, password } = req.body
@@ -82,14 +77,12 @@ router.post('/register', async (req, res) => {
             expiresIn: '1h',
         })
 
-
         if (debug)
             console.log(`Sending token:\n${token}`)
         else
             mailer.sendConfirmationEmail(username, email, token)
 
         res.status(201).json({ message: 'USER_REGISTER_SUCCESS' })
-
     }
     catch (error) {
         console.log(error)
@@ -98,24 +91,18 @@ router.post('/register', async (req, res) => {
 })
 
 
-router.post('/newpicture', async (req, res) => {
+router.post('/newpicture', apiAuth, async (req, res) => {
     try {
-        const decoded = jwt.verify(req.body.userToken, JWT_KEY)
-        const searchedUser = await User.findOne({ _id: decoded.userId })
-
-        if(!searchedUser)
-            return res.status(500).json({ error: 'USER_NOT_FOUND' })
-
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.')
         }
 
         const pictureFile = req.files.profilePicture
-        const pictureName = searchedUser.username + '.' + (pictureFile.name.split('.').splice(-1))
+        const pictureName = req.user.username + '.' + (pictureFile.name.split('.').splice(-1))
         const picturePath = __dirname + '/../build/images/' + pictureName
 
-        searchedUser.picture = pictureName
-        await searchedUser.save()
+        req.user.picture = pictureName
+        await req.user.save()
 
         pictureFile.mv(picturePath, (err) => {
             if (err)
@@ -155,16 +142,10 @@ router.post('/interact', apiAuth, async (req, res) => {
     }
 })
 
-router.post('/resetpicture', async (req, res) => {
+router.post('/resetpicture', apiAuth, async (req, res) => {
     try {
-        const decoded = jwt.verify(req.body.userToken, JWT_KEY)
-        const searchedUser = await User.findOne({ _id: decoded.userId })
-     
-        if(!searchedUser)
-            return res.status(500)
-
-        searchedUser.picture = "default.png"
-        await searchedUser.save()
+        req.user.picture = "default.png"
+        await req.user.save()
 
         return res.status(200).send()
     }
@@ -193,19 +174,12 @@ router.post('/confirmation/:token', async (req, res) => {
     }
 })
 
-router.post('/sendpasswordreset', async (req, res) => {
+
+router.post('/sendpasswordreset', apiAuth, async (req, res) => {
     try {
-        const email = req.body.email
-        const user = await User.findOne({ email })
-
-        if (!user || !user.activated) {
-            return res.status(401).json({ error: 'EMAIL_DOESNT_EXIST' })
-        }
-
-        const token = jwt.sign({ id: user._id }, JWT_KEY, {
+        const token = jwt.sign({ id: req.user._id }, JWT_KEY, {
             expiresIn: '1h',
         })
-
 
         if (debug)
             console.log(`Sending reset password token:\n${token}`)
@@ -218,6 +192,7 @@ router.post('/sendpasswordreset', async (req, res) => {
         res.status(500).json({ error: 'USER_SERVER_ERROR' })
     }
 })
+
 
 router.post('/passwordreset/:token', async (req, res) => {
     try {
@@ -245,11 +220,8 @@ router.post('/passwordreset/:token', async (req, res) => {
 
 router.post('/validatetoken', apiAuth, async (req, res) => {
     try {
-        const searchedUser = await User.findOne({ _id: req.body.userId })
-        if (searchedUser) {
-            const userObj = user.toObject()
-            return res.status(201).json({ message: 'VALIDATE_SUCCESS', ...userObj, password: "-", token })
-        }
+        const userObj = req.user.toObject()
+        return res.status(201).json({ message: 'VALIDATE_SUCCESS', ...userObj, password: "-", token })
     }
     catch (error) {
         res.status(500).json({ error: 'VALIDATE_ERROR' })

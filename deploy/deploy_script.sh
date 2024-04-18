@@ -5,7 +5,7 @@ echo "Node version: $(node --version)"
 
 pm2 kill
 cd /opt/mailcow-dockerized/
-docker compose down
+docker compose down             # will kill mailcow and the running process due to low mem
 
 mkdir -p /root/Codelist
 cd /root/Codelist
@@ -35,6 +35,8 @@ cp -r frontend/build server/build
 
 mkdir -p server/build/images
 mkdir -p server/logs
+
+cp server/utils/res/default.png server/build/images/default.png
 
 echo "0" > server/keys/debug
 

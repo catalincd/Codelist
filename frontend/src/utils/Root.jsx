@@ -39,12 +39,12 @@ const Root = (props) => {
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="articles" element={<Articles />} />
-          <Route path="confirmation" element={<Confirmation />} />
-          <Route path="password" element={<PasswordReset />} />
           <Route path="forgot" element={<ForgotPassword />} />
           <Route path="newpost" element={<NewPost />} />
-          <Route path="newarticle" element={<SubmitArticle />} />
-          <Route path="newproblem" element={<SubmitProblem />} />
+          <Route path="/new/article" element={<SubmitArticle />} />
+          <Route path="/new/problem" element={<SubmitProblem />} />
+          <Route exact path="/password/:username/:token" element={<PasswordReset />} />
+          <Route exact path="/confirmation/:token" element={<Confirmation />} />
           <Route exact path="/problem/:id" element={<Solver />} />
           <Route exact path="/article/:id" element={<Reader />} />
           <Route exact path="/user/:name" element={<Profile />} />

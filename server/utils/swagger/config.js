@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Express API with Swagger',
+      title: 'Codelist API',
       version: '1.0.0',
-      description: 'This is a sample server.',
+      description: 'List of endpoints used for communicating with Codelist with HTTP Requests',
     },
   },
   apis: [], 

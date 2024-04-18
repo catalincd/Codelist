@@ -12,6 +12,9 @@ import { RiZoomOutLine } from "react-icons/ri";
 import { PiPasswordLight } from "react-icons/pi";
 import { IoLogInOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
+import { TiDeleteOutline } from "react-icons/ti";
+
 
 const IconMap = {
     run: FaRegCirclePlay,
@@ -26,19 +29,31 @@ const IconMap = {
     password: PiPasswordLight,
     login: IoLogInOutline,
     logout: IoLogOutOutline,
+    add: FaPlus,
+    delete: TiDeleteOutline,
 }
 
 
-const IconButton = ({text, icon, onClickHandle, reverse}) => {
+const IconButton = ({text, icon, onClickHandle, reverse, styled}) => {
     
     const IconElement = IconMap[icon] || IconMap["button"]
+    let style = "iconbutton" + (reverse? " reverse" : "") + (styled? " styled":"")
 
-    return (
-        <div className={reverse? "iconbutton reverse" : "iconbutton"} onClick={() => {onClickHandle()}}>
+    const normalIconButton = (
+        <div className={style} onClick={() => {onClickHandle()}}>
             <IconElement />
             {text}
         </div>
     )
+
+    const reverseIconButton = (
+        <div className={style} onClick={() => {onClickHandle()}}>
+            {text}
+            <IconElement />
+        </div>
+    )
+
+    return (reverse? reverseIconButton : normalIconButton)
 }
 
 export default IconButton

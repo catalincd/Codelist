@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
-import { Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useParams } from "react-router"
 import { UserContext } from "../utils/UserContext";
 import { useNavigate } from "react-router-dom"
 import Requests from "../utils/Requests"
@@ -10,12 +11,10 @@ const PasswordReset = (props) => {
 
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
     const [errorMessage, setErrorMessage] = useState('')
     const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
 
-    const username = searchParams.get("username")
-    const token = searchParams.get("token")
+    const { username, token } = useParams()
 
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -58,7 +57,7 @@ const PasswordReset = (props) => {
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="tile pageFiller loginContainer">
                     <p>Resetare parola utilizator {username}</p>
                     <div className={'inputContainer'}>

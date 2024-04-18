@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
-import { Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { useParams } from "react-router"
 import { UserContext } from "../utils/UserContext";
 import { useNavigate } from "react-router-dom"
 import Requests from "../utils/Requests"
@@ -10,8 +11,8 @@ const Confirmation = (props) => {
 
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const token = searchParams.get("token")
+    const [errorMessage, setErrorMessage] = useState('')
+    const { token } = useParams()
     const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const Confirmation = (props) => {
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
             </Layout>
         </div>
     );

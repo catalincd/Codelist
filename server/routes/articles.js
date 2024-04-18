@@ -19,8 +19,6 @@ router.post('/create', apiAuth, async (req, res) => {
     try {
         const { name, preview, text } = req.body
 
-        const searchedUser = await User.findOne({ _id: req.userId })
-
         const searchedArticle = await Article.findOne({ name })
         if (searchedArticle) {
             return res.status(409).json({ error: 'ARTICLE_NAME_ALREADY_USED' })
@@ -29,7 +27,7 @@ router.post('/create', apiAuth, async (req, res) => {
         const id = await ConfigManager.GetNewArticleId()
 
 
-        const newArticle = new Article({id, name, preview, text: sanitizeArticleText(text), creator: searchedUser.username})
+        const newArticle = new Article({id, name, preview, text: sanitizeArticleText(text), creator: req.user.username})
         await newArticle.save()
 
         res.status(201).json({ message: 'ARTICLE_REGISTER_SUCCESS', id })

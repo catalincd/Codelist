@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router"
 import Layout from "../components/Layout";
+import Example from "../components/Example";
 import ProblemElement from "../components/ProblemElement";
 
 import { UserContext } from "../utils/UserContext";
@@ -171,7 +172,7 @@ const Solver = (props) => {
 
   return (
     <div className="mainContainer">
-      <Layout>
+      <Layout error={errorMessage} setError={setErrorMessage}>
         <div className="solverContainer">
           <ProblemElement id={id} {...problemData} disableLink={true}/>
           <div className="ide-examples-container tile">
@@ -182,7 +183,7 @@ const Solver = (props) => {
             </div>
             <div className="ide-examples">
               {
-                examples?.map((example) => <Example key={example.inputValue} data={example} />)
+                examples?.map((example) => <Example key={example.inputValue} {...example} {...problemData.files} />)
               }
             </div>
           </div>
@@ -299,21 +300,6 @@ const GetResultElements = (results, showLoadingResult) => {
       <h4>{keyIterator}</h4>
       {GetProgressBar(result.tests)}
     </div>)
-}
-
-const Example = (props) => {
-  return (
-    <div className="ide-example">
-      <div className="ide-example-tab ide-example-input">
-        <h5>{props.data.inputName}</h5>
-        <p>{props.data.inputValue}</p>
-      </div>
-      <div className="ide-example-tab  ide-example-output">
-        <h5>{props.data.outputName}</h5>
-        <p>{props.data.outputValue}</p>
-      </div>
-    </div>
-  )
 }
 
 export default Solver;

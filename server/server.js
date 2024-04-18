@@ -60,11 +60,12 @@ if(debug)
 else
 {
     logger.onInit()
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig))
     app.use('/', express.static('server/build'))
     app.use((req, res, next) => {
-        res.sendFile(path.join(__dirname, "..", "server/build", "index.html"));
+        res.sendFile(path.join(__dirname, "..", "server/build", "index.html"))
     });
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
+    
 
     https.createServer({
         key: ssl_key,

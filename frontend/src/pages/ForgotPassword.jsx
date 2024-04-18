@@ -23,10 +23,7 @@ const Login = (props) => {
         fetch(`${process.env.REACT_APP_HOSTNAME}/auth/sendpasswordreset`,
             {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: email
-                })
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token }
             })
             .then(response => response.json())
             .then(data => {
@@ -43,7 +40,7 @@ const Login = (props) => {
 
     return (
         <div className="mainContainer">
-            <Layout>
+            <Layout error={errorMessage} setError={setErrorMessage}>
                 {
                     !success &&
                     <div className="tile pageFiller loginContainer">
