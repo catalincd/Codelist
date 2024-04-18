@@ -15,7 +15,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/create', apiAuth, async (req, res) => {
+router.post('/', apiAuth, async (req, res) => {
     try {
         const { name, preview, text } = req.body
 
@@ -38,14 +38,16 @@ router.post('/create', apiAuth, async (req, res) => {
     }
 })
 
-router.get('/details', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const id = req.body.id || req.query.id
+        if (!(req.query.id)) {
+            return res.status(406).json({ error: 'ID_OR_FILTER_NOT_FOUND' })
+        }
 
-        const searchedArticle = await Article.findOne({ id })
+        const searchedArticle = await Article.findOne({ id: req.query.id })
 
         if (!searchedArticle) {
-            return res.status(401).json({ error: 'ARTICLE_NOT_FOUND' })
+            return res.status(404).json({ error: 'ARTICLE_NOT_FOUND' })
         }
 
         searchedArticle.views += 1
@@ -61,9 +63,6 @@ router.get('/details', async (req, res) => {
 router.get('/homescreen', async (req, res) => {
     try {
         var searchedArticles = (await Article.find({}).limit(5)) || []
-
-        // searchedArticles = searchedArticles.flatMap(Article => [Article, Article, Article])
-
         res.status(200).json(searchedArticles)
     }
     catch (error) {

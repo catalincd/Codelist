@@ -95,7 +95,7 @@ const Solver = (props) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/run`,
         {
-          method: "POST",
+          method: "PUT",
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
           body: JSON.stringify({
             username: user.username,

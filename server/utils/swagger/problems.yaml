@@ -1,0 +1,68 @@
+paths:
+  /problems:
+    get:
+      tags:
+        - Problems
+      summary: Get problem data
+      description: Returns problem data for a specified problem ID or filter. 
+      parameters:
+        - name: id
+          in: query
+          description: Problem id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Returned problem data successfully.
+        404:
+          description: Problem doesn't exist.
+        406:
+          description: Filters or id fields are not readable.
+        500:
+          description: Internal server error. 
+
+    post:
+      tags:
+        - Problems
+      security:
+        - ApiKeyAuth: []
+      summary: Create a new problem. 
+      description: Creates a new problem on the website, requiring the creator's token.
+      requestBody:
+          description: Problem components
+          required: true
+          example: {"name": "Factorial", "preview": "Given a number N, print out its factorial.", "text": "Details for printing the factorial...", "files": {"stdin": false, "stdout": false, "inputName": "input.txt", "outputName": "output.txt"}, "tests": [{"inputValue": "5", "outputValue": "120"}], "examples": [{"inputValue": "3", "outputValue": "6"}]}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "The A* Algorithm"
+                  preview:
+                    type: string
+                    example: "A* is amazing"
+                  text:
+                    type: string
+                    example: "Details on A*..."
+                  tests:
+                    type: array
+                    example: [{"inputValue": "5", "outputValue": "120"}]
+                  examples:
+                    type: array
+                    example: [{"inputValue": "3", "outputValue": "6"}]
+                  files:
+                    type: object
+                    example: {"stdin": false, "stdout": false, "inputName": "input.txt", "outputName": "output.txt"}
+      responses:
+        201:
+          description: Created the problem successfully.
+        401:
+          description: Authorization token failed.
+        409:
+          description: A problem with the submitted name already exists.
+        500:
+          description: Internal server error. 

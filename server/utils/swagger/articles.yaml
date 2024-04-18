@@ -1,5 +1,28 @@
 paths:
-  /articles/create:
+  /articles:
+    get:
+      tags:
+        - Articles
+      summary: Get article data
+      description: Returns article data for a specified article ID or filter. 
+      parameters:
+        - name: id
+          in: query
+          description: Article id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Returned article data successfully.
+        404:
+          description: Article doesn't exist.
+        406:
+          description: Filters or id fields are not readable.
+        500:
+          description: Internal server error. 
+
     post:
       tags:
         - Articles
@@ -8,7 +31,7 @@ paths:
       summary: Create a new article. 
       description: Creates a new article on the website, requiring the creator's token.
       requestBody:
-          description: Article componenets
+          description: Article components
           required: true
           example: {"name": "The A* Algorithm", "preview": "A* is amazing", "text": "Details on A*..."}
           content:
@@ -36,9 +59,3 @@ paths:
           description: Internal server error. 
 
 
-components:
-  securitySchemes:
-    ApiKeyAuth:      
-      type: apiKey
-      in: header       
-      name: Authorization

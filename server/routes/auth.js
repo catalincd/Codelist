@@ -24,18 +24,18 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne(email == "" ? { username } : { email })
 
         if (!user) {
-            res.status(401).json({ error: (email == "" ? 'USER_NOT_FOUND' : 'EMAIL_NOT_FOUND') })
+            res.status(406).json({ error: (email == "" ? 'USER_NOT_FOUND' : 'EMAIL_NOT_FOUND') })
             return
         }
 
         if (!user.activated) {
-            res.status(401).json({ error: 'USER_NOT_ACTIVATED' })
+            res.status(403).json({ error: 'USER_NOT_ACTIVATED' })
             return
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password)
         if (!passwordMatch) {
-            res.status(401).json({ error: 'USER_WRONG_PASSWORD' })
+            res.status(403).json({ error: 'USER_WRONG_PASSWORD' })
             return
         }
 
@@ -91,7 +91,7 @@ router.post('/register', async (req, res) => {
 })
 
 
-router.post('/newpicture', apiAuth, async (req, res) => {
+router.put('/newpicture', apiAuth, async (req, res) => {
     try {
         if (!req.files || Object.keys(req.files).length === 0) {
             return res.status(400).send('No files were uploaded.')

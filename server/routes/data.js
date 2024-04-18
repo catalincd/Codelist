@@ -10,10 +10,12 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/user', async (req, res) => {
-    const { username } = req.body
+router.get('/user', async (req, res) => {
+    if(!(req.query.username)){
+        return res.status(406).json({ error: 'USERNAME_REQUIRED' })
+    }
 
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ username: req.query.username })
     if (!user) {
         return res.status(401).json({ error: 'USER_NOT_FOUND' })
     }

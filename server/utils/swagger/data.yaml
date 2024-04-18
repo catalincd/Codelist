@@ -1,0 +1,27 @@
+paths:
+  /data/user:
+    get:
+      tags:
+        - Data
+      summary: Returns user profile data.
+      description: Returns user profile data.
+      parameters:
+        - name: username
+          in: query
+          description: Username for the searched profile.
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Returned user data successfully.
+        404:
+          description: User doesn't exist.
+        406:
+          description: No username found.
+        500:
+          description: Internal server error. 
+
+
+

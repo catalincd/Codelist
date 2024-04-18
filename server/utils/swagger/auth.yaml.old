@@ -1,0 +1,71 @@
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      security:
+        - ApiKeyAuth: []
+      summary: Login endpoint. 
+      description: Requires username or email and password. Returns the auth token and user data like the profile picture and email.
+      requestBody:
+          description: Login fields
+          required: true
+          example: {"useroremail": "johndoe", "password": "$trongPassw0rd#!"}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  useroremail:
+                    type: string
+                    example: "johndoe"
+                  password:
+                    type: string
+                    example: "$trongPassw0rd#!"
+      responses:
+        200:
+          description: Successfully logged in and received auth token.
+        403:
+          description: Wrong password or the user is not activated.
+        406:
+          description: User or email not found.
+        500:
+          description: Internal server error.
+
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      security:
+        - ApiKeyAuth: []
+      summary: Register endpoint. 
+      description: Requires username, email and password. Sends an activation email.
+      requestBody:
+          description: Login fields
+          required: true
+          example: {"email:": "johndoe@yahoo.com", "user": "johndoe", "password": "$trongPassw0rd#!"}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: "johndoe@yahoo.com"
+                  user:
+                    type: string
+                    example: "johndoe"
+                  password:
+                    type: string
+                    example: "$trongPassw0rd#!"
+      responses:
+        200:
+          description: Successfully logged in and received auth token.
+        403:
+          description: Wrong password or the user is not activated.
+        406:
+          description: User or email not found.
+        500:
+          description: Internal server error. 
+
+

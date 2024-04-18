@@ -43,7 +43,7 @@ const Profile = (props) => {
         const fetchUserData = async () => {
             fetch(`${process.env.REACT_APP_HOSTNAME}/data/user`,
                 {
-                    method: "POST",
+                    method: "GET",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         username: name,
@@ -118,7 +118,7 @@ const Profile = (props) => {
 
         fetch(`${process.env.REACT_APP_HOSTNAME}/auth/newpicture`,
             {
-                method: "POST",
+                method: "PUT",
                 headers: { 'Authorization': user.token },
                 body: data
             })

@@ -41,11 +41,11 @@ mongoose.connect('mongodb://localhost:27017', {
 app.use(express.json())
 app.use(cors())
 
-app.use('/data', data)
-app.use('/auth', auth)
-app.use('/problems', problems)
-app.use('/articles', articles)
-app.use('/solutions', solutions)
+app.use('/api/data', data)
+app.use('/api/auth', auth)
+app.use('/api/problems', problems)
+app.use('/api/articles', articles)
+app.use('/api/solutions', solutions)
 
 
 

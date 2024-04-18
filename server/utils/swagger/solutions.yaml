@@ -1,0 +1,63 @@
+paths:
+  /solutions/run:
+    put:
+      tags:
+        - Solutions
+      summary: Runs a block of code
+      description: Runs a block of code sent by a user. Requires user auth token.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+          description: Solution components
+          required: true
+          
+          example: {"code": "print('hello world!')", "language": "python"}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "print('hello world!')"
+                  language:
+                    type: string
+                    example: "python"
+      responses:
+        201:
+          description: Code run successfully.
+        500:
+          description: Internal server error. 
+
+  /solutions/send:
+    post:
+      tags:
+        - Solutions
+      summary: Send a solution for a problem
+      description: Runs and evaluates a solution sent by a user. Requires user auth token. Returns evaluation score data.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+          description: Solution components
+          required: true
+          
+          example: {"problemId": "17", "code": "print('hello world!')", "language": "python"}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  problemId:
+                    type: string
+                    example: "17"
+                  code:
+                    type: string
+                    example: "print('hello world!')"
+                  language:
+                    type: string
+                    example: "python"
+      responses:
+        201:
+          description: Solution evaluated successfully. Returns evaluation score data.
+        500:
+          description: Internal server error. 

@@ -34,7 +34,7 @@ router.post('/send', apiAuth, async (req, res) => {
     }
 })
 
-router.post('/run', apiAuth, async (req, res) => {
+router.put('/run', apiAuth, async (req, res) => {
     
     console.log("Received run request")
     console.log(req.body.language)

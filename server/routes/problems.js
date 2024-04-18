@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/create', apiAuth, async (req, res) => {
+router.post('/', apiAuth, async (req, res) => {
     try {
         const { name, preview, text, files, tests, examples } = req.body
 
@@ -34,14 +34,16 @@ router.post('/create', apiAuth, async (req, res) => {
     }
 })
 
-router.get('/details', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const id = req.body.id || req.query.id
+        if (!(req.query.id)) {
+            return res.status(406).json({ error: 'ID_OR_FILTER_NOT_FOUND' })
+        }
 
-        const searchedProblem = await Problem.findOne({ id })
+        const searchedProblem = await Problem.findOne({ id: req.query.id })
 
         if (!searchedProblem) {
-            return res.status(401).json({ error: 'PROBLEM_NOT_FOUND' })
+            return res.status(404).json({ error: 'PROBLEM_NOT_FOUND' })
         }
 
         searchedProblem.views += 1
