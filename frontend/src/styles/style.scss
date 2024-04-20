@@ -78,6 +78,61 @@ body {
 	justify-items: center;
 	align-content: first baseline;
 	grid-gap: 2rem;
+
+	.problemDetailsContainer {
+		display: grid;
+		grid-template-rows: auto 1fr;
+
+		.detailsTable {
+			display: flex;
+			justify-content: space-between;
+			grid-template-columns: 1fr auto;
+
+			.limits {
+				display: grid;
+				grid-template-columns: auto auto;
+				grid-gap: 1.5rem;
+			}
+
+			.creator {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				grid-gap: 1.5rem;
+
+				.creatorImg {
+					align-items: center;
+					align-content: right;
+					min-width: 8rem;
+					display: grid;
+					grid-gap: 1rem;
+					grid-template-columns: auto 1fr;
+					justify-content: end;
+					text-align: right;
+					padding-right: 3rem;
+		
+					a {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: end;
+						gap: 0.75rem;
+						color: white;
+						text-decoration: none;
+
+						&:hover {
+							text-decoration: underline;
+						}
+		
+						img {
+							border-radius: 50%;
+							width: 1.75rem;
+							height: 1.75rem;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 .problemsPageContainer {
@@ -848,7 +903,7 @@ nav {
 	}
 
 	.ide-examples {
-		width: calc(100% - 3rem);
+		width: 100%;
 		display: grid;
 		grid-gap: 1rem;
 		padding: 1.5rem;
@@ -860,7 +915,7 @@ nav {
 			width: 100%;
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			grid-gap: 4rem;
+			grid-gap: 2rem;
 
 			.ide-example-tab {
 				width: 100%;
@@ -1347,6 +1402,10 @@ nav {
 	grid-template-rows: auto 1fr;
 	grid-gap: 1rem;
 
+	&::backdrop {
+		background-color: #112244;
+	}
+
 	.command-bar {
 		display: grid;
 		grid-template-columns: auto 1fr;
@@ -1572,6 +1631,11 @@ nav {
 .articleContentContainer {
 	min-height: 28.5rem;
 	padding: 2.5rem 4rem;
+}
+
+.problemContentContainer {
+	padding-top: 1.5rem;
+	padding-bottom: 2.5rem;
 }
 
 .markdown {

@@ -39,6 +39,7 @@ mkdir -p server/logs
 cp server/utils/res/default.png server/build/images/default.png
 
 echo "0" > server/keys/debug
+echo "0" > server/keys/seed
 
 cd server
 npm install

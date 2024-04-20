@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
       - name: SSH VPS
         env:
@@ -22,3 +21,33 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "tar --exclude='*node_modules*' -cvzf archive/Codelist_$(date +'%d-%m-%Y-%k-%M').tar.gz Codelist && rm -rf ./Codelist && git clone https://github.com/catalincd/Codelist && ./Codelist/deploy/deploy_script.sh $MONGO_KEY $JWT_KEY $NOREPLY_PASSWORD"
+  
+  reset-database:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'repository_dispatch'
+    needs: [deploy]
+    steps:
+      - name: SSH VPS
+        env:
+            PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
+            MONGO_KEY: ${{ secrets.MONGO_KEY  }}
+            HOSTNAME: ${{ secrets.HOSTNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "./Codelist/deploy/deploy_script.sh $MONGO_KEY"
+  
+  reset-cluster:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'repository_dispatch'
+    needs: [deploy]
+    steps:
+      - name: SSH VPS
+        env:
+            PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
+            HOSTNAME: ${{ secrets.HOSTNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "./Codelist/deploy/reset_kubernetes.sh"
+
+
+

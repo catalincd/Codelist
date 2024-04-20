@@ -2,7 +2,7 @@ const mongo = require('mongoose');
 
 const Problem = new mongo.Schema({
     id: { type: Number, unique: true, required: true },
-    name: { type: String, required: true },
+    name: { type: String, unique: true, required: true },
     preview: { type: String, required: true },
     text: { type: String, default: "" },
     views: { type: Number, required: true, default: 0 },

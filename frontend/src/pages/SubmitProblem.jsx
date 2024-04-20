@@ -222,7 +222,7 @@ const SubmitProblem = (props) => {
             }
             {
                 text &&
-                <div class="markdown problemContentContainer tile">
+                <div className="markdown problemContentContainer tile">
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </div>
             }

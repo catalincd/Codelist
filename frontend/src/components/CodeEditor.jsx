@@ -11,6 +11,8 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { cpp } from '@codemirror/lang-cpp'
 import { python } from '@codemirror/lang-python'
 import { javascript } from '@codemirror/lang-javascript'
+import { java } from '@codemirror/lang-java'
+import { csharp } from '@replit/codemirror-lang-csharp'
 
 
 
@@ -19,21 +21,27 @@ import IconButton from './IconButton';
 import { languages } from '@codemirror/language-data';
 
 const StringToLanguage = (language) => {
-    if (language == "gxx") return cpp()
-    if (language == "python") return python()
-    if (language == "js") return cpp()
+    if (language == "cpp") return cpp()
+    if (language == "py") return python()
+    if (language == "js") return javascript()
+    if (language == "java") return java()
+    if (language == "cs") return csharp()
 }
 
 const GetLanguageExtension = {
-    gxx: `cpp`,
-    python: `py`,
-    js: `js`
+    cpp: `cpp`,
+    py: `py`,
+    js: `js`,
+    java: `java`,
+    cs: `cs`
 }
 
 const GetHelloWordApp = {
-    gxx: `#include <iostream>\n\nint main()\n{\n    std::cout<<"Hello World!"<<std::endl;\n    return 0;\n};\n`,
-    python: `print("Hello World!")\n`,
-    js: `console.log("Hello World!")\n`
+    cpp: `#include <iostream>\n\nint main()\n{\n    std::cout<<"Hello World!"<<std::endl;\n    return 0;\n};\n`,
+    py: `print("Hello World!")\n`,
+    js: `console.log("Hello World!")\n`,
+    java: `public class Main {\n        public static void main(String[] args) {\n            System.out.println("Hello, World!");\n        }\n    }\n`,
+    cs: `using System;\n\n    class Program\n    {\n        static void Main()\n        {\n            Console.WriteLine("Hello World!");\n        }\n    }\n`
 }
 
 const LoadCode = (codeId, defaultCode) => localStorage.getItem(codeId) || defaultCode;
@@ -41,9 +49,9 @@ const LoadCode = (codeId, defaultCode) => localStorage.getItem(codeId) || defaul
 
 const CodeEditor = ({ enableRun, onRun, onSubmit, codeId, onFullscreen, onExitFullscreen }) => {
 
-    const [language, setLanguage] = useState("gxx");            // TO-DO: SET THIS TO USER PREFERENCE ITEM
+    const [language, setLanguage] = useState("cpp");            // TO-DO: SET THIS TO USER PREFERENCE ITEM
     const [languageName, setLanguageName] = useState("C++");
-    const [code, setCode] = useState(LoadCode(codeId, GetHelloWordApp["gxx"]))
+    const [code, setCode] = useState(LoadCode(codeId, GetHelloWordApp["cpp"]))
     const [isFullscreen, setFullscreen] = useState(false);
     const [fontSize, setFontSize] = useState(16)
 
@@ -60,7 +68,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, codeId, onFullscreen, onExitFu
 
     const toggleFullscreen = () => {
         isFullscreen && document.exitFullscreen()
-        isFullscreen || document.body.requestFullscreen()
+        isFullscreen || document.getElementById("main-ide").requestFullscreen()
         setFullscreen(!isFullscreen)
     }
 
@@ -74,10 +82,10 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, codeId, onFullscreen, onExitFu
 
 
     return (
-        <div className="ide-container">
+        <div id="main-ide" className="ide-container">
             <div className="command-bar">
                 <div className="languageSelector">
-                    <Dropdown name={languageName} items={[{ name: "C++", value: "gxx" }, { name: "Python", value: "python" }, { name: "JavaScript", value: "js" }]} value={language} onChangeHandle={changeLanguage} />
+                    <Dropdown name={languageName} items={[{ name: "C++", value: "cpp" }, { name: "Python", value: "py" }, { name: "JavaScript", value: "js" }, { name: "C#", value: "cs" }, { name: "Java", value: "java" }]} value={language} onChangeHandle={changeLanguage} />
                 </div>
                 <div className="command-container">
                     <div className="commands-left">

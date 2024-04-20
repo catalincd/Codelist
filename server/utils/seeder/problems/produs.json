@@ -1,0 +1,8 @@
+{
+    "name": "Produs",
+    "preview": "Se citesc n numere de la tastatură. Să se calculeze produsul lor.",
+    "text": "Inițial se citește n de la tastatură, după care se vor citi n numere întregi (mai mici decât 2^31). Se va afișa pe ecran produsul numerelor citite.",
+    "files": {"stdin": true, "stdout": true, "inputName": "", "outputName": ""},
+    "examples": [{"inputValue": "3\n1 2 3", "outputValue": "6"}, {"inputValue": "5\n5 6 7 8 9", "outputValue": "15120"}],
+    "tests": [{"inputValue": "3\n0 2 3", "outputValue": "0"}, {"inputValue": "5\n5 6 7 8 9", "outputValue": "15120"}, {"inputValue": "10\n1 2 3 4 5 6 7 8 9 10", "outputValue": "3628800"}]
+}

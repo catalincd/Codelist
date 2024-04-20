@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useParams } from "react-router"
 import Layout from "../components/Layout"
 import ArticleElement from "../components/ArticleElement"
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from "react-markdown"
 
 const Reader = (props) => {
 
@@ -39,7 +39,7 @@ const Reader = (props) => {
           }
           {
             articleData &&
-            <div class="markdown articleContentContainer tile">
+            <div className="markdown articleContentContainer tile">
               <ReactMarkdown>{articleData.text}</ReactMarkdown>
             </div>
           }

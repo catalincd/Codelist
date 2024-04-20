@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router"
+import ReactMarkdown from "react-markdown"
+
 import Layout from "../components/Layout";
 import Example from "../components/Example";
-import ProblemElement from "../components/ProblemElement";
+import ProblemElement from "../components/ProblemElement"
+
 
 import { UserContext } from "../utils/UserContext";
 
@@ -14,7 +17,7 @@ import { BsMemory } from "react-icons/bs";
 import { BsCpu } from "react-icons/bs";
 
 
-
+import { GetLanguageExtension } from "../utils/Code"
 
 const Solver = (props) => {
 
@@ -26,6 +29,7 @@ const Solver = (props) => {
   const [showLoadingRuntime, setShowLoadingRuntime] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [problemData, setProblemData] = useState(null)
+  const [creatorData, setCreatorData] = useState(null)
   const [results, setResults] = useState([])
   const [runtime, setRuntime] = useState(null)
 
@@ -34,7 +38,7 @@ const Solver = (props) => {
 
   const scrollToRuntime = () => {
     const runtimeElement = document.getElementById("ide-runtime")
-    if(runtimeElement)
+    if (runtimeElement)
       runtimeElement.scrollIntoView({ behavior: 'smooth', block: "center" });
     else
       setTimeout(scrollToRuntime, 50)
@@ -42,18 +46,18 @@ const Solver = (props) => {
 
   const scrollToLastResult = () => {
     const resultsElement = document.getElementById("ide-results")
-    if(resultsElement)
+    if (resultsElement)
       resultsElement.scrollIntoView({ behavior: 'smooth', block: "end" });
     else
       setTimeout(scrollToLastResult, 50)
   }
 
   const onSubmitHandle = async (code, language) => {
-    setRuntime({loading: true})
+    setRuntime({ loading: true })
     setShowLoadingRuntime(true)
     setShowLoadingResult(true)
     scrollToRuntime()
-    
+
     try {
       const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/send`,
         {
@@ -89,7 +93,7 @@ const Solver = (props) => {
 
   const onRunHandle = async (code, language) => {
     setShowLoadingRuntime(true)
-    setRuntime({loading: true})
+    setRuntime({ loading: true })
     scrollToRuntime()
 
     try {
@@ -99,7 +103,9 @@ const Solver = (props) => {
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
           body: JSON.stringify({
             username: user.username,
-            code: code,
+            source: [
+              {name: `Main.${GetLanguageExtension[language]}`, code}
+            ],
             language
           })
         })
@@ -123,9 +129,18 @@ const Solver = (props) => {
     }
   }
 
+  const fetchUserData = async (username) => {
+    fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/user/${username}`,
+      {
+        method: "GET"
+      })
+      .then(response => response.json())
+      .then(data => setCreatorData(data))
+  }
+
   useEffect(() => {
     const fetchProblemData = async () => {
-      fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/details?id=${id}`,
+      fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/?id=${id}`,
         {
           method: "GET"
         })
@@ -136,6 +151,7 @@ const Solver = (props) => {
             return
           }
           setProblemData(data)
+          fetchUserData(data.creator)
           console.log(data)
         })
         .catch(error => console.error(error));
@@ -143,6 +159,8 @@ const Solver = (props) => {
 
     fetchProblemData()
   }, [])
+
+
 
   useEffect(() => {
     if (!user)
@@ -174,7 +192,20 @@ const Solver = (props) => {
     <div className="mainContainer">
       <Layout error={errorMessage} setError={setErrorMessage}>
         <div className="solverContainer">
-          <ProblemElement id={id} {...problemData} disableLink={true}/>
+          <ProblemElement id={id} {...problemData} disableLink={true} />
+          {
+            problemData &&
+            <div className="problemContentContainer tile">
+              <div className="top-bar">
+                <div className="example-name">
+                  <h4>Descriere</h4>
+                </div>
+              </div>
+              <div className="markdown">
+                <ReactMarkdown>{problemData.text}</ReactMarkdown>
+              </div>
+            </div>
+          }
           <div className="ide-examples-container tile">
             <div className="top-bar">
               <div className="example-name">
@@ -203,7 +234,7 @@ const Solver = (props) => {
               }
               {!showLoadingRuntime &&
                 <div className="ide-runtime-grid">
-                  <textarea disabled rows={runtime.output?.split('\n').length} value={runtime.output} />
+                  <textarea disabled rows={(runtime.error? runtime.error:runtime.stdout).split('\n').length} value={runtime.error? runtime.error : runtime.stdout} />
                 </div>
               }
             </div>
@@ -225,6 +256,35 @@ const Solver = (props) => {
                 <h4>Intră în cont pentru a putea trimite soluții pentru probleme</h4>
                 <Link className="login" to="/login">Log in</Link>
                 <Link className="signup" to="/signup">Sign up</Link>
+              </div>
+            </div>
+          }
+          {
+            problemData &&
+            <div className="problemDetailsContainer tile">
+              <div className="top-bar">
+                <div className="example-name">
+                  <h4>Detalii</h4>
+                </div>
+              </div>
+              <div className="detailsTable">
+                <div className="creator">
+                  <p>Creator: </p>
+                  <div className="creatorImg">
+                    <Link to={`/user/${problemData?.creator}`}>
+                      <p>{problemData.creator}</p>
+                      <img src={`${process.env.REACT_APP_HOSTNAME}/images/${creatorData && creatorData.picture || "default.png"}`} />
+                    </Link>
+                  </div>
+                </div>
+                <div className="limits">
+                  <div className="time">
+                    <p>Limită de timp: {"1.0s"}</p>
+                  </div>
+                  <div className="mem">
+                    <p>Limită de memorie: {"100MB"}</p>
+                  </div>
+                </div>
               </div>
             </div>
           }
@@ -251,8 +311,7 @@ const GetMemString = (mem) => {
   var units = ["B", "KB", "MB", "GB"]
   var unitId = 0
 
-  while(mem > 1000)
-  {
+  while (mem > 1000) {
     unitId++
     mem /= 1000
   }

@@ -111,7 +111,7 @@ const SubmitArticle = (props) => {
             }
             {
                 text &&
-                <div class="markdown articleContentContainer tile">
+                <div className="markdown articleContentContainer tile">
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </div>
             }

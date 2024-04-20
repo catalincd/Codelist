@@ -1,0 +1,8 @@
+{
+    "name": "Numere Prime",
+    "preview": "Se dă un număr natural. Să se afișeze toate numerele prime mai mici decât el.",
+    "text": "Se citește N de la tastatură. Se vor afișa în ordine crescătoare toate numerele prime mai mici sau egale cu N.",
+    "files": {"stdin": true, "stdout": true, "inputName": "", "outputName": ""},
+    "examples": [{"inputValue": "10", "outputValue": "2 3 5 7"}],
+    "tests": [{"inputValue": "10", "outputValue": "2 3 5 7"}, {"inputValue": "30", "outputValue": "2 3 5 7 11 13 17 19 23 29"}]
+}

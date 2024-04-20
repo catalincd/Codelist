@@ -1,0 +1,8 @@
+{
+    "name": "Prim",
+    "preview": "Se citește de la tastatură un număr. Să se determine dacă numărul este prim.",
+    "text": "Numărul citit de la tastatură este un număr natural mai mic decât 2^63. Se va afișa 'true' dacă numărul este prim, respectiv 'false' dacă numărul nu este prim.",
+    "files": {"stdin": true, "stdout": true, "inputName": "", "outputName": ""},
+    "examples": [{"inputValue": "1", "outputValue": "false"}, {"inputValue": "7", "outputValue": "true"}],
+    "tests": [{"inputValue": "1", "outputValue": "false"}, {"inputValue": "7", "outputValue": "true"}, {"inputValue": "100", "outputValue": "false"}, {"inputValue": "2147462143", "outputValue": "true"}]
+}

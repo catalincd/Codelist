@@ -75,6 +75,53 @@ body {
   align-content: first baseline;
   grid-gap: 2rem;
 }
+.solverContainer .problemDetailsContainer {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.solverContainer .problemDetailsContainer .detailsTable {
+  display: flex;
+  justify-content: space-between;
+  grid-template-columns: 1fr auto;
+}
+.solverContainer .problemDetailsContainer .detailsTable .limits {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 1.5rem;
+}
+.solverContainer .problemDetailsContainer .detailsTable .creator {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 1.5rem;
+}
+.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg {
+  align-items: center;
+  align-content: right;
+  min-width: 8rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: auto 1fr;
+  justify-content: end;
+  text-align: right;
+  padding-right: 3rem;
+}
+.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 0.75rem;
+  color: white;
+  text-decoration: none;
+}
+.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a:hover {
+  text-decoration: underline;
+}
+.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a img {
+  border-radius: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+}
 
 .problemsPageContainer {
   width: 100%;
@@ -713,7 +760,7 @@ nav a:hover {
   font-size: 1rem;
 }
 .ide-examples-container .ide-examples {
-  width: calc(100% - 3rem);
+  width: 100%;
   display: grid;
   grid-gap: 1rem;
   padding: 1.5rem;
@@ -724,7 +771,7 @@ nav a:hover {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 4rem;
+  grid-gap: 2rem;
 }
 .ide-examples-container .ide-examples .ide-example .ide-example-tab {
   width: 100%;
@@ -1106,6 +1153,9 @@ nav a:hover {
   grid-template-rows: auto 1fr;
   grid-gap: 1rem;
 }
+.ide-container::backdrop {
+  background-color: #112244;
+}
 .ide-container .command-bar {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1294,6 +1344,11 @@ nav a:hover {
 .articleContentContainer {
   min-height: 28.5rem;
   padding: 2.5rem 4rem;
+}
+
+.problemContentContainer {
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .markdown {

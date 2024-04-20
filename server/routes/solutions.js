@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const RunnerManager = require('../utils/RunnerManager')
 const ConfigManager = require('../utils/ConfigManager')
-const CodeRunner = require('../utils/CodeRunner')
 
 const apiAuth = require('../middlewares/apiAuth')
 const Solution = require('../schemas/Solution')
@@ -21,7 +21,7 @@ router.post('/send', apiAuth, async (req, res) => {
     try {
         const { problemId, code, language } = req.body
 
-        const { time, memory, error, tests, output } = await CodeRunner.RunSolutionCode(problemId, code, language)
+        const { time, memory, error, tests, output } = await RunnerManager.Problem()
 
         const id = await ConfigManager.GetNewSolutionId()
         const solution = new Solution({ id, problemId, username: req.user.username, code, time, memory, error, tests, output })
@@ -38,14 +38,14 @@ router.put('/run', apiAuth, async (req, res) => {
     
     console.log("Received run request")
     console.log(req.body.language)
-    console.log(req.body.code)
+    console.log(req.body.source)
 
     try {
         //username: req.user.username
         
-        const { code, language } = req.body
+        const { source, language } = req.body
 
-        const runResults = await CodeRunner.RunCode(code, language)
+        const runResults = await RunnerManager.Code(source, language, req.user.username)
 
         res.status(201).json(runResults)
     }

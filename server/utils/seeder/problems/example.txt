@@ -1,0 +1,8 @@
+{
+    "name": "example",
+    "preview": "preview",
+    "text": "text",
+    "files": {"stdin": true, "stdout": true, "inputName": "", "outputName": ""},
+    "examples": [{"inputValue": "value", "outputValue": "value"}],
+    "tests": [{"inputValue": "value", "outputValue": "value"}]
+}

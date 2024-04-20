@@ -1,0 +1,8 @@
+{
+    "name": "Dijkstra",
+    "preview": "Se dă un graf orientat ponderat. Să se găsească cel mai scurt drum până la fiecare nod.",
+    "text": "Se dă pe prima linie a fișierului de intrare nodul sursă. Pe a doua linie se dă numărul de noduri N și de muchii M. Pe următoarele M linii se dau câte trei numere naturale i, j și k, unde k reprezintă distanța dintre nodurile i și j. Se vor printa în fișierul de ieșire distanțele minime de la nodul sursă la fiecare nod. Nodurile sunt numerotate de la 1 la N.",
+    "files": {"stdin": false, "stdout": false, "inputName": "input.txt", "outputName": "output.txt"},
+    "examples": [{"inputValue": "1\n5 7\n1 2 2\n1 3 4\n2 3 1\n2 4 7\n3 5 3\n4 5 1\n1 5 6", "outputValue": "0 2 3 9 6"}],
+    "tests": [{"inputValue": "1\n5 7\n1 2 2\n1 3 4\n2 3 1\n2 4 7\n3 5 3\n4 5 1\n1 5 6", "outputValue": "0 2 3 9 6"}]
+}

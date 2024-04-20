@@ -9,6 +9,7 @@ const articles = require('./routes/articles')
 const solutions = require('./routes/solutions')
 
 const logger = require('./utils/logs/LogManager')
+const seeder = require('./utils/seeder/Seeder')
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerConfig = require('./utils/swagger/config');
@@ -28,7 +29,7 @@ const ssl_key = fs.readFileSync('/keys/ssl_key').toString()
 const ssl_ca = fs.readFileSync('/keys/ssl_ca').toString()
 
 
-mongoose.connect('mongodb://localhost:27017', {
+const mongoDb = mongoose.connect('mongodb://localhost:27017', {
     serverSelectionTimeoutMS: 1000,
     autoIndex: true,
     user: "user",
@@ -36,7 +37,9 @@ mongoose.connect('mongodb://localhost:27017', {
     dbName: "codelist"
 })
 
-
+mongoose.connection.once('open', async () => {
+    seeder.onInit()
+})
 
 app.use(express.json())
 app.use(cors())
