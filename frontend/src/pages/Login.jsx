@@ -18,7 +18,7 @@ const Login = (props) => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const onLogin = (e) => {
-    fetch(`${process.env.REACT_APP_HOSTNAME}/auth/login`,
+    fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/login`,
       {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },

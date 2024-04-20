@@ -31,7 +31,7 @@ const PasswordReset = (props) => {
         }
 
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/passwordreset/${token}`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/passwordreset/${token}`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },

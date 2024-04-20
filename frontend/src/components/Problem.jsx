@@ -12,7 +12,7 @@ const Problem = (props) => {
 
     useEffect(() => {
         const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/problems/details?id=${props.id}`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/details?id=${props.id}`,
                 {
                     method: "GET"
                 })

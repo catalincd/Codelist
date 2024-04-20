@@ -36,7 +36,7 @@ const InitCodeFolder = (source, username, language) => {
 
 const GetTimeFromStderr = (output) => {
     const [memory, time] = output.split('\n').slice(-2)[0].split(' ')
-    stderr = output.split('\n').slice(0, -2).join('\n') // + '\n'
+    stderr = output.split('\n').slice(0, -2).concat('').join('\n') // + '\n'
     return {stderr, memory, time}
 }
 

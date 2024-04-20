@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: codelist-deployment
+   namespace: default
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         bb: web
+   template:
+      metadata:
+         labels:
+            bb: web
+      spec:
+         containers:
+            - name: codelist-site
+              image: catalincd/codelist:latest 
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: codelist-entrypoint
+   namespace: default
+spec:
+   type: NodePort
+   selector:
+      bb: web
+   ports:
+      - port: 7070
+        targetPort: 7070
+        nodePort: 30070

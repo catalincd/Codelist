@@ -17,7 +17,7 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
         const newArticles = liked ? user.likedProblems.filter(_id => _id != id) : [...user.likedProblems, id]
         setUser({ ...user, likedProblems: newArticles })
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/interact`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },

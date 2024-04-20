@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.16
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk update

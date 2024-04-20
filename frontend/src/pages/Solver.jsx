@@ -55,7 +55,7 @@ const Solver = (props) => {
     scrollToRuntime()
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/send`,
+      const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/send`,
         {
           method: "POST",
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
@@ -93,7 +93,7 @@ const Solver = (props) => {
     scrollToRuntime()
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/run`,
+      const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/run`,
         {
           method: "PUT",
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
@@ -125,7 +125,7 @@ const Solver = (props) => {
 
   useEffect(() => {
     const fetchProblemData = async () => {
-      fetch(`${process.env.REACT_APP_HOSTNAME}/problems/details?id=${id}`,
+      fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/details?id=${id}`,
         {
           method: "GET"
         })
@@ -149,7 +149,7 @@ const Solver = (props) => {
       return
 
     const fetchProblemData = async () => {
-      fetch(`${process.env.REACT_APP_HOSTNAME}/solutions/getUserSolutions?username=${user.username}`,
+      fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/getUserSolutions?username=${user.username}`,
         {
           method: "GET"
         })

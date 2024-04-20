@@ -20,7 +20,7 @@ const Login = (props) => {
             return
         }
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/sendpasswordreset`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/sendpasswordreset`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token }

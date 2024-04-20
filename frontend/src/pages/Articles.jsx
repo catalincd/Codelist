@@ -12,7 +12,7 @@ const Articles = (props) => {
 
     useEffect(() => {
         const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/articles/homescreen`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/articles/homescreen`,
                 {
                     method: "GET"
                 })

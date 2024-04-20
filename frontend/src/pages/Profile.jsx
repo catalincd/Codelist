@@ -41,13 +41,9 @@ const Profile = (props) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/data/user`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/user/${name}`,
                 {
-                    method: "GET",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: name,
-                    })
+                    method: "GET"
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -82,7 +78,7 @@ const Profile = (props) => {
         setPictureName(`${process.env.REACT_APP_HOSTNAME}/images/default.png`)
         setUser({ ...user, picture: "default.png" })
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/resetpicture`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/resetpicture`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token }
@@ -90,7 +86,7 @@ const Profile = (props) => {
     }
 
     const onResetPassword = async () => {
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/sendpasswordreset`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/sendpasswordreset`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
@@ -116,7 +112,7 @@ const Profile = (props) => {
         data.append("profilePicture", e.target[0].files[0])
 
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/newpicture`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/newpicture`,
             {
                 method: "PUT",
                 headers: { 'Authorization': user.token },

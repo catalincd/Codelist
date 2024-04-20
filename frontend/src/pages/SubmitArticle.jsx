@@ -33,7 +33,7 @@ const SubmitArticle = (props) => {
 
         setUploading(true)
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/articles/create`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/articles/create`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },

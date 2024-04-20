@@ -17,7 +17,7 @@ const Confirmation = (props) => {
 
     useEffect(() => {
         const sendConfirmationData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/auth/confirmation/${token}`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/confirmation/${token}`,
                 {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },

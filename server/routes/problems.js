@@ -60,6 +60,7 @@ router.get('/homescreen', async (req, res) => {
     try {
         var searchedProblems = (await Problem.find({}).limit(5)) || []
 
+        console.log(searchedProblems)
         // searchedProblems = searchedProblems.flatMap(problem => [problem, problem, problem])
 
         res.status(200).json(searchedProblems)

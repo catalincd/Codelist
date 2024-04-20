@@ -20,7 +20,7 @@ const Article = ({ id, name, rating, preview, views }) => {
 
         console.log("FETCHING")
 
-        fetch(`${process.env.REACT_APP_HOSTNAME}/auth/interact`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },

@@ -12,7 +12,7 @@ const Reader = (props) => {
   const [articleData, setArticleData] = useState(null)
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_HOSTNAME}/articles/?id=${id}`,
+    fetch(`${process.env.REACT_APP_HOSTNAME}/api/articles/?id=${id}`,
       {
         method: "GET"
       })

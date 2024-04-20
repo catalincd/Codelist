@@ -30,7 +30,7 @@ const Signup = (props) => {
     }
 
 
-    fetch(`${process.env.REACT_APP_HOSTNAME}/auth/register`,
+    fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/register`,
       {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },

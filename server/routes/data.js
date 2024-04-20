@@ -10,12 +10,12 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/user', async (req, res) => {
-    if(!(req.query.username)){
+router.get('/user/:username/', async (req, res) => {
+    if(!(req.params.username)){
         return res.status(406).json({ error: 'USERNAME_REQUIRED' })
     }
 
-    const user = await User.findOne({ username: req.query.username })
+    const user = await User.findOne({ username: req.params.username })
     if (!user) {
         return res.status(401).json({ error: 'USER_NOT_FOUND' })
     }

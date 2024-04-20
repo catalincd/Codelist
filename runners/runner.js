@@ -15,7 +15,8 @@ app.post('/code', async (req, res) => {
     res.status(200).json({...results, message: "something"})
   }
   catch(e){
-    res.status(500).json({error: e})
+    console.log(e)
+    res.status(500).json({error: e.toString()})
   }
 })
 
@@ -27,10 +28,10 @@ app.post('/problem', async (req, res) => {
     res.status(200).json({...results})
   }
   catch(e){
-    res.status(500).json({error: e})
+    res.status(500).json({error: e.toString()})
   }
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Code runner running on port: ${port}`)
 })
