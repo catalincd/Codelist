@@ -9,6 +9,8 @@ import Cookies from 'universal-cookie'
 
 const Login = (props) => {
 
+  document.title = `Codelist - Login`
+
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 

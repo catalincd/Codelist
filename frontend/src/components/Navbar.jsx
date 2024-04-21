@@ -2,6 +2,9 @@ import React, { useContext, useState, useEffect } from "react"
 import { UserContext } from "../utils/UserContext";
 import { Link, NavLink } from "react-router-dom";
 
+import Image from "./Image"
+import Utils from "../utils/Utils"
+
 const Navbar = (props) => {
 
     const { user, setUser } = useContext(UserContext);
@@ -12,7 +15,7 @@ const Navbar = (props) => {
     const loggedElement = <div className="logElement in">
                             <Link to={userProfileHref} className="username">
                                 {user?.username}
-                                <img src={userProfilePicture} />
+                                <Image src={userProfilePicture} altSrc={Utils.DefaultProfileImage}/>
                             </Link>
                         </div>
 

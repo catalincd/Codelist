@@ -14,8 +14,8 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
 
     const handleLike = (e) => {
         e.stopPropagation()
-        const newArticles = liked ? user.likedProblems.filter(_id => _id != id) : [...user.likedProblems, id]
-        setUser({ ...user, likedProblems: newArticles })
+        const newProblems = liked ? user.likedProblems.filter(_id => _id != id) : [...user.likedProblems, id]
+        setUser({ ...user, likedProblems: newProblems })
 
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
             {

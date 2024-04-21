@@ -5,7 +5,9 @@ import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
 
 
-const Login = (props) => {
+const ForgotPassword = (props) => {
+
+    document.title = `Codelist - Recuperare parola`
 
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
@@ -69,4 +71,4 @@ const Login = (props) => {
         </div>
     );
 }
-export default Login;
+export default ForgotPassword;

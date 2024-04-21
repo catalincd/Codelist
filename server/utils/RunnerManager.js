@@ -17,7 +17,7 @@ const Code = async (source, language, username) => {
         codeResponse = response.data
     } catch (error) {
         console.log(error.toString())
-        codeResponse = { error }
+        codeResponse = { error: error.message }
     }
     finally {
         return codeResponse

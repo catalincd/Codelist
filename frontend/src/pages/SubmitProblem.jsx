@@ -15,6 +15,8 @@ import ProblemElement from "../components/ProblemElement"
 
 const SubmitProblem = (props) => {
 
+    document.title = `Codelist - Problemă nouă`
+
     const { user, setUser } = useContext(UserContext)
     const [preview, setPreview] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")

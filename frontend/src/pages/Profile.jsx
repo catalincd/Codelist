@@ -34,6 +34,8 @@ const Profile = (props) => {
     const imageInputRef = useRef(null)
     const imageFormRef = useRef(null)
     const { name } = useParams();
+    document.title = `Codelist - ${name}`
+
     const editable = user ? (user.username == name) : false
 
     const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
@@ -41,7 +43,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/user/${name}`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/user/full/${name}`,
                 {
                     method: "GET"
                 })
@@ -207,7 +209,7 @@ const Profile = (props) => {
                                 <div className="problemContainers">
                                     <div className="uploadedProblems">
                                         {
-                                            uploadedProblems.map(problem => <UploadedElement key={problem.id} id={problem.id} name={problem.name} views={problem.views} link={`/solver?id=${problem.id}`} />)
+                                            uploadedProblems.map(problem => <UploadedElement key={problem.id} id={problem.id} name={problem.name} views={problem.views} link={`/problem/${problem.id}`} />)
                                         }
                                     </div>
                                 </div>
@@ -222,7 +224,7 @@ const Profile = (props) => {
                                 <div className="problemContainers">
                                     <div className="solvedProblems">
                                         {
-                                            solvedProblems.map(problem => <RatingElement key={problem.id} id={problem.id} name={problem.name} rating={problem.rating} solved={problem.solved} link={`/solver?id=${problem.id}`}/>)
+                                            solvedProblems.map(problem => <RatingElement key={problem.id} id={problem.id} name={problem.name} rating={problem.rating} solved={problem.solved} link={`/problem/${problem.id}`}/>)
                                         }
                                     </div>
                                 </div>

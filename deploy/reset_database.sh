@@ -9,5 +9,6 @@ docker run --name mongodb -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=user -
 
 cd /root/Codelist
 echo -n "1" > server/keys/seed
+
 pm2 kill
 pm2 start server/server.js

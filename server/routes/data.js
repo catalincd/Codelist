@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const User = require('../schemas/User')
+const Problem = require('../schemas/Problem')
+const Article = require('../schemas/Article')
 
 const apiAuth = require('../middlewares/apiAuth')
 
@@ -14,56 +16,42 @@ router.get('/user/:username/', async (req, res) => {
     if(!(req.params.username)){
         return res.status(406).json({ error: 'USERNAME_REQUIRED' })
     }
-
     const user = await User.findOne({ username: req.params.username })
     if (!user) {
         return res.status(401).json({ error: 'USER_NOT_FOUND' })
     }
-
-    const solvedProblems = [{
-        id: 1,
-        name: "Factorial",
-        rating: 3.5,
-        solved: true
-    },
-    {
-        id: 2,
-        name: "Problemm",
-        rating: 4,
-        solved: false
-    },
-    {
-        id: 3,
-        name: "FactorialX",
-        rating: 3.5,
-        solved: null
-    }]
-
-    const uploadedProblems = [{
-        id: 4,
-        name: "NSUM",
-        views: 576,
-    },
-    {
-        id: 5,
-        name: "Problemm5",
-        views: 400,
-    },
-    {
-        id: 6,
-        name: "Fibo16",
-        views: 100,
-    }]
-
-    res.status(200).json({
-        picture: user.picture,
-        username: user.username,
-        created: user.createdAt,
-        description: user.description,
-        solvedProblems,
-        uploadedProblems
-    })
+    const userObj = user.toObject()
+    res.status(200).json(userObj)
 })
 
+
+router.get('/user/full/:username/', async (req, res) => {
+    if(!(req.params.username)){
+        return res.status(406).json({ error: 'USERNAME_REQUIRED' })
+    }
+    const user = await User.findOne({ username: req.params.username })
+    if (!user) {
+        return res.status(401).json({ error: 'USER_NOT_FOUND' })
+    }
+    const userObj = user.toObject()
+    
+    const readArticles = await Problem.find({id: { $in: user.readArticles}})
+    const solvedProblems = await Problem.find({id: { $in: user.solvedProblems}})
+    const uploadedArticles = await Problem.find({id: { $in: user.uploadedArticles}})
+    const uploadedProblems = await Problem.find({id: { $in: user.uploadedProblems}})
+    const likedArticles = await Problem.find({id: { $in: user.likedArticles}})
+    const likedProblems = await Problem.find({id: { $in: user.likedProblems}})
+    
+    res.status(200).json({
+        ...userObj,
+        password: "-",
+        readArticles,
+        solvedProblems,
+        uploadedArticles,
+        uploadedProblems,
+        likedArticles,
+        likedProblems
+    })
+})
 
 module.exports = router

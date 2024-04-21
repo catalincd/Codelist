@@ -8,6 +8,10 @@ const User = new mongo.Schema({
     password: { type: String, required: true },
     picture: { type: String, default: "default.png" },
     description: { type: String, default: "Codelist user" },
+    readArticles: { type: Array, required: true, default: []},
+    solvedProblems: { type: Array, required: true, default: []},
+    uploadedArticles: { type: Array, required: true, default: []},
+    uploadedProblems: { type: Array, required: true, default: []},
     likedArticles: { type: Array, required: true, default: []},
     likedProblems: { type: Array, required: true, default: []}
 }, {timestamps: true});

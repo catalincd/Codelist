@@ -75,26 +75,27 @@ body {
   align-content: first baseline;
   grid-gap: 2rem;
 }
-.solverContainer .problemDetailsContainer {
+
+.problemDetailsContainer {
   display: grid;
   grid-template-rows: auto 1fr;
 }
-.solverContainer .problemDetailsContainer .detailsTable {
+.problemDetailsContainer .detailsTable {
   display: flex;
   justify-content: space-between;
   grid-template-columns: 1fr auto;
 }
-.solverContainer .problemDetailsContainer .detailsTable .limits {
+.problemDetailsContainer .detailsTable .limits {
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 1.5rem;
 }
-.solverContainer .problemDetailsContainer .detailsTable .creator {
+.problemDetailsContainer .detailsTable .creator {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 1.5rem;
 }
-.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg {
+.problemDetailsContainer .detailsTable .creator .creatorImg {
   align-items: center;
   align-content: right;
   min-width: 8rem;
@@ -105,7 +106,7 @@ body {
   text-align: right;
   padding-right: 3rem;
 }
-.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a {
+.problemDetailsContainer .detailsTable .creator .creatorImg a {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -114,10 +115,10 @@ body {
   color: white;
   text-decoration: none;
 }
-.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a:hover {
+.problemDetailsContainer .detailsTable .creator .creatorImg a:hover {
   text-decoration: underline;
 }
-.solverContainer .problemDetailsContainer .detailsTable .creator .creatorImg a img {
+.problemDetailsContainer .detailsTable .creator .creatorImg a img {
   border-radius: 50%;
   width: 1.75rem;
   height: 1.75rem;
@@ -894,7 +895,7 @@ nav a:hover {
   padding: 1rem;
   border: none;
   border-radius: 0.5rem;
-  width: calc(100% - 2rem);
+  width: 100%;
   resize: none;
   background-color: #282c34;
   color: white;
@@ -1146,8 +1147,7 @@ nav a:hover {
 }
 
 .ide-container {
-  padding: 1rem;
-  padding-top: 2rem;
+  padding: 2rem 0rem;
   width: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -1367,15 +1367,17 @@ nav a:hover {
   text-decoration: underline;
 }
 .markdown pre {
-  padding: 0.75rem 1.15rem;
-  outline: 1px white solid;
-  background-color: rgba(255, 255, 255, 0.1882352941);
-  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.35), 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-  color: #adff98;
+  padding: 1rem 1.75rem;
+  background-color: #282c34;
+  font-family: monospace;
+  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.35);
+  color: white;
   border-radius: 0.35rem;
 }
 .markdown pre code {
   line-height: 2.25;
+  font-family: monospace;
+  letter-spacing: 0.5px;
 }
 .markdown ul,
 .markdown ol {

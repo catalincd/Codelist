@@ -9,6 +9,8 @@ import Cookies from 'universal-cookie'
 
 const PasswordReset = (props) => {
 
+    document.title = `Codelist - Resetare parola`
+
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('')

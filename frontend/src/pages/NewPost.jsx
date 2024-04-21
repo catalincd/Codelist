@@ -6,6 +6,8 @@ import { UserContext } from "../utils/UserContext";
 
 const NewPost = (props) => {
 
+    document.title = `Codelist - Postare nouă`
+
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
 

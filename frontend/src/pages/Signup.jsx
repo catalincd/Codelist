@@ -7,9 +7,9 @@ import Layout from "../components/Layout";
 
 const Signup = (props) => {
 
+  document.title = `Codelist - Signup`
+
   const { user, setUser } = useContext(UserContext);
-
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')

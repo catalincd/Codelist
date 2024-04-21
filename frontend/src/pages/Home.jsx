@@ -5,8 +5,11 @@ import ProblemElement from "../components/ProblemElement";
 
 import { UserContext } from "../utils/UserContext";
 
-const Home = (props) =>{
-  const { user, setUser } = useContext(UserContext);
+const Home = (props) => {
+
+    document.title = `Codelist - Home`
+
+    const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
     const [problemList, setProblemList] = useState([]);
 
@@ -40,7 +43,7 @@ const Home = (props) =>{
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="problemsPageContainer">
-                    {problemList.map(problem => <ProblemElement {...problem}/>)}
+                    {problemList.map(problem => <ProblemElement {...problem} />)}
                 </div>
             </Layout>
         </div>

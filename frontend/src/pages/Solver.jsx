@@ -17,7 +17,7 @@ import { BsMemory } from "react-icons/bs";
 import { BsCpu } from "react-icons/bs";
 
 
-import { GetLanguageExtension } from "../utils/Code"
+import { GetLanguageExtension } from "../utils/Utils"
 
 const Solver = (props) => {
 
@@ -151,6 +151,7 @@ const Solver = (props) => {
             return
           }
           setProblemData(data)
+          document.title = `Codelist - ${data.name}`
           fetchUserData(data.creator)
           console.log(data)
         })

@@ -1,13 +1,28 @@
 import React, { useContext, useState, useEffect } from "react"
 import { UserContext } from "../utils/UserContext";
 
-const ArticleElement = ({ id, name, rating, preview, views }) => {
+const ArticleElement = ({ id, name, rating, preview, views, disableLink, disableLike }) => {
 
     const { user, setUser } = useContext(UserContext);
+    const [liked, setLiked] = useState(user?.likedArticles?.includes(id) || false)
 
     const handleLike = (e) => {
         e.stopPropagation()
-        console.log(handleLike)
+        const newArticles = liked ? user.likedArticles.filter(_id => _id != id) : [...user.likedArticles, id]
+        setUser({ ...user, likedArticles: newArticles })
+
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
+            {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
+                body: JSON.stringify({
+                    id,
+                    type: "ARTICLE_LIKE",
+                    action: liked ? "REMOVE" : "ADD"
+                })
+            })
+
+        setLiked(!liked)
     }
 
     return (
@@ -29,13 +44,14 @@ const ArticleElement = ({ id, name, rating, preview, views }) => {
             <div className="article-bottom">
                 <p>{views} <span className="material-symbols-outlined article-icon">visibility</span></p>
                 {
-                    user &&
-                    <div onClick={handleLike} className="article-like-container">
+                    user && (!disableLike) &&
+                    <div onClick={handleLike} className={liked ? "article-like-container liked" : "article-like-container"}>
                         <p><span className="material-symbols-outlined">favorite</span></p>
                     </div>
                 }
             </div>
-        </div>)
+        </div>
+    )
 }
 
 const GetStarsFromRating = (rating) => {

@@ -1,4 +1,4 @@
-name: Reset Codelist Database
+name: Reset Codelist Cluster
 
 on:
   workflow_dispatch:
