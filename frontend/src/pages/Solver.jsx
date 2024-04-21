@@ -234,7 +234,7 @@ const Solver = (props) => {
               }
               {!showLoadingRuntime &&
                 <div className="ide-runtime-grid">
-                  <textarea disabled rows={(runtime.error? runtime.error:runtime.stdout).split('\n').length} value={runtime.error? runtime.error : runtime.stdout} />
+                  <textarea disabled rows={(runtime.error? runtime.error:runtime.stdout)?.split('\n').length} value={(runtime.error? runtime.error : runtime.stdout) || ""} />
                 </div>
               }
             </div>

@@ -8,7 +8,7 @@ const Footer = (props) => {
     const navigate = useNavigate()
 
     const handleAPI = () => {
-        navigate(`/api-docs`)
+        navigate(`/api-docs/`)
     }
 
     return (

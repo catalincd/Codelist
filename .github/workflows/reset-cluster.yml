@@ -1,0 +1,16 @@
+name: Reset Codelist Database
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reset-cluster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH VPS
+        env:
+            PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
+            HOSTNAME: ${{ secrets.HOSTNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "./Codelist/deploy/reset_kubernetes.sh"
