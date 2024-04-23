@@ -8,7 +8,8 @@ const Footer = (props) => {
     const navigate = useNavigate()
 
     const handleAPI = () => {
-        navigate(`/api-docs/`)
+        // navigate(`/api-docs/`)
+        window.location.href = `${process.env.REACT_APP_HOSTNAME}/api-docs/`
     }
 
     return (

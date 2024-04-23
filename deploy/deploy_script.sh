@@ -40,7 +40,7 @@ cp server/utils/res/default.png server/build/images/default.png
 
 echo "0" > server/keys/debug
 echo "0" > server/keys/seed
-echo "localhost" > server/keys/cluster
+echo -n $(minikube ip 2>/dev/null || echo "localhost") > server/keys/cluster
 
 cd server
 npm install

@@ -2,6 +2,8 @@
     "name": "Factorial",
     "preview": "Se dă un număr natural N. Să se scrie calculeze N Factorial.",
     "text": "Numărul dat se va citi de la tastatură (STDIN). Factorialul va fi afișat pe ecran (STDOUT).",
+    "rating": 3.4,
+    "ratingsCount": 3,
     "files": {"stdin": true, "stdout": true, "inputName": "", "outputName": ""},
     "examples": [{"inputValue": "1", "outputValue": "1"}, {"inputValue": "3", "outputValue": "6"}],
     "tests": [{"inputValue": "5", "outputValue": "120"}, {"inputValue": "10", "outputValue": "3628800"}, {"inputValue": "20", "outputValue": "2432902008176640000"}] 

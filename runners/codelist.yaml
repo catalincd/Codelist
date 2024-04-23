@@ -16,6 +16,7 @@ spec:
          containers:
             - name: codelist-site
               image: catalincd/codelist:latest 
+              imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service

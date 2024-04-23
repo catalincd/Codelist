@@ -36,8 +36,13 @@ body {
   position: relative;
 }
 
+.limited-width {
+  width: calc(min(70rem, 75vw) - 5.5rem);
+}
+
 .mainLayoutContent {
   width: 100%;
+  overflow: scroll;
   display: grid;
   justify-items: center;
   align-content: center;
@@ -782,7 +787,7 @@ nav a:hover {
 }
 .ide-examples-container .ide-examples .ide-example .ide-example-tab p {
   width: 100%;
-  background-color: #5674ba;
+  background-color: #282c34;
   border-radius: 1rem;
   padding: 0.55rem 0.85rem;
   white-space: pre-wrap;
@@ -969,6 +974,28 @@ nav a:hover {
   text-shadow: #1b202c;
 }
 
+.stars-container {
+  display: grid;
+  grid-template-columns: 1fr 1.5rem;
+  grid-gap: 0.5rem;
+  align-items: center;
+  font-size: 1rem;
+}
+.stars-container.rated {
+  color: gold;
+}
+.stars-container .stars {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 0.5rem;
+}
+.stars-container .stars:hover {
+  color: gold;
+}
+.stars-container .star-filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
 .problem {
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
@@ -1009,16 +1036,6 @@ nav a:hover {
 }
 .problem .problem-top a.problem-name {
   cursor: pointer;
-}
-.problem .problem-top .problem-stars-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr) auto;
-  grid-gap: 0.5rem;
-  align-items: center;
-  font-size: 1rem;
-}
-.problem .problem-top .problem-stars-container .problem-star-filled {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 .problem a.problem-content {
   cursor: pointer;
@@ -1105,7 +1122,7 @@ nav a:hover {
   align-items: center;
   font-size: 1rem;
 }
-.article .article-top .article-stars-container .article-star-filled {
+.article .article-top .article-stars-container .star-filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 .article a.article-content {
@@ -1175,9 +1192,112 @@ nav a:hover {
   display: flex;
   flex-direction: row;
 }
-.ide-container .code-container {
-  border-radius: 0.5rem;
-  overflow: hidden;
+.ide-container .mirror-container .newfile {
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.ide-container .mirror-container .newfile svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+.ide-container .mirror-container .newfile:hover {
+  color: lime;
+}
+.ide-container .mirror-container .file-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #1b202c;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.ide-container .mirror-container .file-container .stdin {
+  cursor: pointer;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  padding: 0rem 1rem;
+  margin-left: auto;
+  border-left: 1px solid #494c55;
+}
+.ide-container .mirror-container .file-container .stdin p {
+  margin: 0;
+}
+.ide-container .mirror-container .file-container .stdin.active {
+  background-color: #282c34;
+}
+.ide-container .mirror-container .file-container .stdin.active p {
+  font-weight: 500;
+  color: limegreen;
+}
+.ide-container .mirror-container .file-container .stdin:hover {
+  background-color: #494c55;
+}
+.ide-container .mirror-container .file-container .file {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  align-content: center;
+  grid-gap: 0.5rem;
+  min-width: 8rem;
+  height: 3rem;
+  padding-left: 1rem;
+  background-color: #1b202c;
+  border-right: 1px solid #494c55;
+}
+.ide-container .mirror-container .file-container .file p {
+  font-weight: 300;
+}
+.ide-container .mirror-container .file-container .file .closeIcon {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 1rem;
+}
+.ide-container .mirror-container .file-container .file .closeIcon:hover {
+  color: red;
+}
+.ide-container .mirror-container .file-container .file .closeIcon svg {
+  width: 1rem;
+  height: 1rem;
+}
+.ide-container .mirror-container .file-container .file .editableField input, .ide-container .mirror-container .file-container .file .editableField input:active, .ide-container .mirror-container .file-container .file .editableField input:focus {
+  font-size: 1.15rem;
+  color: white;
+  width: 8rem;
+  background-color: #1b202c;
+  border: none;
+  outline: none;
+  padding: 0.15rem 0.55rem;
+  border-radius: 0.25rem;
+}
+.ide-container .mirror-container .file-container .file.main .closeIcon {
+  display: none;
+}
+.ide-container .mirror-container .file-container .file.active {
+  background-color: #282c34;
+}
+.ide-container .mirror-container .file-container .file.active .editableField p {
+  font-weight: 500;
+}
+.ide-container .mirror-container .file-container .file:hover {
+  background-color: #494c55;
+}
+.ide-container .mirror-container .code-container {
+  max-width: 64.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  overflow: auto;
 }
 
 .dropdown select {
@@ -1300,7 +1420,7 @@ nav a:hover {
 .ratingElement .stars-container p span:hover {
   text-decoration: none;
 }
-.ratingElement .stars-container .problem-star-filled {
+.ratingElement .stars-container .star-filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
@@ -1337,7 +1457,7 @@ nav a:hover {
 .uploadElement .viewsContainer p span:hover {
   text-decoration: none;
 }
-.uploadElement .viewsContainer .problem-star-filled {
+.uploadElement .viewsContainer .star-filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
@@ -1394,11 +1514,17 @@ nav a:hover {
     margin: 1.5rem 0rem;
     width: min(70rem, 85vw);
   }
+  .code-container, .limited-width {
+    max-width: calc(min(70rem, 85vw) - 5.5rem);
+  }
 }
 @media only screen and (max-width: 1250px) {
   .mainLayout {
     margin: 1.5rem 0rem;
     width: min(70rem, 95vw);
+  }
+  .code-container, .limited-width {
+    max-width: calc(min(70rem, 85vw) - 5.5rem);
   }
 }
 @media only screen and (max-width: 1050px) {

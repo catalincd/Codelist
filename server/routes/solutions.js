@@ -5,6 +5,9 @@ const RunnerManager = require('../utils/RunnerManager')
 const ConfigManager = require('../utils/ConfigManager')
 
 const apiAuth = require('../middlewares/apiAuth')
+
+const User = require('../schemas/User')
+const Problem = require('../schemas/Problem')
 const Solution = require('../schemas/Solution')
 
 router.use((req, res, next) => {
@@ -13,23 +16,29 @@ router.use((req, res, next) => {
 })
 
 router.post('/send', apiAuth, async (req, res) => {
-    
-    console.log("Received solution")
-    console.log(req.body.language)
-    console.log(req.body.code)
+        try {
+        const { problemId, source, language } = req.body
 
-    try {
-        const { problemId, code, language } = req.body
+        const searchedProblem = await Problem.findOne({ id: problemId })
 
-        const { time, memory, error, tests, output } = await RunnerManager.Problem()
+        if (!searchedProblem) {
+            return res.status(404).json({ error: 'PROBLEM_NOT_FOUND' })
+        }
+
+        const probObj = searchedProblem.toObject()
+
+        const { reqError, error, stdout, stderr, memory, time, tests} = await RunnerManager.Problem(source, language, req.user.username, probObj.files, probObj.tests)
+
+        if(reqError) throw new Error(reqError)
 
         const id = await ConfigManager.GetNewSolutionId()
-        const solution = new Solution({ id, problemId, username: req.user.username, code, time, memory, error, tests, output })
+        const solution = new Solution({ id, problemId, username: req.user.username, time, memory, error, tests })
         await solution.save()
 
-        res.status(201).json(solution)
+        res.status(201).json({...solution.toObject(), stdout, stderr})
     }
     catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'SOLUTION_SERVER_ERROR' })
     }
 })
@@ -44,6 +53,8 @@ router.put('/run', apiAuth, async (req, res) => {
         //username: req.user.username
         
         const { source, language } = req.body
+
+        console.log(source)
 
         const runResults = await RunnerManager.Code(source, language, req.user.username)
 

@@ -12,7 +12,6 @@ RUN apk add --no-cache openjdk11
 RUN apk add --no-cache time
 RUN apk add --no-cache bash
 
-
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install

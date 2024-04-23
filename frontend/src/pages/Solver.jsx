@@ -12,12 +12,7 @@ import { UserContext } from "../utils/UserContext";
 
 import CodeEditor from "../components/CodeEditor"
 
-import { BiErrorCircle } from "react-icons/bi";
-import { BsMemory } from "react-icons/bs";
-import { BsCpu } from "react-icons/bs";
-
-
-import { GetLanguageExtension } from "../utils/Utils"
+import Utils from "../utils/Utils"
 
 const Solver = (props) => {
 
@@ -32,9 +27,6 @@ const Solver = (props) => {
   const [creatorData, setCreatorData] = useState(null)
   const [results, setResults] = useState([])
   const [runtime, setRuntime] = useState(null)
-
-  const runtimeRef = useRef(null)
-
 
   const scrollToRuntime = () => {
     const runtimeElement = document.getElementById("ide-runtime")
@@ -52,7 +44,7 @@ const Solver = (props) => {
       setTimeout(scrollToLastResult, 50)
   }
 
-  const onSubmitHandle = async (code, language) => {
+  const onSubmitHandle = async (files, language) => {
     setRuntime({ loading: true })
     setShowLoadingRuntime(true)
     setShowLoadingResult(true)
@@ -66,7 +58,7 @@ const Solver = (props) => {
           body: JSON.stringify({
             problemId: id,
             username: user.username,
-            code: code,
+            source: [...files],
             language
           })
         })
@@ -91,10 +83,11 @@ const Solver = (props) => {
     }
   }
 
-  const onRunHandle = async (code, language) => {
+  const onRunHandle = async (files, language) => {
     setShowLoadingRuntime(true)
     setRuntime({ loading: true })
     scrollToRuntime()
+    console.log(files)
 
     try {
       const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/run`,
@@ -103,9 +96,7 @@ const Solver = (props) => {
           headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
           body: JSON.stringify({
             username: user.username,
-            source: [
-              {name: `Main.${GetLanguageExtension[language]}`, code}
-            ],
+            source: [...files],
             language
           })
         })
@@ -220,13 +211,16 @@ const Solver = (props) => {
             </div>
           </div>
           <div className="ide-textarea tile">
-            <CodeEditor enableRun={user != null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
+            {
+              problemData &&
+              <CodeEditor enableRun={user != null} inputFiles={problemData.files} inputExamples={problemData.examples} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
+            }
           </div>
           {(runtime || showLoadingRuntime) &&
             <div id="ide-runtime" className="ide-runtime tile">
               <div className="ide-runtime-title">
                 <h4>Execuție</h4>
-                {GetExecutionTimeElement(runtime, showLoadingRuntime)}
+                {Utils.GetExecutionTimeElement(runtime, showLoadingRuntime)}
               </div>
               {showLoadingRuntime &&
                 <div className="ide-runtime-grid">
@@ -235,7 +229,7 @@ const Solver = (props) => {
               }
               {!showLoadingRuntime &&
                 <div className="ide-runtime-grid">
-                  <textarea disabled rows={(runtime.error? runtime.error:runtime.stdout)?.split('\n').length} value={(runtime.error? runtime.error : runtime.stdout) || ""} />
+                  <textarea disabled rows={(runtime.error ? runtime.error : runtime.stdout)?.split('\n').length} value={(runtime.error ? runtime.error : runtime.stdout) || ""} />
                 </div>
               }
             </div>
@@ -246,8 +240,8 @@ const Solver = (props) => {
                 <h4>Rezultate</h4>
               </div>
               <div id="ide-results" className="resultsTable">
-                {GetResultElements(results)}
-                {showLoadingResult && GetLoadingResultElement(results)}
+                {Utils.GetResultElements(results)}
+                {showLoadingResult && Utils.GetLoadingResultElement(results)}
               </div>
             </div>
           }
@@ -295,71 +289,5 @@ const Solver = (props) => {
   );
 }
 
-const GetProgressBar = (tests, message = null) => {
-  const passed = tests.filter(test => test).length
-  const ratio = parseInt(100 * parseFloat(passed) / parseFloat(tests.length))
-  const widthString = `${ratio}%`
-
-  return (
-    <div className="progress-bar-container">
-      <div className="progress-bar" style={{ width: widthString }}></div>
-      {message ? <p>{message}</p> : <p>{ratio}% ({passed}/{tests.length})</p>}
-    </div>
-  )
-}
-
-const GetMemString = (mem) => {
-  var units = ["B", "KB", "MB", "GB"]
-  var unitId = 0
-
-  while (mem > 1000) {
-    unitId++
-    mem /= 1000
-  }
-
-  return `${mem.toFixed(1)}${units[unitId]}`
-}
-
-const GetExecutionTimeElement = (runtime, loading) => {
-  if (loading) return (<div></div>)
-
-  if (runtime.error)
-    return (
-      <div className="diagnostic-error">
-        <h4>Error</h4>
-        <BiErrorCircle />
-      </div>
-    )
-
-  return (
-    <div className="diagnostic-success">
-      <div className="diagnostic-sub cpu">
-        <BsCpu />
-        <h4>{`${parseFloat(runtime.time).toFixed(1)}s`}</h4>
-      </div>
-      <div className="diagnostic-sub memory">
-        <BsMemory />
-        <h4>{GetMemString(parseFloat(runtime.memory))}</h4>
-      </div>
-    </div>
-  )
-}
-
-const GetLoadingResultElement = (results) => {
-  return (<div key={99} className="resultRow">
-    <h4>{results.length + 1}</h4>
-    {GetProgressBar([], "Loading...")}
-  </div>)
-}
-
-const GetResultElements = (results, showLoadingResult) => {
-  let keyIterator = 1
-
-  return results.map(result =>
-    <div key={keyIterator++} className="resultRow">
-      <h4>{keyIterator}</h4>
-      {GetProgressBar(result.tests)}
-    </div>)
-}
 
 export default Solver;

@@ -31,6 +31,9 @@ const Profile = (props) => {
     const [readArticles, setReadArticles] = useState([])
     const [uploadedArticles, setUploadedArticles] = useState([])
 
+    const [likedProblems, setLikedProblems] = useState([])
+    const [likedArticles, setLikedArticles] = useState([])
+
     const imageInputRef = useRef(null)
     const imageFormRef = useRef(null)
     const { name } = useParams();
@@ -57,6 +60,10 @@ const Profile = (props) => {
 
                     setSolvedProblems([...data.solvedProblems, ...data.solvedProblems, ...data.solvedProblems])
                     setUploadedProblems(data.uploadedProblems)
+                    setReadArticles(data.readArticles)
+                    setUploadedArticles(data.uploadedArticles)
+                    setLikedProblems(data.likedProblems)
+                    setLikedArticles(data.likedArticles)
                     setUserData(data)
                     setPictureName(`${process.env.REACT_APP_HOSTNAME}/images/${data.picture}`)
                     console.log(data)
@@ -200,6 +207,36 @@ const Profile = (props) => {
                                 editable && accountButtons
                             }
                         </div>
+                        {
+                            editable && likedProblems && likedProblems.length > 0 &&
+                            <div className="profileProblems">
+                                <div className="problemsTitle">
+                                    <h3>Probleme apreciate</h3>
+                                </div>
+                                <div className="problemContainers">
+                                    <div className="uploadedProblems">
+                                        {
+                                            likedProblems.map(problem => <UploadedElement key={problem.id} id={problem.id} name={problem.name} views={problem.views} link={`/problem/${problem.id}`} />)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        {
+                            editable && likedArticles && likedArticles.length > 0 &&
+                            <div className="profileProblems">
+                                <div className="problemsTitle">
+                                    <h3>Articole apreciate</h3>
+                                </div>
+                                <div className="problemContainers">
+                                    <div className="uploadedProblems">
+                                        {
+                                            likedArticles.map(problem => <UploadedElement key={problem.id} id={problem.id} name={problem.name} views={problem.views} link={`/article/${problem.id}`} />)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         {
                             uploadedProblems && uploadedProblems.length > 0 &&
                             <div className="profileProblems">

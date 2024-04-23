@@ -9,26 +9,26 @@ app.use(cors())
 
 app.post('/code', async (req, res) => {
   try{
-    const {source, username, language} = req.body
+    const {source, username, language, stdin} = req.body
     // TO-DO: check if they're missing
-    const results = await ExecCode(source, username, language)
-    res.status(200).json({...results, message: "something"})
+    const results = await ExecCode(source, username, language, stdin || null)
+    res.status(200).json({...results})
   }
   catch(e){
     console.log(e)
-    res.status(500).json({error: e.toString()})
+    res.status(200).json({reqError: e.toString()})
   }
 })
 
 app.post('/problem', async (req, res) => {
   try{
-    const {source, username, language} = req.body
+    const {source, username, language, files, tests} = req.body
     // TO-DO: check if they're missing
-    const results = await ExecProblem(source, username, language)
+    const results = await ExecProblem(source, username, language, files, tests)
     res.status(200).json({...results})
   }
   catch(e){
-    res.status(500).json({error: e.toString()})
+    res.status(200).json({reqError: e.toString()})
   }
 })
 

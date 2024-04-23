@@ -11,7 +11,7 @@ const onInit = () => {
 
         if (seedActivated) {
             console.log("SEEDING DATABASE")
-            // fs.writeFileSync("./server/keys/seed", "0")
+            fs.writeFileSync("./server/keys/seed", "0")
             seedDatabase()
         }
     }
@@ -38,6 +38,9 @@ const seedUsers = async () => {
     await codelistUser.save()
     console.log(`Created user ${"codelist"}`)
 
+    const testerUser = new User({ id: 1, username: "tester", email: "tester@codelist.ro", password: "$2b$10$.J5j4yVgn9qIXPVljJf7Uea5kD9tprSFX6zt//hkGAxrPhgkDhAnO", description: `Codelist user #${0}`, activated: true })
+    await testerUser.save()
+    console.log(`Created user ${"tester"}`)
 }
 
 

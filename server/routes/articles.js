@@ -26,7 +26,6 @@ router.post('/', apiAuth, async (req, res) => {
 
         const id = await ConfigManager.GetNewArticleId()
 
-
         const newArticle = new Article({id, name, preview, text: sanitizeArticleText(text), creator: req.user.username})
         await newArticle.save()
 

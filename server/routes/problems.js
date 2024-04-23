@@ -23,7 +23,6 @@ router.post('/', apiAuth, async (req, res) => {
 
         const id = await ConfigManager.GetNewProblemId()
 
-
         const problem = new Problem({id, name, preview, text, tests, examples, files, creator: req.user.username})
         await problem.save()
 
@@ -60,7 +59,6 @@ router.get('/homescreen', async (req, res) => {
     try {
         var searchedProblems = (await Problem.find({}).limit(5)) || []
 
-        console.log(searchedProblems)
         // searchedProblems = searchedProblems.flatMap(problem => [problem, problem, problem])
 
         res.status(200).json(searchedProblems)

@@ -53,7 +53,7 @@ const ExecSync = (cmd, options = {}, input = null) => new Promise((resolve, reje
 
 const Trim = (str) => str.replace(/ +(?= )/g,'').replace(/(\r\n|\n|\r)/gm, "") // TO-DO: repair this somehow
 
-const ExecCode = async (source, username, language) => {
+const ExecCode = async (source, username, language, stdin = null) => {
     const folder = InitCodeFolder(source, username, language)
     const runner = SplitRunner(language)
     const compileResults = await runner.compile(folder, source, ExecSync)
@@ -62,21 +62,23 @@ const ExecCode = async (source, username, language) => {
         return {error: compileResults.error.toString()}
     }
 
-    const runtimeResults = await runner.run(folder, source, ExecSync)
+    const runtimeResults = await runner.run(folder, source, ExecSync, stdin)
     return {...runtimeResults, ...GetTimeFromStderr(runtimeResults.stderr)}
 }
 
-const ExecProblem = async (source, username, language, {files, tests}) => {
+const ExecProblem = async (source, username, language, files, tests) => {
     const folder = InitCodeFolder(source, username, language)
     const runner = SplitRunner(language)
     const compileResults = await runner.compile(folder, source, ExecSync)
 
     if(compileResults.error){
-        return {error: compileResults.error.toString()}
+        return {error: compileResults.error.toString(), stderr: compileResults.stderr}
     }
 
     let testResults = []
     let mainOutput = null
+    let time = 0
+    let memory = 0
 
     try{
         for(var i=0;i<tests.length;i++){
@@ -86,18 +88,36 @@ const ExecProblem = async (source, username, language, {files, tests}) => {
             // const parsedResults = {...runtimeResults, ...GetTimeFromStderr(runtimeResults.stderr)}
             // TO-DO: check here for mem and timeout
             if(runtimeResults.error){
-                return {error: runtimeResults.error.toString()}
+                return {error: runtimeResults.error.toString(), stderr: runtimeResults.stderr}
             }
-            const output = files.stdout? runtimeResults.stdout : fs.readFileSync(`${folder}/${files.outputName}`, 'utf8')
+
+
+            let output = ""
+            if(files.stdout)
+                output = runtimeResults.stdout
+            else
+            {
+                try
+                {
+                    output = fs.readFileSync(`${folder}/${files.outputName}`, 'utf8')
+                }
+                catch(e)
+                {
+                    output = ""
+                }
+            } 
             testResults.push(Trim(output) == test.outputValue)
             mainOutput = mainOutput || runtimeResults.stderr
+
+            time = runtimeResults.time > time? runtimeResults.time : time
+            memory = runtimeResults.memory > memory? runtimeResults.memory : memory
         }
     }
     catch(e){
-        return {error: e.toString()}
+        return {reqError: e.toString()}
     }
     
-    return {error: null, tests: testResults}
+    return {error: null, time, memory, tests: testResults}
 }
 
 module.exports = {ExecCode, ExecProblem}

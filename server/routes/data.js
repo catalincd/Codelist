@@ -35,11 +35,11 @@ router.get('/user/full/:username/', async (req, res) => {
     }
     const userObj = user.toObject()
     
-    const readArticles = await Problem.find({id: { $in: user.readArticles}})
+    const readArticles = await Article.find({id: { $in: user.readArticles}})
     const solvedProblems = await Problem.find({id: { $in: user.solvedProblems}})
-    const uploadedArticles = await Problem.find({id: { $in: user.uploadedArticles}})
+    const uploadedArticles = await Article.find({id: { $in: user.uploadedArticles}})
     const uploadedProblems = await Problem.find({id: { $in: user.uploadedProblems}})
-    const likedArticles = await Problem.find({id: { $in: user.likedArticles}})
+    const likedArticles = await Article.find({id: { $in: user.likedArticles}})
     const likedProblems = await Problem.find({id: { $in: user.likedProblems}})
     
     res.status(200).json({

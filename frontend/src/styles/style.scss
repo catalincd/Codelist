@@ -39,8 +39,13 @@ body {
 	position: relative;
 }
 
+.limited-width {
+	width: calc(min(70rem, 75vw) - 5.5rem);
+}
+
 .mainLayoutContent {
 	width: 100%;
+	overflow: scroll;
 	display: grid;
 	justify-items: center;
 	align-content: center;
@@ -927,7 +932,7 @@ nav {
 
 				p {
 					width: 100%;
-					background-color: #5674ba;
+					background-color: #282c34;
 					border-radius: 1rem;
 					padding: 0.55rem 0.85rem;
 					white-space: pre-wrap;
@@ -1155,6 +1160,36 @@ nav {
 
 }
 
+.stars-container {
+	display: grid;
+	grid-template-columns: 1fr 1.5rem;
+	grid-gap: 0.5rem;
+	align-items: center;
+	font-size: 1rem;
+
+	&.rated {
+		color: gold;
+	}
+
+	.stars {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-gap: 0.5rem;
+
+		&:hover {
+			color: gold;
+		}
+	}
+
+	.star-filled {
+		font-variation-settings:
+			'FILL' 1,
+			'wght' 400,
+			'GRAD' 0,
+			'opsz' 24;
+	}
+}
+
 
 .problem {
 	cursor: pointer;
@@ -1202,22 +1237,6 @@ nav {
 
 		a.problem-name {
 			cursor: pointer;
-		}
-
-		.problem-stars-container {
-			display: grid;
-			grid-template-columns: repeat(5, 1fr) auto;
-			grid-gap: 0.5rem;
-			align-items: center;
-			font-size: 1rem;
-
-			.problem-star-filled {
-				font-variation-settings:
-					'FILL' 1,
-					'wght' 400,
-					'GRAD' 0,
-					'opsz' 24;
-			}
 		}
 	}
 
@@ -1328,7 +1347,7 @@ nav {
 			align-items: center;
 			font-size: 1rem;
 
-			.article-star-filled {
+			.star-filled {
 				font-variation-settings:
 					'FILL' 1,
 					'wght' 400,
@@ -1428,9 +1447,142 @@ nav {
 		}
 	}
 
-	.code-container {
-		border-radius: 0.5rem;
-		overflow: hidden;
+	.mirror-container {
+
+		
+
+		.newfile {
+			cursor: pointer;
+			width: 3rem;
+			height: 3rem;
+			display: grid;
+			justify-content: center;
+			align-items: center;
+			color: white;
+
+			svg {
+				width: 0.8rem;
+				height: 0.8rem;
+			}
+			
+			&:hover {
+				color: lime;
+			}
+		}
+
+		.file-container {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			background-color:#1b202c;
+
+			overflow-y: hidden;
+			overflow-x: scroll;
+			border-top-left-radius: 0.5rem;
+			border-top-right-radius: 0.5rem;
+
+			.stdin {
+				cursor: pointer;
+				display: grid;
+				justify-content: center;
+				align-items: center;
+				height: 3rem;
+				padding: 0rem 1rem;
+				margin-left: auto;
+				border-left: 1px solid #494c55;
+
+				p {
+					margin: 0;
+				}
+
+				&.active {
+					background-color: #282c34;
+
+					p {
+						font-weight: 500;
+						color: limegreen;
+					}
+				}
+
+				&:hover {
+					background-color: #494c55;
+				}
+			}
+
+			.file {
+				cursor: pointer;
+				display: grid;
+				grid-template-columns: 1fr auto;
+				align-items: center;
+				align-content: center;
+				grid-gap: 0.5rem;
+				min-width: 8rem;
+				height: 3rem;
+				padding-left: 1rem;
+				background-color:#1b202c;
+				border-right: 1px solid #494c55;
+
+				p {
+					font-weight: 300;
+				}
+				
+				.closeIcon {
+					display: grid;
+					justify-content: center;
+					align-items: center;
+					color: white;
+					padding: 1rem;
+					&:hover {
+						color: red;
+					}
+					svg {
+						width: 1rem;
+						height: 1rem;
+					}
+				}
+				
+				.editableField {
+					input, input:active, input:focus {
+						font-size: 1.15rem;
+						color: white;
+						width: 8rem;
+						background-color: #1b202c;
+						border: none;
+						outline: none;
+						padding: 0.15rem 0.55rem;
+						border-radius: 0.25rem;
+					};
+				}
+
+				&.main {
+					.closeIcon {
+						display: none;
+					}	
+				}
+
+				&.active {
+					background-color: #282c34;
+
+					.editableField {
+						p {
+							font-weight: 500;
+						}
+					}
+				}
+
+				&:hover {
+					background-color: #494c55;
+				}
+			}
+		}
+	
+		.code-container {
+			max-width: 64.5rem;
+			border-bottom-left-radius: 0.5rem;
+			border-bottom-right-radius: 0.5rem;
+			
+			overflow: auto;
+		}
 	}
 }
 
@@ -1577,7 +1729,7 @@ nav {
 			padding-top: 0.4rem;
 		}
 
-		.problem-star-filled {
+		.star-filled {
 			font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 		}
 	}
@@ -1621,7 +1773,7 @@ nav {
 			padding-top: 0.4rem;
 		}
 
-		.problem-star-filled {
+		.star-filled {
 			font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 		}
 	}
@@ -1687,6 +1839,10 @@ nav {
 		margin: 1.5rem 0rem;
 		width: calc(min(70rem, 85vw));
 	}
+
+	.code-container, .limited-width {
+		max-width: calc(min(70rem, 85vw) - 5.5rem);
+	}
 }
 
 
@@ -1694,6 +1850,10 @@ nav {
 	.mainLayout {
 		margin: 1.5rem 0rem;
 		width: calc(min(70rem, 95vw));
+	}
+
+	.code-container, .limited-width {
+		max-width: calc(min(70rem, 85vw) - 5.5rem);
 	}
 }
 

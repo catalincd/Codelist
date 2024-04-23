@@ -9,7 +9,11 @@ const ConfigManager = require('../utils/ConfigManager')
 const apiAuth = require('../middlewares/apiAuth')
 
 const JWT_KEY = fs.readFileSync('/keys/jwt_key')
+
 const User = require('../schemas/User')
+const Problem = require('../schemas/Problem')
+const Article = require('../schemas/Article')
+
 const mailer = require('../utils/accounts/mailer')
 const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1
 
@@ -122,12 +126,34 @@ router.put('/newpicture', apiAuth, async (req, res) => {
 
 router.post('/interact', apiAuth, async (req, res) => {
     try {
-        if(req.body.type == "PROBLEM_LIKE")
+        if(req.body.type == "PROBLEM_LIKE"){
             req.user.likedProblems = (req.body.action == "ADD"? [...req.user.likedProblems, req.body.id] : req.user.likedProblems.filter(_id => _id != req.body.id))
+        }
 
         if(req.body.type == "ARTICLE_LIKE") {
             req.user.likedArticles = (req.body.action == "ADD"? [...req.user.likedArticles, req.body.id] : req.user.likedArticles.filter(_id => _id != req.body.id))
-            console.log("ARTICLES", [...req.user.likedArticles, req.body.id])
+        }
+
+        if(req.body.type == "PROBLEM_RATE") {
+            const searchedProblem = await Problem.findOne({ id: req.body.id })
+            if (!searchedProblem) {
+                return res.status(404).json({ error: 'PROBLEM_NOT_FOUND' })
+            }
+
+            var totalRating = searchedProblem.rating * searchedProblem.ratingsCount
+            var oldRating = req.user.ratedProblems.find(problem => problem.id == req.body.id)
+            if(oldRating){
+                searchedProblem.ratingsCount -= 1
+                totalRating -= oldRating.rating
+            }
+
+            searchedProblem.ratingsCount += 1
+            searchedProblem.rating = totalRating / searchedProblem.ratingsCount
+
+            req.user.ratedProblems = [...req.user.ratedProblems.filter(problem => problem.id != req.body.id), {id:req.body.id, rating: req.body.action}]
+
+            await req.user.save()
+            await searchedProblem.save()
         }
 
         console.log(req.body)
