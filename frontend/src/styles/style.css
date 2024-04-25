@@ -984,13 +984,13 @@ nav a:hover {
 .stars-container.rated {
   color: gold;
 }
+.stars-container.enabled:hover {
+  color: gold;
+}
 .stars-container .stars {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 0.5rem;
-}
-.stars-container .stars:hover {
-  color: gold;
 }
 .stars-container .star-filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;

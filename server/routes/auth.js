@@ -14,6 +14,8 @@ const User = require('../schemas/User')
 const Problem = require('../schemas/Problem')
 const Article = require('../schemas/Article')
 
+const { ComputeRating } = require('../utils/ratings/RatingComputer')
+
 const mailer = require('../utils/accounts/mailer')
 const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1
 
@@ -137,27 +139,23 @@ router.post('/interact', apiAuth, async (req, res) => {
         if(req.body.type == "PROBLEM_RATE") {
             const searchedProblem = await Problem.findOne({ id: req.body.id })
             if (!searchedProblem) {
-                return res.status(404).json({ error: 'PROBLEM_NOT_FOUND' })
+                return res.status(404).json({ error: 'ITEM_NOT_FOUND' })
             }
-
-            var totalRating = searchedProblem.rating * searchedProblem.ratingsCount
-            var oldRating = req.user.ratedProblems.find(problem => problem.id == req.body.id)
-            if(oldRating){
-                searchedProblem.ratingsCount -= 1
-                totalRating -= oldRating.rating
-            }
-
-            searchedProblem.ratingsCount += 1
-            searchedProblem.rating = totalRating / searchedProblem.ratingsCount
-
-            req.user.ratedProblems = [...req.user.ratedProblems.filter(problem => problem.id != req.body.id), {id:req.body.id, rating: req.body.action}]
-
+            
+            await ComputeRating(req.user, "ratedProblems", req.body, searchedProblem)
             await req.user.save()
-            await searchedProblem.save()
         }
 
-        console.log(req.body)
-        console.log(req.user)
+        if(req.body.type == "ARTICLE_RATE") {
+            const searchedArticle = await Article.findOne({ id: req.body.id })
+            if (!searchedArticle) {
+                return res.status(404).json({ error: 'ITEM_NOT_FOUND' })
+            }
+
+            await ComputeRating(req.user, "ratedArticles", req.body, searchedArticle)
+            await req.user.save()
+        }
+
         await req.user.save()
 
         return res.status(201).send()

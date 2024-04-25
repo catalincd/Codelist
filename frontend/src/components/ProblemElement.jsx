@@ -36,8 +36,14 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
     }
 
     const onHandleRating = (rating) => {
-        const newProblems = [...user.ratedProblems.filter(problem => problem.id != id), {id, rating}]
+        const resetOldRating = (user.ratedProblems.find(problem => problem.id == id)?.rating == rating) || false
+        const newProblems = user.ratedProblems.filter(problem => problem.id != id)
+        if(!resetOldRating) 
+            newProblems.push({id, rating})
+        
         setUser({ ...user, ratedProblems: newProblems })
+        setUserRating(resetOldRating? null:rating)
+
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
             {
                 method: "POST",
@@ -48,7 +54,7 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                     action: rating
                 })
             })
-        setUserRating(rating)
+        
     }
 
     return (
@@ -57,7 +63,7 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                 <div className="problem-name">
                     <p>{name} <span>#{id}</span></p>
                 </div>
-                <StarsContainer rating={rating} userRating={userRating} handleRating={onHandleRating}/>
+                <StarsContainer enabled={user? true:false} rating={rating} userRating={userRating} handleRating={onHandleRating}/>
             </div>
             <div className="problem-content">
                 <p>{preview}</p>
