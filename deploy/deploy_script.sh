@@ -4,8 +4,6 @@ export PATH="$PATH:/root/.nvm/versions/node/v21.6.2/bin"
 echo "Node version: $(node --version)"
 
 pm2 kill
-cd /opt/mailcow-dockerized/
-docker compose down             # will kill mailcow and the running process due to low mem
 minikube stop 
 
 mkdir -p /root/Codelist
@@ -46,5 +44,3 @@ cd ..
 docker start mongodb
 
 pm2 start server/server.js
-cd /opt/mailcow-dockerized/
-docker compose up -d
