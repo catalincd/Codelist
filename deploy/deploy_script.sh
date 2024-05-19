@@ -26,18 +26,7 @@ cp /keys/ssl_ca server/keys/ssl_ca
 # maybe add '/keys/client' and '/keys/google' files
 
 echo -n $DOMAIN > server/hostname
-echo "REACT_APP_HOSTNAME=$FULL_HOST" > ./frontend/.env
-echo "REACT_APP_GOOGLE_CLIENT_ID=$4" >> frontend/.env
-echo "REACT_APP_REDIRECT_URI=$FULL_HOST/callback" >> frontend/.env
-
 echo -n $PORT > server/port
-
-cd frontend
-npm install
-npm run build
-cd ..
-rm -rf server/build
-cp -r frontend/build server/build
 
 mkdir -p server/build/images
 mkdir -p server/logs

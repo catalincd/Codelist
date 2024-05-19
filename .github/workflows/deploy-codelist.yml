@@ -6,11 +6,42 @@ on:
       - master
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.6]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Create Env
+      env:
+        HOSTNAME: ${{ secrets.HOSTNAME  }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID  }}
+      run: echo "REACT_APP_HOSTNAME=https://$HOSTNAME" > .env && echo "REACT_APP_GOOGLE_CLIENT_ID=$CLIENT_ID" >> .env && echo "REACT_APP_REDIRECT_URI=https://$HOSTNAME/callback" >> .env
+    
+    - name: LS
+      run: ls -ltrha
+
+    - name: Build
+      run: npm run build
+
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: SSH VPS
+      - name: Run deploy script
         env:
             PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
             MONGO_KEY: ${{ secrets.MONGO_KEY  }}
@@ -23,3 +54,16 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "tar --exclude='*node_modules*' -cvzf archive/Codelist_$(date +'%d-%m-%Y-%H-%M').tar.gz Codelist && rm -rf ./Codelist && git clone https://github.com/catalincd/Codelist && ./Codelist/deploy/deploy_script.sh $MONGO_KEY $JWT_KEY $NOREPLY_PASSWORD $CLIENT_ID"
+  
+  copy_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run deploy script
+        env:
+            PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
+            HOSTNAME: ${{ secrets.HOSTNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp -r -o StrictHostKeyChecking=no -i private_key build/ root@${HOSTNAME}:/root/Codelist/server/
+          
