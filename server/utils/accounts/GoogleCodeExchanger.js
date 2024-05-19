@@ -4,6 +4,10 @@ const axios = require('axios')
 const User = require('../../schemas/User')
 const ConfigManager = require('../../utils/ConfigManager')
 
+const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1 || false
+const protocol = debug? 'http' : 'https'
+const domain = fs.readFileSync('./server/hostname').toString() || "codelist.ro"
+
 const GOOGLE_CLIENT = fs.readFileSync('/keys/client').toString()
 const GOOGLE_KEY = fs.readFileSync('/keys/google').toString()
 
@@ -15,7 +19,7 @@ const PostGoogleCode = async (code) => {
         data: {
             client_id: GOOGLE_CLIENT,
             client_secret: GOOGLE_KEY,
-            redirect_uri: 'http://localhost:3000/callback',
+            redirect_uri: `${protocol}://${domain}/callback`,
             grant_type: 'authorization_code',
             code,
         },

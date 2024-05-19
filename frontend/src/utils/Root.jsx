@@ -45,15 +45,15 @@ const Root = (props) => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
-          <Route path="/callback" element={<GoogleCallback />} />
+          <Route path="callback" element={<GoogleCallback />} />
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="articles" element={<Articles />} />
           <Route path="quizzes" element={<Quizzes />} />
           <Route path="forgot" element={<ForgotPassword />} />
           <Route path="newpost" element={<NewPost />} />
-          <Route path="/new/article" element={<SubmitArticle />} />
-          <Route path="/new/problem" element={<SubmitProblem />} />
+          <Route exact path="/new/article" element={<SubmitArticle />} />
+          <Route exact path="/new/problem" element={<SubmitProblem />} />
           <Route exact path="/password/:username/:token" element={<PasswordReset />} />
           <Route exact path="/confirmation/:token" element={<Confirmation />} />
           <Route exact path="/problem/:id" element={<Solver />} />
