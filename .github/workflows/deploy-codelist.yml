@@ -32,7 +32,11 @@ jobs:
       env:
         HOSTNAME: ${{ secrets.HOSTNAME  }}
         CLIENT_ID: ${{ secrets.CLIENT_ID  }}
-      run: echo "REACT_APP_HOSTNAME=https://$HOSTNAME" > .env && echo "REACT_APP_GOOGLE_CLIENT_ID=$CLIENT_ID" >> .env && echo "REACT_APP_REDIRECT_URI=https://$HOSTNAME/callback" >> .env
+      run: |
+        echo "REACT_APP_HOSTNAME=https://$HOSTNAME" > .env
+        echo "REACT_APP_GOOGLE_CLIENT_ID=$CLIENT_ID" >> .env
+        echo "REACT_APP_REDIRECT_URI=https://$HOSTNAME/callback" >> .env
+        cat .env
     
     - name: LS
       working-directory: ./frontend
