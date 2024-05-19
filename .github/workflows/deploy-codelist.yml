@@ -7,21 +7,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     needs: deploy
 
-    strategy:
-      matrix:
-        node-version: [21.6]
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Set up Node.js 
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 21.x
 
     - name: Install dependencies
       working-directory: ./frontend
@@ -56,7 +53,7 @@ jobs:
         scp -r -o StrictHostKeyChecking=no -i private_key build/ root@${HOSTNAME}:/root/Codelist/server/
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     
     steps:
       - name: Run deploy script
