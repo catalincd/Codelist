@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     needs: deploy
 
 
@@ -53,7 +53,7 @@ jobs:
         scp -r -o StrictHostKeyChecking=no -i private_key build/ root@${HOSTNAME}:/root/Codelist/server/
 
   deploy:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     
     steps:
       - name: Run deploy script
