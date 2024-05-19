@@ -5,12 +5,14 @@ import { Link, NavLink } from "react-router-dom";
 import Image from "./Image"
 import Utils from "../utils/Utils"
 
+
+
 const Navbar = (props) => {
 
     const { user, setUser } = useContext(UserContext);
 
     const userProfileHref = `/user/${user?.username}`
-    const userProfilePicture = `${process.env.REACT_APP_HOSTNAME}/images/${user && user.picture || "default.png"}`
+    const userProfilePicture = Utils.GetUserPicture(user)
 
     const loggedElement = <div className="logElement in">
                             <Link to={userProfileHref} className="username">
@@ -25,11 +27,12 @@ const Navbar = (props) => {
                         </div>
 
     return (
-        <div className="tile navbar">
+        <div className="navbar tile">
             <Link className="home" to="/"><h3>CODELIST</h3></Link>
             <nav>
-                <NavLink to="/problems" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Probleme</NavLink>
                 <NavLink to="/articles" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Articole</NavLink>
+                <NavLink to="/problems" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Probleme</NavLink>
+                <NavLink to="/quizzes" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Cursuri</NavLink>
                 <NavLink to="/users" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Utilizatori</NavLink>
                 {
                     user &&

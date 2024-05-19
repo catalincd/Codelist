@@ -7,7 +7,7 @@ import IconButton from "../components/IconButton"
 import DataInput from "../components/DataInput"
 import Example from "../components/Example"
 
-import ReactMarkdown from 'react-markdown'
+import Renderer from '../components/Renderer'
 
 import CodeMirror from '@uiw/react-codemirror';
 import { UserContext } from "../utils/UserContext"
@@ -225,7 +225,7 @@ const SubmitProblem = (props) => {
             {
                 text &&
                 <div className="markdown problemContentContainer tile">
-                    <ReactMarkdown>{text}</ReactMarkdown>
+                    <Renderer>{text}</Renderer>
                 </div>
             }
             {

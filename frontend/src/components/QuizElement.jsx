@@ -8,25 +8,19 @@ import StarsContainer from "./StarsContainer"
 const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
 
     const { user, setUser } = useContext(UserContext);
-
-    
-
-    const [liked, setLiked] = useState(user?.likedProblems?.includes(id) || false)
-    const [userRating, setUserRating] = useState(user?.ratedProblems?.find(problem => problem.id == id)?.rating || null)
+    const [liked, setLiked] = useState(user?.likedQuizzes?.includes(id) || false)
+    const [userRating, setUserRating] = useState(user?.ratedQuizzes?.find(problem => problem.id == id)?.rating || null)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        setLiked(user?.likedProblems?.includes(id) || false)
-    }, [user])
-
     const handleNavigate = () => {
-        disableLink || navigate(`/problem/${id}`)
+        disableLink || navigate(`/quiz/${id}`)
     }
 
     const handleLike = (e) => {
         e.stopPropagation()
-        const newProblems = liked ? user.likedProblems.filter(_id => _id != id) : [...user.likedProblems, id]
-        setUser({ ...user, likedProblems: newProblems })
+        user.likedQuizzes = user.likedQuizzes || []
+        const newQuizzes = liked ? user.likedQuizzes.filter(_id => _id != id) : [...user.likedQuizzes, id]
+        setUser({ ...user, likedQuizzes: newQuizzes })
 
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
             {
@@ -34,23 +28,21 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
                 body: JSON.stringify({
                     id,
-                    type: "PROBLEM_LIKE",
+                    type: "QUIZ_LIKE",
                     action: liked ? "REMOVE" : "ADD"
                 })
-
             })
 
-        console.log("switchLiked")
         setLiked(!liked)
     }
 
     const onHandleRating = (rating) => {
-        const resetOldRating = (user.ratedProblems.find(problem => problem.id == id)?.rating == rating) || false
-        const newProblems = user.ratedProblems.filter(problem => problem.id != id)
+        const resetOldRating = (user.likedQuizzes.find(problem => problem.id == id)?.rating == rating) || false
+        const newQuizzes = user.likedQuizzes.filter(problem => problem.id != id)
         if(!resetOldRating) 
-            newProblems.push({id, rating})
+        newQuizzes.push({id, rating})
         
-        setUser({ ...user, ratedProblems: newProblems })
+        setUser({ ...user, likedQuizzes: newQuizzes })
         setUserRating(resetOldRating? null:rating)
 
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/interact`,
@@ -59,7 +51,7 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
                 body: JSON.stringify({
                     id,
-                    type: "PROBLEM_RATE",
+                    type: "QUIZ_RATE",
                     action: rating
                 })
             })

@@ -5,6 +5,8 @@ const User = require('../schemas/User')
 const Problem = require('../schemas/Problem')
 const Article = require('../schemas/Article')
 
+const ConfigManager = require('../utils/ConfigManager')
+
 const apiAuth = require('../middlewares/apiAuth')
 
 router.use((req, res, next) => {
@@ -52,6 +54,30 @@ router.get('/user/full/:username/', async (req, res) => {
         likedArticles,
         likedProblems
     })
+})
+
+router.get('/home', async (req, res) => {
+
+    const currentConfig = await ConfigManager.GetConfigFull()
+    const currentConfigObj = currentConfig.toObject()
+
+    const itemsCount = 4
+
+    const randomProblems = []
+    const randomArticles = []
+    
+    for(var i=0;i<itemsCount;i++)
+    {
+        const randomProblem = await Problem.findOne({}).skip(Math.floor(Math.random() * currentConfigObj.problemsCount))
+        const randomProblemObj = randomProblem.toObject()
+        randomProblems.push(randomProblemObj)
+
+        const randomArticle = await Article.findOne({}).skip(Math.floor(Math.random() * currentConfigObj.articlesCount))
+        const randomArticleObj = randomArticle.toObject()
+        randomArticles.push(randomArticleObj)
+    }
+
+    res.status(200).json({ ...currentConfigObj, randomProblems, randomArticles})
 })
 
 module.exports = router

@@ -5,7 +5,8 @@ import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
 import Requests from "../utils/Requests"
 import Cookies from 'universal-cookie'
-
+import GoogleButton from 'react-google-button'
+import Utils from "../utils/Utils";
 
 const Login = (props) => {
 
@@ -71,9 +72,15 @@ const Login = (props) => {
               className={'passwordInput'}
             />
           </div>
-          <div className="formButtonStack">
-            <button onClick={() => onForgot()}>Resetare parola</button>
-            <button onClick={() => onLogin()}>Login</button>
+          <div className="buttons">
+            <div className="formButtonStack">
+              <button onClick={() => onForgot()}>Resetare parola</button>
+              <button onClick={() => onLogin()}>Login</button>
+            </div>
+            <GoogleButton
+              type="dark"
+              onClick={() => Utils.LoginWithGoogle()}
+            />
           </div>
         </div>
       </Layout>

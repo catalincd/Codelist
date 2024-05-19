@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const axios = require('axios')
+
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -10,11 +12,14 @@ const apiAuth = require('../middlewares/apiAuth')
 
 const JWT_KEY = fs.readFileSync('/keys/jwt_key')
 
+
 const User = require('../schemas/User')
 const Problem = require('../schemas/Problem')
 const Article = require('../schemas/Article')
+const Quiz = require('../schemas/Quiz')
 
 const { ComputeRating } = require('../utils/ratings/RatingComputer')
+const { GetUserData, FetchNewUser } = require('../utils/accounts/GoogleCodeExchanger')
 
 const mailer = require('../utils/accounts/mailer')
 const debug = parseInt(fs.readFileSync('./server/keys/debug').toString()) == 1
@@ -49,10 +54,71 @@ router.post('/login', async (req, res) => {
             expiresIn: '7d',
         })
 
+        
         const userObj = user.toObject()
+        console.log(userObj)
         res.status(200).json({ ...userObj, password: "-", token })
     }
     catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'USER_SERVER_ERROR' })
+    }
+})
+
+router.post('/google', async (req, res) => {
+    try {
+        const { code } = req.body
+        
+        const data = await GetUserData(code)
+
+        var searchedUser = await User.findOne({ $or: [{googleid: data.id}, {email: data.email}]})
+
+        if(!searchedUser){
+            searchedUser = await FetchNewUser(data)
+        }
+
+        const newToken = jwt.sign({ userId: searchedUser._id }, JWT_KEY, {
+            expiresIn: '7d',
+        })
+
+        const userObj = searchedUser.toObject()
+        res.status(200).json({ ...userObj, password: "-", token: newToken })
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'USER_SERVER_ERROR' })
+    }
+})
+
+router.post('/token', async (req, res) => {
+    try {
+        const { token } = req.body
+        const decoded = jwt.verify(token, JWT_KEY)
+
+        console.log("DECODED")
+        console.log(decoded)
+
+        const user = await User.findOne({ _id: decoded.userId})
+
+        if (!user) {
+            res.status(406).json({ error: 'USER_NOT_FOUND'})
+            return
+        }
+
+        if (!user.activated) {
+            res.status(403).json({ error: 'USER_NOT_ACTIVATED' })
+            return
+        }
+
+        const newToken = jwt.sign({ userId: user._id }, JWT_KEY, {
+            expiresIn: '7d',
+        })
+        
+        const userObj = user.toObject()
+        res.status(200).json({ ...userObj, password: "-", token: newToken })
+    }
+    catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'USER_SERVER_ERROR' })
     }
 })
@@ -136,6 +202,10 @@ router.post('/interact', apiAuth, async (req, res) => {
             req.user.likedArticles = (req.body.action == "ADD"? [...req.user.likedArticles, req.body.id] : req.user.likedArticles.filter(_id => _id != req.body.id))
         }
 
+        if(req.body.type == "QUIZ_LIKE") {
+            req.user.likedQuizzes = (req.body.action == "ADD"? [...req.user.likedQuizzes, req.body.id] : req.user.likedQuizzes.filter(_id => _id != req.body.id))
+        }
+
         if(req.body.type == "PROBLEM_RATE") {
             const searchedProblem = await Problem.findOne({ id: req.body.id })
             if (!searchedProblem) {
@@ -153,6 +223,17 @@ router.post('/interact', apiAuth, async (req, res) => {
             }
 
             await ComputeRating(req.user, "ratedArticles", req.body, searchedArticle)
+            await req.user.save()
+        }
+
+        if(req.body.type == "QUIZ_RATE") {
+            const searchedQuiz = await Quiz.findOne({ id: req.body.id })
+            if (!searchedQuiz) {
+                return res.status(404).json({ error: 'ITEM_NOT_FOUND' })
+            }
+
+            console.log("QUIZ_RATE")
+            await ComputeRating(req.user, "ratedQuizzes", req.body, searchedQuiz)
             await req.user.save()
         }
 

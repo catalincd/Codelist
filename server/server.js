@@ -7,6 +7,7 @@ const data = require('./routes/data')
 const problems = require('./routes/problems')
 const articles = require('./routes/articles')
 const solutions = require('./routes/solutions')
+const quizzes = require('./routes/quizzes')
 
 const logger = require('./utils/logs/LogManager')
 const seeder = require('./utils/seeder/Seeder')
@@ -49,6 +50,7 @@ app.use('/api/auth', auth)
 app.use('/api/problems', problems)
 app.use('/api/articles', articles)
 app.use('/api/solutions', solutions)
+app.use('/api/quizzes', quizzes)
 
 
 

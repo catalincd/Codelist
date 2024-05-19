@@ -5,19 +5,12 @@ import { UserContext } from "../utils/UserContext";
 import Utils from "../utils/Utils"
 import StarsContainer from "./StarsContainer"
 
-const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
+const Item = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
 
     const { user, setUser } = useContext(UserContext);
-
-    
-
     const [liked, setLiked] = useState(user?.likedProblems?.includes(id) || false)
     const [userRating, setUserRating] = useState(user?.ratedProblems?.find(problem => problem.id == id)?.rating || null)
     const navigate = useNavigate()
-
-    useEffect(() => {
-        setLiked(user?.likedProblems?.includes(id) || false)
-    }, [user])
 
     const handleNavigate = () => {
         disableLink || navigate(`/problem/${id}`)
@@ -37,10 +30,8 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
                     type: "PROBLEM_LIKE",
                     action: liked ? "REMOVE" : "ADD"
                 })
-
             })
 
-        console.log("switchLiked")
         setLiked(!liked)
     }
 
@@ -91,4 +82,4 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
         </div>)
 }
 
-export default ProblemElement
+export default Item

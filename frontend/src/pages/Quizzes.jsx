@@ -1,21 +1,20 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
-import Article from "../components/Article";
+import QuizElement from "../components/QuizElement";
 
 import { UserContext } from "../utils/UserContext";
-import ArticleElement from "../components/ArticleElement";
 
-const Articles = (props) => {
+const Quizzes = (props) => {
 
-    document.title = "Codelist - Articole"
+    document.title = `Codelist - Cursuri`
 
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
-    const [articlesList, setArticlesList] = useState([]);
+    const [problemList, setProblemList] = useState([]);
 
     useEffect(() => {
         const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/api/articles/homescreen`,
+            fetch(`${process.env.REACT_APP_HOSTNAME}/api/quizzes/homescreen`,
                 {
                     method: "GET"
                 })
@@ -26,12 +25,12 @@ const Articles = (props) => {
                         setErrorMessage(data.error)
                         return
                     }
-                    setArticlesList(data)
+                    setProblemList(data)
                     console.log(data)
                 })
                 .catch(error => console.error(error));
 
-            console.log("FETCHED ARTICLES")
+            console.log("FETCHED FROM PROBLEM")
         }
 
         fetchProblemData()
@@ -41,11 +40,11 @@ const Articles = (props) => {
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="problemsPageContainer">
-                    {articlesList.map(problem => <ArticleElement key={problem.id} {...problem} />)}
+                    {problemList.map(problem => <QuizElement key={problem.id} {...problem}/>)}
                 </div>
             </Layout>
         </div>
     );
 }
 
-export default Articles;
+export default Quizzes;

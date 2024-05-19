@@ -9,6 +9,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import Problems from "../pages/Problems"
 import Articles from "../pages/Articles"
+import Quizzes from "../pages/Quizzes"
 import Solver from "../pages/Solver"
 import Reader from "../pages/Reader"
 import Confirmation from "../pages/Confirmation"
@@ -18,16 +19,24 @@ import Profile from "../pages/Profile"
 import NewPost from "../pages/NewPost"
 import SubmitArticle from "../pages/SubmitArticle"
 import SubmitProblem from "../pages/SubmitProblem"
+import QuizSolver from "../pages/QuizSolver"
+import QuizViewer from "../pages/QuizViewer"
+import GoogleCallback from "../pages/GoogleCallback"
 
 import { UserContext } from "./UserContext";
+
 
 const Root = (props) => {
 
   const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
-  const [user, setUser] = useState(cookies.get("USER_COOKIE") || null)
+  const sessionData = sessionStorage.getItem("USER_DATA")
+  const cookieData = cookies.get("USER_COOKIE") == undefined? null : {token: cookies.get("USER_COOKIE")}
+  const [user, setUser] = useState(sessionData? JSON.parse(sessionData) : cookieData)
 
   useEffect(() => {
-    user && cookies.set("USER_COOKIE", JSON.stringify(user))
+    user && cookies.set("USER_COOKIE", user.token)
+    user && sessionStorage.setItem("USER_DATA", JSON.stringify(user))
+    user && (user.username || Requests.LoginFromCookie(setUser)) 
   }, [user])
 
   return (
@@ -36,9 +45,11 @@ const Root = (props) => {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
+          <Route path="/callback" element={<GoogleCallback />} />
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="articles" element={<Articles />} />
+          <Route path="quizzes" element={<Quizzes />} />
           <Route path="forgot" element={<ForgotPassword />} />
           <Route path="newpost" element={<NewPost />} />
           <Route path="/new/article" element={<SubmitArticle />} />
@@ -47,6 +58,8 @@ const Root = (props) => {
           <Route exact path="/confirmation/:token" element={<Confirmation />} />
           <Route exact path="/problem/:id" element={<Solver />} />
           <Route exact path="/article/:id" element={<Reader />} />
+          <Route exact path="/quiz/:id" element={<QuizViewer />} />
+          <Route exact path="/solvequiz/:id" element={<QuizSolver />} />
           <Route exact path="/user/:name" element={<Profile />} />
         </Routes>
       </BrowserRouter>

@@ -22,6 +22,8 @@ cp /keys/ssl_cert server/keys/ssl_cert
 cp /keys/ssl_key server/keys/ssl_key
 cp /keys/ssl_ca server/keys/ssl_ca
 
+# maybe add '/keys/client' and '/keys/google' files
+
 echo -n $DOMAIN > server/hostname
 echo -n "REACT_APP_HOSTNAME=$FULL_HOST" > ./frontend/.env
 echo -n $PORT > server/port

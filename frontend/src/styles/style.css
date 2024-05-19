@@ -81,9 +81,162 @@ body {
   grid-gap: 2rem;
 }
 
+.quizStep {
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  border: #5674ba solid 3px;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+}
+.quizStep svg {
+  width: 2rem;
+  height: 2rem;
+}
+.quizStep.complete svg {
+  color: lime;
+}
+.quizStep:hover, .quizStep.active {
+  background-color: #5674ba;
+}
+.quizStep .delete {
+  display: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  color: red;
+  font-size: 1rem;
+  position: absolute;
+  top: 0%;
+  left: 100%;
+  transform: translateY(-50%) translateX(-50%);
+}
+.quizStep .delete svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  cursor: pointer;
+}
+.quizStep.editable:hover .delete {
+  display: block;
+}
+
+.quizSolverContainer {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: first baseline;
+  grid-gap: 2rem;
+  min-height: calc(100vh - 20rem);
+}
+.quizSolverContainer .topQuiz {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+.quizSolverContainer .topQuiz .stepsContainer {
+  max-width: calc(min(70rem, 75vw) * 0.5);
+  /*
+  display: flex;
+  flex-wrap: wrap; 
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;*/
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3rem, 3rem));
+  grid-gap: 1rem;
+}
+.quizSolverContainer .topQuiz .countdownContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  align-items: center;
+  justify-items: right;
+  justify-content: right;
+  text-align: right;
+  grid-gap: 1rem;
+}
+.quizSolverContainer .topQuiz .countdownContainer .pointsContainer {
+  text-align: right;
+}
+.quizSolverContainer .topQuiz .countdownContainer .pointsContainer span {
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  color: white;
+}
+.quizSolverContainer .topQuiz .countdownContainer .pointsContainer span:hover {
+  text-decoration: none;
+}
+.quizSolverContainer .topQuiz .countdownContainer .pointsContainer span.completed, .quizSolverContainer .topQuiz .countdownContainer .pointsContainer span.total {
+  color: lime;
+}
+.quizSolverContainer .topQuiz .countdownContainer .clockContainer {
+  width: 2rem;
+  height: 2rem;
+}
+.quizSolverContainer .topQuiz .countdownContainer .clockContainer svg {
+  width: 2rem;
+  height: 2rem;
+}
+.quizSolverContainer .topQuiz .countdownContainer p {
+  text-align: right;
+}
+.quizSolverContainer .topQuiz .countdownContainer p span {
+  display: inline-block;
+  color: red;
+  width: 1.5rem;
+}
+.quizSolverContainer .topQuiz .countdownContainer p span:hover {
+  text-decoration: none;
+}
+.quizSolverContainer .topQuiz .countdownContainer p .dots {
+  color: white;
+  width: auto;
+  margin-left: 0.2rem;
+}
+.quizSolverContainer .contentQuiz .titleContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.quizSolverContainer .contentQuiz .titleContainer p span {
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+  color: white;
+}
+.quizSolverContainer .contentQuiz .titleContainer p span:hover {
+  text-decoration: none;
+}
+.quizSolverContainer .contentQuiz .titleContainer p span.completed, .quizSolverContainer .contentQuiz .titleContainer p span.total {
+  color: lime;
+}
+.quizSolverContainer .contentQuiz.isArticle {
+  min-height: calc(100vh - 28rem);
+}
+.quizSolverContainer .runtimeContainer .runtimeTextarea {
+  display: grid;
+  padding-bottom: 2rem;
+  width: 100%;
+  grid-template-rows: 1fr;
+}
+.quizSolverContainer .runtimeContainer .runtimeTextarea textarea {
+  font-family: monospace;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  width: 100%;
+  resize: none;
+  background-color: #282c34;
+  color: white;
+}
+
 .problemDetailsContainer {
   display: grid;
   grid-template-rows: auto 1fr;
+}
+.problemDetailsContainer .quizDetails .dateDetails {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 0rem 2rem;
 }
 .problemDetailsContainer .detailsTable {
   display: flex;
@@ -144,6 +297,100 @@ body {
   justify-items: center;
   align-content: first baseline;
   grid-gap: 2rem;
+}
+
+.homePageContainer {
+  width: 100%;
+  min-height: calc(100vh - 20rem);
+  padding: 2.5rem 5.5rem !important;
+  display: grid;
+  grid-gap: 3rem;
+  grid-template-rows: 1fr 3fr;
+  justify-items: center;
+}
+.homePageContainer .randomData {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 2rem;
+}
+.homePageContainer .randomData .randomSection {
+  width: 100%;
+  text-align: center;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.homePageContainer .randomData .randomSection .randomContainer {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  text-align: left;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  grid-gap: 1.75rem;
+}
+.homePageContainer .statsContainer {
+  width: 100%;
+  height: 5rem;
+  margin: 3rem 0rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.homePageContainer .statsContainer .stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 1rem;
+  align-items: end;
+  justify-items: center;
+}
+.homePageContainer .statsContainer .stat h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+}
+.homePageContainer .statsContainer .stat p {
+  margin: 0.4rem 0rem;
+  font-size: 2rem;
+}
+
+.quizStartContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.quizStartContainer .stepDetails {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.quizStartContainer .stepDetails p {
+  font-weight: 500;
+}
+.quizStartContainer .startButtonContainer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-gap: 1.5rem;
+}
+.quizStartContainer .startButtonContainer .iconbutton {
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: 3px #5674ba solid;
+}
+.quizStartContainer .startButtonContainer .iconbutton:hover {
+  color: lime;
+}
+.quizStartContainer .startButtonContainer p {
+  font-weight: 500;
+}
+.quizStartContainer .startButtonContainer p span {
+  color: lime;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}
+.quizStartContainer .startButtonContainer p span.out {
+  color: red;
 }
 
 .newArticleContainer {
@@ -455,16 +702,17 @@ body {
 }
 .newPostContainer .newPostButtonsContainer {
   width: 75%;
-  height: 40%;
+  height: min(40%, 10rem);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 1rem;
   padding: 1rem 0rem 4rem 0rem;
 }
 .newPostContainer .newPostButtonsContainer button {
   cursor: pointer;
+  padding: 1rem;
   outline: none;
-  font-size: 2rem;
+  font-size: 1.75rem;
   border: 3px solid #5674ba;
   border-radius: 0.25rem;
   background-color: #1E3772;
@@ -574,12 +822,36 @@ body {
 }
 
 .navbar {
+  padding: 0;
   height: 7rem;
   display: grid;
   width: 100%;
   grid-template-columns: 7rem 1fr 7rem;
   justify-items: center;
   align-items: center;
+}
+.navbar nav {
+  box-sizing: border-box;
+  width: 30rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.navbar nav a {
+  box-sizing: border-box;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.1rem;
+  border-radius: 0.35rem;
+}
+.navbar nav a.active {
+  border: 3px solid #5674ba;
+}
+.navbar nav a:hover {
+  text-decoration: none;
+  background-color: #5674ba;
 }
 .navbar .logElement {
   align-items: center;
@@ -593,19 +865,19 @@ body {
   grid-template-columns: 1fr;
   justify-content: end;
   text-align: right;
-  padding-right: 3rem;
+  padding-right: 2rem;
 }
 .navbar .logElement.in a {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: end;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 .navbar .logElement.in a img {
   border-radius: 50%;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2rem;
+  height: 2rem;
 }
 .navbar a.username,
 .navbar a.login,
@@ -618,6 +890,9 @@ body {
 .navbar a.signup:hover {
   text-decoration: underline;
 }
+.navbar a.username {
+  font-size: 0.8rem;
+}
 .navbar a.home {
   color: white;
   text-decoration: none;
@@ -628,29 +903,6 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-}
-
-nav {
-  box-sizing: border-box;
-  width: 30rem;
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-evenly;
-  align-items: center;
-}
-nav a {
-  box-sizing: border-box;
-  color: white;
-  text-decoration: none;
-  padding: 0.75rem 2rem;
-  border-radius: 0.35rem;
-}
-nav a.active {
-  border: 3px solid #5674ba;
-}
-nav a:hover {
-  text-decoration: none;
-  background-color: #5674ba;
 }
 
 .loginContainer {
@@ -703,14 +955,33 @@ nav a:hover {
 .loginContainer button:hover {
   background-color: #5674ba;
 }
-.loginContainer .formButtonStack {
+.loginContainer .buttons {
   width: min(80%, 25rem);
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 3rem;
+  justify-items: center;
+}
+.loginContainer .buttons .formButtonStack {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
 }
-.loginContainer .formButtonStack button {
+.loginContainer .buttons .formButtonStack button {
   padding: 0.75rem 1rem;
+}
+.loginContainer .signupButtons {
+  width: min(80%, 35rem);
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+.loginContainer .signupButtons button {
+  width: 100%;
+  margin: 0;
 }
 .loginContainer .errorMessage {
   color: red;
@@ -910,7 +1181,7 @@ nav a:hover {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto auto;
-  grid-gap: 0.5rem;
+  grid-gap: 1.5rem;
   align-items: center;
 }
 .ide-solutions .ide-content .login,
@@ -933,30 +1204,75 @@ nav a:hover {
 }
 .ide-solutions .resultsTable {
   display: grid;
-  grid-gap: 1.75rem;
-  padding: 2rem 0rem;
+  grid-gap: 5rem;
+  padding: 2rem 1.25rem;
 }
-.ide-solutions .resultsTable .resultRow {
-  border-radius: 0.5rem;
+.ide-solutions .resultsTable .resultsDate {
   display: grid;
-  grid-template-columns: 2rem 1fr;
-  grid-gap: 2rem;
+}
+.ide-solutions .resultsTable .resultsDate .date {
+  margin: 0;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow {
+  display: grid;
+  grid-template-columns: 7rem 1fr 1.2fr;
+  align-items: center;
+  grid-gap: 1rem;
   width: 100%;
-  height: 2rem;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  border-bottom: 1px white solid;
 }
-.ide-solutions .resultsTable .resultRow h4 {
-  margin-left: 0.5rem;
-  height: 2rem;
-  transform: translateY(-75%);
+.ide-solutions .resultsTable .resultsDate .resultRow:first-of-type {
+  border-top: 1px white solid;
 }
-.ide-solutions .resultsTable .resultRow .progress-bar-container {
+.ide-solutions .resultsTable .resultsDate .resultRow p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr 1fr;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails .output svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails .diagnostic-sub {
+  width: 6rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails .diagnostic-sub p {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails .diagnostic-sub.cpu svg {
+  color: lime;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.2rem;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .resultDetails .diagnostic-sub.memory svg {
+  color: yellow;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.2rem;
+}
+.ide-solutions .resultsTable .resultsDate .resultRow .progress-bar-container {
   border-radius: 0.5rem;
   position: relative;
-  background-color: #5674ba;
+  background-color: #282c34;
   height: 2rem;
   overflow: hidden;
 }
-.ide-solutions .resultsTable .resultRow .progress-bar-container .progress-bar {
+.ide-solutions .resultsTable .resultsDate .resultRow .progress-bar-container .progress-bar {
   position: absolute;
   top: 0;
   left: 0;
@@ -965,11 +1281,11 @@ nav a:hover {
   z-index: 1;
   height: 2rem;
 }
-.ide-solutions .resultsTable .resultRow .progress-bar-container p {
+.ide-solutions .resultsTable .resultsDate .resultRow .progress-bar-container p {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(calc(-100% - 0.2rem));
+  transform: translateX(-50%) translateY(-50%);
   z-index: 5;
   text-shadow: #1b202c;
 }
@@ -1271,7 +1587,9 @@ nav a:hover {
   width: 1rem;
   height: 1rem;
 }
-.ide-container .mirror-container .file-container .file .editableField input, .ide-container .mirror-container .file-container .file .editableField input:active, .ide-container .mirror-container .file-container .file .editableField input:focus {
+.ide-container .mirror-container .file-container .file .editableField input,
+.ide-container .mirror-container .file-container .file .editableField input:active,
+.ide-container .mirror-container .file-container .file .editableField input:focus {
   font-size: 1.15rem;
   color: white;
   width: 8rem;
@@ -1486,18 +1804,73 @@ nav a:hover {
 .markdown a:hover {
   text-decoration: underline;
 }
-.markdown pre {
-  padding: 1rem 1.75rem;
+.markdown table {
+  box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.35);
+  border-radius: 0.35rem;
+  min-width: 50%;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
   background-color: #282c34;
+  border-spacing: 0 !important;
+  border-collapse: collapse !important;
+}
+.markdown tbody,
+.markdown td,
+.markdown tfoot,
+.markdown th,
+.markdown thead,
+.markdown tr {
+  padding: 0.5rem 1.25rem !important;
+}
+.markdown th,
+.markdown td {
+  border: 1px solid white;
+}
+.markdown th:first-child,
+.markdown td:first-child {
+  border-left: none;
+}
+.markdown th:last-child,
+.markdown td:last-child {
+  border-right: none;
+}
+.markdown tr:first-child th {
+  border-top: none;
+}
+.markdown tr:last-child th,
+.markdown tr:last-child td {
+  border-bottom: none;
+}
+.markdown code {
+  text-shadow: none !important;
+  background-color: #282c34;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.35rem;
+  line-height: 1.5rem;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 0.85rem;
+}
+.markdown div {
+  padding: none !important;
+  margin: none !important;
+  background-color: #282c34 !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 0.85rem;
+}
+.markdown img {
+  max-width: 10rem;
+  max-height: 10rem;
+}
+.markdown pre,
+.markdown .katex-display {
+  margin: 1rem auto;
+  padding: 1rem 1.75rem;
+  background-color: #282c34 !important;
   font-family: monospace;
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.35);
   color: white;
   border-radius: 0.35rem;
-}
-.markdown pre code {
-  line-height: 2.25;
-  font-family: monospace;
-  letter-spacing: 0.5px;
 }
 .markdown ul,
 .markdown ol {
@@ -1514,7 +1887,8 @@ nav a:hover {
     margin: 1.5rem 0rem;
     width: min(70rem, 85vw);
   }
-  .code-container, .limited-width {
+  .code-container,
+  .limited-width {
     max-width: calc(min(70rem, 85vw) - 5.5rem);
   }
 }
@@ -1523,7 +1897,8 @@ nav a:hover {
     margin: 1.5rem 0rem;
     width: min(70rem, 95vw);
   }
-  .code-container, .limited-width {
+  .code-container,
+  .limited-width {
     max-width: calc(min(70rem, 85vw) - 5.5rem);
   }
 }

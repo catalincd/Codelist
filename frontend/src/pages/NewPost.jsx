@@ -13,22 +13,15 @@ const NewPost = (props) => {
 
     const navigate = useNavigate()
 
-    const handleNewProblem = () => {
-        navigate(`/new/problem`)
-    }
-
-    const handleNewArticle = () => {
-        navigate(`/new/article`)
-    }
-
     return (
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
                 <div className="tile newPostContainer pageFiller">
                     <h3>Postare nouă</h3>
                     <div className="newPostButtonsContainer">
-                        <button onClick={handleNewProblem}>Problemă nouă</button>
-                        <button onClick={handleNewArticle}>Articol nou</button>
+                        <button onClick={() => navigate(`/new/problem`)}>Problemă nouă</button>
+                        <button onClick={() => navigate(`/new/article`)}>Articol nou</button>
+                        <button onClick={() => navigate(`/new/quiz`)}>Curs nou</button>
                     </div>
                 </div>
             </Layout>

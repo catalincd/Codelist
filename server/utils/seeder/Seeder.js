@@ -1,9 +1,12 @@
 const fs = require("fs")
 
 const ConfigManager = require('../../utils/ConfigManager')
+
+const Config = require('../../schemas/Config')
 const User = require('../../schemas/User')
 const Article = require('../../schemas/Article')
 const Problem = require('../../schemas/Problem')
+const QuizSolution = require('../../schemas/QuizSolution')
 
 const onInit = () => {
     try {
@@ -28,9 +31,11 @@ const seedDatabase = async () => {
 }
 
 const clearDatabase = async () => {
+    await Config.deleteMany({})
     await User.deleteMany({})
     await Article.deleteMany({})
     await Problem.deleteMany({})
+    await QuizSolution.deleteMany({})
 }
 
 const seedUsers = async () => {

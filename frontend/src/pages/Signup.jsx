@@ -2,8 +2,8 @@ import React, { useContext, useState, useEffect } from "react"
 import Title from 'reactjs-title'
 import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
-
-
+import Utils from "../utils/Utils";
+import GoogleButton from 'react-google-button'
 
 const Signup = (props) => {
 
@@ -46,7 +46,7 @@ const Signup = (props) => {
           setErrorMessage(data.error)
           return
         }
-        
+
         setSuccess(data.message == "USER_REGISTER_SUCCESS")
       })
       .catch(error => console.error(error));
@@ -55,7 +55,7 @@ const Signup = (props) => {
   return (
     <div className="mainContainer">
       <Layout error={errorMessage} setError={setErrorMessage}>
-        { !success &&
+        {!success &&
           <div className="tile pageFiller loginContainer">
             <div className={'inputContainer'}>
               <p>Email</p>
@@ -95,14 +95,20 @@ const Signup = (props) => {
                 className={'passwordInput'}
               />
             </div>
-            <button onClick={() => onSignup()}>Sign up</button>
+            <div className="signupButtons">
+              <button onClick={() => onSignup()}>Sign up</button>
+              <GoogleButton
+                type="dark"
+                onClick={() => Utils.LoginWithGoogle()}
+              />
+            </div>
           </div>
         }
         {
           success &&
           <div className="tile pageFiller loginContainer">
-              <p>Un email cu link-ul de activare a fost trimis la {email}!</p>
-              <p>Nu uita să verifici și folderul 'Spam'.</p>
+            <p>Un email cu link-ul de activare a fost trimis la {email}!</p>
+            <p>Nu uita să verifici și folderul 'Spam'.</p>
           </div>
         }
       </Layout>

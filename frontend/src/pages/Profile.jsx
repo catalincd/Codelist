@@ -8,6 +8,7 @@ import Cookies from 'universal-cookie'
 
 import { UserContext } from "../utils/UserContext";
 import Layout from "../components/Layout";
+import Utils from "../utils/Utils";
 import IconButton from '../components/IconButton';
 import RatingElement from '../components/RatingElement';
 import UploadedElement from '../components/UploadedElement';
@@ -65,7 +66,7 @@ const Profile = (props) => {
                     setLikedProblems(data.likedProblems)
                     setLikedArticles(data.likedArticles)
                     setUserData(data)
-                    setPictureName(`${process.env.REACT_APP_HOSTNAME}/images/${data.picture}`)
+                    setPictureName(Utils.GetUserPicture(data))
                     console.log(data)
                 })
                 .catch(error => console.error(error));
@@ -77,6 +78,7 @@ const Profile = (props) => {
 
     const onLogout = () => {
         cookies.remove("USER_COOKIE")
+        sessionStorage.removeItem("USER_DATA")
         user && setUser(null)
         window.location.reload()
     }

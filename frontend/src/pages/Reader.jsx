@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import { useParams } from "react-router"
 import Layout from "../components/Layout"
 import ArticleElement from "../components/ArticleElement"
-import ReactMarkdown from "react-markdown"
+import Renderer from "../components/Renderer"
+import Utils from "../utils/Utils";
 
 const Reader = (props) => {
 
@@ -54,7 +55,7 @@ const Reader = (props) => {
           {
             articleData &&
             <div className="markdown articleContentContainer tile">
-              <ReactMarkdown>{articleData.text}</ReactMarkdown>
+              <Renderer>{articleData.text}</Renderer>
             </div>
           }
           {
@@ -71,7 +72,7 @@ const Reader = (props) => {
                   <div className="creatorImg">
                     <Link to={`/user/${articleData?.creator}`}>
                       <p>{articleData?.creator}</p>
-                      <img src={`${process.env.REACT_APP_HOSTNAME}/images/${creatorData && creatorData.picture || "default.png"}`} />
+                      <img src={Utils.GetUserPicture(creatorData)} />
                     </Link>
                   </div>
                 </div>

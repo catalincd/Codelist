@@ -1,6 +1,21 @@
 const Config = require('../schemas/Config')
 const CONFIG_ID = 1
+var latestQuizSolutionId = -1
 
+const InitConfig = async () => {
+    latestQuizSolutionId = await GetConfigVar("quizSolutionsCount")
+}
+
+const GetConfigFull = async () => {
+    const configId = CONFIG_ID
+
+    const thisConfig = await Config.findOneAndUpdate({ configId }, {}, {
+        new: true,
+        upsert: true
+    });
+
+    return thisConfig
+}
 
 const GetConfigVar = async (varName) => {
     const configId = CONFIG_ID
@@ -46,6 +61,18 @@ const GetNewSolutionId = async () => {
     return solutionId
 }
 
+const GetNewQuizId = async () => {
+    const quizId = await GetConfigVar("quizzesCount") + 1
+    await SetConfigVar({quizzesCount: quizId})
+    return quizId
+}
+
+const GetNewQuizSolutionId = async () => {
+    latestQuizSolutionId += 1
+    SetConfigVar({quizSolutionsCount: latestQuizSolutionId})
+    return latestQuizSolutionId
+}
 
 
-module.exports = {GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId, GetNewUserId, GetNewArticleId}
+InitConfig()
+module.exports = {GetConfigFull, GetNewQuizSolutionId, GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId, GetNewUserId, GetNewArticleId, GetNewQuizId}

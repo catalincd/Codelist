@@ -16,7 +16,7 @@ const GetLanguageExtension = {
 }
 
 const GetProgressBar = (tests, message = null) => {
-    if(!tests) 
+    if (!tests)
         return (<div></div>)
 
     const passed = tests.filter(test => test).length
@@ -75,22 +75,12 @@ const GetLoadingResultElement = (results) => {
     </div>)
 }
 
-const GetResultElements = (results, showLoadingResult) => {
-    let keyIterator = 1
-
-    return results.map(result =>
-        <div key={keyIterator++} className="resultRow">
-            <h4>{keyIterator}</h4>
-            {GetProgressBar(result.tests)}
-        </div>)
-}
-
 
 const GetCodeFile = (files, examples) => {
-    if(files && !(files.stdin))
-        return {id: 1, name: files.inputName, code: examples[0].inputValue}
+    if (files && !(files.stdin))
+        return { id: 1, name: files.inputName, code: examples ? examples[0].inputValue : "" }
 
-    return {id: 9999, name: "__stdin", code: examples? examples[0].inputValue : ""}
+    return { id: 9999, name: "__stdin", code: examples ? examples[0].inputValue : "" }
 }
 
 const GetStarsFromRating = (rating) => {
@@ -113,10 +103,59 @@ const GetStarsFromRating = (rating) => {
     return stars
 }
 
+const ScrollToRuntime = () => {
+    const runtimeElement = document.getElementById("ide-runtime")
+    if (runtimeElement)
+        runtimeElement.scrollIntoView({ behavior: 'smooth', block: "center" })
+    else
+        setTimeout(ScrollToRuntime, 50)
+}
+
+const CountdownRenderer = ({hours, minutes, seconds}) => {
+    return <p>
+        {
+            hours > 0 && <span>{hours}</span>
+        }
+        {
+            hours > 0 && <span class="dots">:</span>
+        }
+        {
+            <span>{minutes > 9? minutes : `0${minutes}`}</span>
+        }
+        <span class="dots">:</span>
+        {
+            <span>{seconds > 9? seconds : `0${seconds}`}</span>
+        }
+    </p>
+}
+
 const GetSolveRating = (solved, solveTries) => (solved / Math.max(1, solveTries))
 
 
-const Clamp = (x, min, max) => x > max? max : (x < min? min : x)
+const Clamp = (x, min, max) => x > max ? max : (x < min ? min : x)
 
 
-export default { Clamp, GetSolveRating, GetStarsFromRating, GetCodeFile, DefaultProfileImage, GetLanguageExtension, GetResultElements, GetLoadingResultElement, GetExecutionTimeElement, GetMemString, GetProgressBar }
+const StringToDate = (str) => new Date(Date.parse(str)).toLocaleDateString("RO-ro")
+
+const StringToDateTime = (str) => new Date(Date.parse(str)).toLocaleString("RO-ro", {year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit"})
+
+const GetUserPicture = (user) => {
+    if(!user || !user.picture) return `${process.env.REACT_APP_HOSTNAME}/images/default.png`
+
+    return user.picture.includes("://")? user.picture : `${process.env.REACT_APP_HOSTNAME}/images/${user.picture}`
+}
+
+const LoginWithGoogle = () => {
+    const RESPONSE_TYPE = 'code'
+    const SCOPE = 'email profile openid'
+    
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(
+        process.env.REACT_APP_GOOGLE_CLIENT_ID
+    )}&redirect_uri=${encodeURIComponent(
+        process.env.REACT_APP_REDIRECT_URI
+    )}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPE)}`
+    console.log('URL:', authUrl)
+    window.location.href = authUrl
+}
+
+export default { LoginWithGoogle, GetUserPicture, StringToDateTime, StringToDate, Clamp, CountdownRenderer, GetSolveRating, GetStarsFromRating, GetCodeFile, ScrollToRuntime, DefaultProfileImage, GetLanguageExtension, GetLoadingResultElement, GetExecutionTimeElement, GetMemString, GetProgressBar }

@@ -10,6 +10,9 @@ import ReactMarkdown from 'react-markdown'
 import CodeMirror from '@uiw/react-codemirror';
 import { UserContext } from "../utils/UserContext"
 
+import Renderer from "../components/Renderer"
+
+
 const SubmitArticle = (props) => {
 
     const { user, setUser } = useContext(UserContext)
@@ -112,7 +115,7 @@ const SubmitArticle = (props) => {
             {
                 text &&
                 <div className="markdown articleContentContainer tile">
-                    <ReactMarkdown>{text}</ReactMarkdown>
+                    <Renderer>{text}</Renderer>
                 </div>
             }
             {

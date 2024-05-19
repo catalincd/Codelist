@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router"
-import ReactMarkdown from "react-markdown"
+import Renderer from "../components/Renderer"
 
 import Layout from "../components/Layout";
 import Example from "../components/Example";
 import ProblemElement from "../components/ProblemElement"
+import ResultContainer from "../components/ResultContainer"
 
 
 import { UserContext } from "../utils/UserContext";
@@ -28,16 +29,10 @@ const Solver = (props) => {
   const [results, setResults] = useState([])
   const [runtime, setRuntime] = useState(null)
 
-  const scrollToRuntime = () => {
-    const runtimeElement = document.getElementById("ide-runtime")
-    if (runtimeElement)
-      runtimeElement.scrollIntoView({ behavior: 'smooth', block: "center" });
-    else
-      setTimeout(scrollToRuntime, 50)
-  }
+  
 
   const scrollToLastResult = () => {
-    const resultsElement = document.getElementById("ide-results")
+    const resultsElement = document.getElementById("ide-results") // TO DO Fix dis
     if (resultsElement)
       resultsElement.scrollIntoView({ behavior: 'smooth', block: "end" });
     else
@@ -48,7 +43,7 @@ const Solver = (props) => {
     setRuntime({ loading: true })
     setShowLoadingRuntime(true)
     setShowLoadingResult(true)
-    scrollToRuntime()
+    Utils.ScrollToRuntime()
 
     try {
       const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/send`,
@@ -86,7 +81,7 @@ const Solver = (props) => {
   const onRunHandle = async (files, language) => {
     setShowLoadingRuntime(true)
     setRuntime({ loading: true })
-    scrollToRuntime()
+    Utils.ScrollToRuntime()
     console.log(files)
 
     try {
@@ -194,7 +189,7 @@ const Solver = (props) => {
                 </div>
               </div>
               <div className="markdown">
-                <ReactMarkdown>{problemData.text}</ReactMarkdown>
+                <Renderer>{problemData.text}</Renderer>
               </div>
             </div>
           }
@@ -239,10 +234,7 @@ const Solver = (props) => {
               <div className="ide-title">
                 <h4>Rezultate</h4>
               </div>
-              <div id="ide-results" className="resultsTable">
-                {Utils.GetResultElements(results)}
-                {showLoadingResult && Utils.GetLoadingResultElement(results)}
-              </div>
+              <ResultContainer results={results}/>
             </div>
           }
           {!user &&
@@ -268,7 +260,7 @@ const Solver = (props) => {
                   <div className="creatorImg">
                     <Link to={`/user/${problemData?.creator}`}>
                       <p>{problemData.creator}</p>
-                      <img src={`${process.env.REACT_APP_HOSTNAME}/images/${creatorData && creatorData.picture || "default.png"}`} />
+                      <img src={Utils.GetUserPicture(creatorData)} />
                     </Link>
                   </div>
                 </div>
