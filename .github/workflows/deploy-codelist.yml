@@ -6,46 +6,11 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    needs: deploy
-
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js 
-      uses: actions/setup-node@v3
-      with:
-        node-version: 21.x
-
-    - name: Install dependencies
-      env:
-        HOSTNAME: ${{ secrets.HOSTNAME  }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID  }}
-      run: |
-        cd frontend
-        npm install
-        echo "REACT_APP_HOSTNAME=https://$HOSTNAME" > .env
-        echo "REACT_APP_GOOGLE_CLIENT_ID=$CLIENT_ID" >> .env
-        echo "REACT_APP_REDIRECT_URI=https://$HOSTNAME/callback" >> .env
-        cat .env
-        npm run build
-
-    - name: Copy to server
-      env:
-          PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
-          HOSTNAME: ${{ secrets.HOSTNAME  }}
-      run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -r -o StrictHostKeyChecking=no -i private_key frontend/build/ root@${HOSTNAME}:/root/Codelist/server/
-
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Run deploy script
+      - name: SSH VPS
         env:
             PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
             MONGO_KEY: ${{ secrets.MONGO_KEY  }}
@@ -58,6 +23,3 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key root@${HOSTNAME} "tar --exclude='*node_modules*' -cvzf archive/Codelist_$(date +'%d-%m-%Y-%H-%M').tar.gz Codelist && rm -rf ./Codelist && git clone https://github.com/catalincd/Codelist && ./Codelist/deploy/deploy_script.sh $MONGO_KEY $JWT_KEY $NOREPLY_PASSWORD $CLIENT_ID"
-  
-      
-          

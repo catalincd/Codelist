@@ -4,7 +4,10 @@ export PATH="$PATH:/root/.nvm/versions/node/v21.6.2/bin"
 echo "Node version: $(node --version)"
 
 pm2 kill
-minikube stop 
+cd /opt/mailcow-dockerized/
+docker compose down             # will kill mailcow and the running process due to low mem
+docker stop mongodb
+minikube stop
 
 mkdir -p /root/Codelist
 cd /root/Codelist
@@ -24,14 +27,25 @@ cp /keys/ssl_ca server/keys/ssl_ca
 # maybe add '/keys/client' and '/keys/google' files
 
 echo -n $DOMAIN > server/hostname
+echo "REACT_APP_HOSTNAME=$FULL_HOST" > ./frontend/.env
+echo "REACT_APP_GOOGLE_CLIENT_ID=$4" >> ./frontend/.env
+echo "REACT_APP_REDIRECT_URI=$FULL_HOST/callback" >> ./frontend/.env
+
 echo -n $PORT > server/port
+
+cd frontend
+npm install
+npm run build
+cd ..
+rm -rf server/build
+cp -r frontend/build server/build
+
+minikube start --force
 
 mkdir -p server/build/images
 mkdir -p server/logs
 
 cp server/utils/res/default.png server/build/images/default.png
-
-minikube start --force
 
 echo "0" > server/keys/debug
 echo "0" > server/keys/seed
@@ -44,3 +58,5 @@ cd ..
 docker start mongodb
 
 pm2 start server/server.js
+cd /opt/mailcow-dockerized/
+docker compose up -d
