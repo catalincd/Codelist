@@ -23,31 +23,33 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Go to frontend
-      run: cd frontend
-
     - name: Install dependencies
+      working-directory: ./frontend
       run: npm install
 
     - name: Create Env
+      working-directory: ./frontend
       env:
         HOSTNAME: ${{ secrets.HOSTNAME  }}
         CLIENT_ID: ${{ secrets.CLIENT_ID  }}
       run: echo "REACT_APP_HOSTNAME=https://$HOSTNAME" > .env && echo "REACT_APP_GOOGLE_CLIENT_ID=$CLIENT_ID" >> .env && echo "REACT_APP_REDIRECT_URI=https://$HOSTNAME/callback" >> .env
     
     - name: LS
+      working-directory: ./frontend
       run: ls -ltrha
 
     - name: Build
+      working-directory: ./frontend
       run: npm run build
 
     - name: Copy to server
+      working-directory: ./frontend
       env:
           PRIVATE_KEY: ${{ secrets.CODELIST_SERVER_KEY  }}
           HOSTNAME: ${{ secrets.HOSTNAME  }}
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -r -o StrictHostKeyChecking=no -i private_key frontend/build/ root@${HOSTNAME}:/root/Codelist/server/
+        scp -r -o StrictHostKeyChecking=no -i private_key build/ root@${HOSTNAME}:/root/Codelist/server/
 
   deploy:
     runs-on: ubuntu-latest
