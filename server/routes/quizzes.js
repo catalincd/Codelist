@@ -9,7 +9,7 @@ const ConfigManager = require('../utils/ConfigManager')
 
 const apiAuth = require('../middlewares/apiAuth')
 const Quiz = require('../schemas/Quiz')
-const QuizToken = require('../utils/accounts/QuizToken')
+const QuizToken = require('../utils/quizzes/QuizToken')
 
 
 router.post('/create', apiAuth, async (req, res) => {
@@ -23,14 +23,18 @@ router.post('/create', apiAuth, async (req, res) => {
 
         const id = await ConfigManager.GetNewQuizId()
 
+
+        const cleanSteps = sanitizeSteps(steps)
         const startTime = req.body.startTime || null
         const endTime = req.body.endTime || null
         const maxTime = req.body.maxTime || null
         const maxTries = req.body.maxTries || null
-        const password = req.body.password || null
+        const maxScore = cleanSteps.reduce((accumulator, step) => {return accumulator + step.score}, 0)
+        const password = req.body.password? (req.body.password.length > 1? req.body.password : null) : null
         const publicResults = req.body.publicResults || true
+        const intro = req.body.intro? req.body.intro : ""
 
-        const newQuiz = new Quiz({ id, name, preview, startTime, endTime, maxTime, maxTries, password, publicResults, steps: sanitizeSteps(steps), creator: req.user.username })
+        const newQuiz = new Quiz({ id, name, preview, startTime, endTime, maxTime, maxTries, maxScore, password, publicResults, steps: cleanSteps, creator: req.user.username, intro})
         await newQuiz.save()
 
         res.status(201).json({ message: 'QUIZ_REGISTER_SUCCESS', id })
@@ -66,8 +70,8 @@ router.post('/data', apiAuth, async (req, res) => {
         const searchedQuizObj = searchedQuiz.toObject()
         const tryData = await QuizToken.GetQuizToken(req.user, searchedQuiz)
 
-        //if(tryData.outOfTries)
-        //    return res.status(500).json({ error: 'OUT_OF_QUIZ_TRIES' })
+        if(tryData.outOfTries)
+            return res.status(500).json({ error: 'OUT_OF_QUIZ_TRIES' })
 
 
         const cleanedSteps = cleanupSteps(searchedQuizObj.steps).map((step, i) => {
@@ -102,12 +106,13 @@ router.get('/', async (req, res) => {
 
         res.status(200).json({
             ...searchedQuizObj,
-            steps: [],
+            steps: cleanupSteps(searchedQuizObj.steps),
             password: "-",
             stepsNum: searchedQuizObj.steps.length,
         })
     }
     catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'QUIZ_SERVER_ERROR' })
     }
 })

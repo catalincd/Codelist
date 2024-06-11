@@ -8,6 +8,8 @@ const Article = require('../../schemas/Article')
 const Problem = require('../../schemas/Problem')
 const QuizSolution = require('../../schemas/QuizSolution')
 
+var codelistUser = null;
+
 const onInit = () => {
     try {
         const seedActivated = parseInt(fs.readFileSync("./server/keys/seed").toString()) == 1 || false
@@ -39,7 +41,7 @@ const clearDatabase = async () => {
 }
 
 const seedUsers = async () => {
-    const codelistUser = new User({ id: 0, username: "codelist", email: "codelist@codelist.ro", password: "-", description: `Codelist user #${0}` })
+    codelistUser = new User({ id: 0, username: "codelist", email: "codelist@codelist.ro", password: "$2b$10$.J5j4yVgn9qIXPVljJf7Uea5kD9tprSFX6zt//hkGAxrPhgkDhAnO", description: `Codelist user #${0}` })
     await codelistUser.save()
     console.log(`Created user ${"codelist"}`)
 
@@ -51,7 +53,6 @@ const seedUsers = async () => {
 
 
 const seedProblems = async () => {
-    const codelistUser = await User.findOne({id: 0})
     const files = fs.readdirSync("./server/utils/seeder/problems")
     const problems = []
     
@@ -78,7 +79,6 @@ const seedProblems = async () => {
 }
 
 const seedArticles = async () => {
-    const codelistUser = await User.findOne({id: 0})
     const files = fs.readdirSync("./server/utils/seeder/articles")
     const articles = []
     

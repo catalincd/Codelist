@@ -11,7 +11,11 @@ const Problem = require('../schemas/Problem')
 const Quiz = require('../schemas/Quiz')
 const Solution = require('../schemas/Solution')
 const QuizSolution = require('../schemas/QuizSolution')
-const { ValidateUserToken } = require('../utils/accounts/QuizToken')
+
+const { ManageNewSolution, PopulateSolution } = require('../utils/quizzes/QuizResultManager')
+
+const { ValidateUserToken } = require('../utils/quizzes/QuizToken')
+const QuizResult = require('../schemas/QuizResult')
 
 router.use((req, res, next) => {
     // console.log('Data Req: ', Date.now())
@@ -57,8 +61,13 @@ router.post('/sendquiz', apiAuth, async (req, res) => {
 
     var newSteps = searchedSolution.steps? searchedSolution.steps : []
     newSteps[stepId] = {score: newScore, source, error, stdout, stderr, memory, time, tests}
-    searchedSolution.steps = newSteps
     
+    for(var i=0;i<quizObj.steps.length;i++){
+        if(!(newSteps[i]))
+            newSteps[i] = {score: 0}
+    }
+    
+    searchedSolution.steps = newSteps
     
     var totalScore = 0
     for(var i=0;i<searchedSolution.steps.length;i++) totalScore += searchedSolution.steps[i]? searchedSolution.steps[i].score || 0 : 0
@@ -66,8 +75,7 @@ router.post('/sendquiz', apiAuth, async (req, res) => {
     searchedSolution.score = totalScore
     await searchedSolution.save()
 
-    
-
+    await ManageNewSolution(searchedSolution.toObject(), quizObj)
 
     return res.status(201).json({ stepId, score: newScore, totalScore, time, memory, error, tests, stdout, stderr, createdAt: new Date()})
 }
@@ -128,15 +136,56 @@ router.put('/run', apiAuth, async (req, res) => {
     }
 })
 
-router.get('/getUserSolutions', async (req, res) => {
+router.get('/getProblemSolutions', async (req, res) => {
     try {
         const username = req.body.username || req.query.username
+        const problemId = req.body.problemId || req.query.problemId
 
-        const searchedSolutions = await Solution.find({ username }) ///// filter these per problem....
+        const searchedSolutions = await Solution.find({ $and: [ {username}, {problemId}] }) 
+
+        if (!searchedSolutions) {
+            return res.status(404).json({ error: 'SOLUTIONS_NOT_FOUND' })
+        }
 
         res.status(200).json(searchedSolutions? searchedSolutions : [])
     }
     catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'PROBLEM_SERVER_ERROR' })
+    }
+})
+
+router.get('/getQuizSolutions', async (req, res) => {
+    try {
+        const username = req.body.username || req.query.username
+        const quizId = req.body.quizId || req.query.quizId
+
+        const searchedSolutions = await QuizSolution.find({ $and: [ {username}, {quizId}] }) 
+
+        if (!searchedSolutions) {
+            return res.status(404).json({ error: 'SOLUTIONS_NOT_FOUND' })
+        }
+
+        res.status(200).json(searchedSolutions? searchedSolutions : [])
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'PROBLEM_SERVER_ERROR' })
+    }
+})
+
+router.get('/getQuizResults', async (req, res) => { // TO DO CHECK IF PUBLIC 
+    try {
+        const quizId = req.body.quizId || req.query.quizId
+
+        const searchedResults = await QuizResult.findOne({quizId})
+
+        const populatedResults = searchedResults? await PopulateSolution(searchedResults.toObject()) : []
+
+        res.status(200).json(populatedResults)
+    }
+    catch (error) {
+        console.error(error)
         res.status(500).json({ error: 'PROBLEM_SERVER_ERROR' })
     }
 })

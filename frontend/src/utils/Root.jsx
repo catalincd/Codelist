@@ -9,6 +9,7 @@ import Login from "../pages/Login"
 import Signup from "../pages/Signup"
 import Problems from "../pages/Problems"
 import Articles from "../pages/Articles"
+import Courses from "../pages/Courses"
 import Quizzes from "../pages/Quizzes"
 import Solver from "../pages/Solver"
 import Reader from "../pages/Reader"
@@ -19,11 +20,13 @@ import Profile from "../pages/Profile"
 import NewPost from "../pages/NewPost"
 import SubmitArticle from "../pages/SubmitArticle"
 import SubmitProblem from "../pages/SubmitProblem"
+import SubmitQuiz from "../pages/SubmitQuiz"
 import QuizSolver from "../pages/QuizSolver"
 import QuizViewer from "../pages/QuizViewer"
 import GoogleCallback from "../pages/GoogleCallback"
 
 import { UserContext } from "./UserContext";
+import QuizResults from "../pages/QuizResults";
 
 
 const Root = (props) => {
@@ -49,17 +52,20 @@ const Root = (props) => {
           <Route path="signup" element={<Signup />} />
           <Route path="problems" element={<Problems />} />
           <Route path="articles" element={<Articles />} />
+          <Route path="courses" element={<Courses />} />
           <Route path="quizzes" element={<Quizzes />} />
           <Route path="forgot" element={<ForgotPassword />} />
           <Route path="newpost" element={<NewPost />} />
           <Route exact path="/new/article" element={<SubmitArticle />} />
           <Route exact path="/new/problem" element={<SubmitProblem />} />
+          <Route exact path="/new/quiz" element={<SubmitQuiz />} />
           <Route exact path="/password/:username/:token" element={<PasswordReset />} />
           <Route exact path="/confirmation/:token" element={<Confirmation />} />
           <Route exact path="/problem/:id" element={<Solver />} />
           <Route exact path="/article/:id" element={<Reader />} />
           <Route exact path="/quiz/:id" element={<QuizViewer />} />
-          <Route exact path="/solvequiz/:id" element={<QuizSolver />} />
+          <Route exact path="/quiz/solve/:id" element={<QuizSolver />} />
+          <Route exact path="/quiz/:id/results" element={<QuizResults />} />
           <Route exact path="/user/:name" element={<Profile />} />
         </Routes>
       </BrowserRouter>

@@ -73,6 +73,12 @@ const GetNewQuizSolutionId = async () => {
     return latestQuizSolutionId
 }
 
+const GetNewQuizResultId = async () => {
+    const quizResultId = await GetConfigVar("quizResultsCount") + 1
+    await SetConfigVar({quizResultsCount: quizResultId})
+    return quizResultId
+}
+
 
 InitConfig()
-module.exports = {GetConfigFull, GetNewQuizSolutionId, GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId, GetNewUserId, GetNewArticleId, GetNewQuizId}
+module.exports = {GetConfigFull, GetNewQuizResultId, GetNewQuizSolutionId, GetConfigVar, SetConfigVar, GetNewProblemId, GetNewSolutionId, GetNewUserId, GetNewArticleId, GetNewQuizId}

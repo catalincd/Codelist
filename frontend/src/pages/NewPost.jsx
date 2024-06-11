@@ -21,7 +21,8 @@ const NewPost = (props) => {
                     <div className="newPostButtonsContainer">
                         <button onClick={() => navigate(`/new/problem`)}>Problemă nouă</button>
                         <button onClick={() => navigate(`/new/article`)}>Articol nou</button>
-                        <button onClick={() => navigate(`/new/quiz`)}>Curs nou</button>
+                        <button onClick={() => navigate(`/new/course`)}>Curs nou</button>
+                        <button onClick={() => navigate(`/new/quiz`)}>Examen nou</button>
                     </div>
                 </div>
             </Layout>

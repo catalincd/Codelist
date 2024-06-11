@@ -29,7 +29,7 @@ const Solver = (props) => {
   const [results, setResults] = useState([])
   const [runtime, setRuntime] = useState(null)
 
-  
+
 
   const scrollToLastResult = () => {
     const resultsElement = document.getElementById("ide-results") // TO DO Fix dis
@@ -154,7 +154,7 @@ const Solver = (props) => {
       return
 
     const fetchProblemData = async () => {
-      fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/getUserSolutions?username=${user.username}`,
+      fetch(`${process.env.REACT_APP_HOSTNAME}/api/solutions/getProblemSolutions?username=${user.username}&problemId=${id}`,
         {
           method: "GET"
         })
@@ -205,36 +205,38 @@ const Solver = (props) => {
               }
             </div>
           </div>
-          <div className="ide-textarea tile">
-            {
-              problemData &&
-              <CodeEditor enableRun={user != null} inputFiles={problemData.files} inputExamples={problemData.examples} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
-            }
-          </div>
-          {(runtime || showLoadingRuntime) &&
-            <div id="ide-runtime" className="ide-runtime tile">
-              <div className="ide-runtime-title">
-                <h4>Execuție</h4>
-                {Utils.GetExecutionTimeElement(runtime, showLoadingRuntime)}
-              </div>
-              {showLoadingRuntime &&
-                <div className="ide-runtime-grid">
-                  <textarea disabled rows={1} value="Loading..." />
-                </div>
-              }
-              {!showLoadingRuntime &&
-                <div className="ide-runtime-grid">
-                  <textarea disabled rows={(runtime.error ? runtime.error : runtime.stdout)?.split('\n').length} value={(runtime.error ? runtime.error : runtime.stdout) || ""} />
-                </div>
+          <div id="main-ide" className="ide-full-container">
+            <div className="ide-textarea tile">
+              {
+                problemData &&
+                <CodeEditor enableRun={user != null} inputFiles={problemData.files} inputExamples={problemData.examples} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
               }
             </div>
-          }
+            {(runtime || showLoadingRuntime) &&
+              <div id="ide-runtime" className="ide-runtime tile">
+                <div className="ide-runtime-title">
+                  <h4>Execuție</h4>
+                  {Utils.GetExecutionTimeElement(runtime, showLoadingRuntime)}
+                </div>
+                {showLoadingRuntime &&
+                  <div className="ide-runtime-grid">
+                    <textarea disabled rows={1} value="Loading..." />
+                  </div>
+                }
+                {!showLoadingRuntime &&
+                  <div className="ide-runtime-grid">
+                    <textarea disabled rows={(runtime.error ? runtime.error : runtime.stdout)?.split('\n').length} value={(runtime.error ? runtime.error : runtime.stdout) || ""} />
+                  </div>
+                }
+              </div>
+            }
+          </div>
           {user && results.length > 0 &&
             <div className="ide-solutions tile">
               <div className="ide-title">
                 <h4>Rezultate</h4>
               </div>
-              <ResultContainer results={results}/>
+              <ResultContainer results={results} />
             </div>
           }
           {!user &&

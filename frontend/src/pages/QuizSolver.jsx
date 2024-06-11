@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useParams } from "react-router"
 import Layout from "../components/Layout"
 import ArticleElement from "../components/ArticleElement"
@@ -26,6 +26,8 @@ const QuizSolver = (props) => {
 
   document.title = `Codelist - Quiz`
 
+  const navigate = useNavigate()
+
   const { user, setUser } = useContext(UserContext);
 
   const { id } = useParams()
@@ -38,7 +40,21 @@ const QuizSolver = (props) => {
   const [totalScore, setTotalScore] = useState(0)
   const [result, setResult] = useState(null)
   const [targetDate, setTargetDate] = useState(null)
+  const isAlive = useRef(true);
   const [percentage, setPercentage] = useState(100)
+
+
+  useEffect(() => {
+    isAlive.current = true
+    return () => {
+      isAlive.current = false
+    }
+  }, [])
+
+  const goToResults = () => {
+    if (isAlive.current)
+      navigate(`/quiz/${id}/results`)
+  }
 
   const fetchUserData = async (username) => {
     fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/user/${username}`,
@@ -62,31 +78,36 @@ const QuizSolver = (props) => {
       .then(data => {
         if (data.error) {
           setErrorMessage(data.error)
+          setTimeout(() => { navigate(`/quiz/${id}`) }, 3000)
           return
         }
         setQuizData(data)
         setCompleted(data.steps.map(step => step.completed))
         setScores(data.steps.map(step => step.currentScore))
         setCurrentStep(data.steps[0])
-        
-        
-        
+
+        const newTarget = new Date(data.userStartTime)
+        newTarget.setMinutes(newTarget.getMinutes() + data.maxTime || 0)
+        const finalTarget = data.maxTime ? ((data.endTime && newTarget > data.endTime) ? data.endTime : newTarget) : data.endTime
+
         const newQuizDictionary = user.quizzes || {}
-        const newQuizObj = {userStartTime: data.userStartTime, token: data.token, solutionId: data.solutionId}
-        const newQuizArray = user.quizzes? (user.quizzes[id]? (user.quizzes[id].filter(q => q.solutionId == data.solutionId).length > 0? user.quizzes[id] : [...user.quizzes[id], newQuizObj]) : [newQuizObj]): [newQuizObj]
+        const newQuizObj = { userStartTime: data.userStartTime, expires: finalTarget, token: data.token, solutionId: data.solutionId }
+        const newQuizArray = user.quizzes ? (user.quizzes[id] ? (user.quizzes[id].filter(q => q.solutionId == data.solutionId).length > 0 ? user.quizzes[id] : [...user.quizzes[id], newQuizObj]) : [newQuizObj]) : [newQuizObj]
         newQuizDictionary[id] = newQuizArray
 
         //console.log({...user, quizzes: newQuizDictionary})
-        setUser({...user, quizzes: newQuizDictionary})
-        
+        setUser({ ...user, quizzes: newQuizDictionary })
+
 
         if (data.maxTime) {
-          const newTarget = new Date(data.userStartTime)
-          newTarget.setMinutes(newTarget.getMinutes() + data.maxTime)
-          setTargetDate((data.endTime && newTarget > data.endTime) ? data.endTime : newTarget)
+          setTargetDate(finalTarget)
           // TO DO setTimeout(onTimeIsUp, ) TO DO
         }
 
+        const dtnow = new Date()
+        setTimeout(() => {
+          goToResults()
+        }, finalTarget.getTime() - dtnow.getTime())
         setInterval(() => setPercentage(new Date().getTime()), 1500);
 
         document.title = `Codelist - ${data.name}`
@@ -193,26 +214,28 @@ const QuizSolver = (props) => {
                 <Renderer>{currentStep.text}</Renderer>
               </div>
             </div>
-            {
-              currentStep.type == "problem" &&
-              <div className="codeEditorContainer tile">
-                <CodeEditor key={quizData.steps.indexOf(currentStep)} enableRun={true} inputFiles={currentStep.files} inputExamples={null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={`${id}_${quizData.steps.indexOf(currentStep)}`} />
-              </div>
-            }
-            {
-              result &&
-              <div id="ide-runtime" className="ide-runtime tile">
-                <div className="ide-runtime-title">
-                  <h4>Execuție</h4>
-                  {
-                    Utils.GetExecutionTimeElement(result, result == "loading")
-                  }
+            <div id="main-ide" className="ide-full-container">
+              {
+                currentStep.type == "problem" &&
+                <div className="codeEditorContainer tile">
+                  <CodeEditor key={quizData.steps.indexOf(currentStep)} enableRun={true} inputFiles={currentStep.files} inputExamples={null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={`${id}_${quizData.steps.indexOf(currentStep)}`} />
                 </div>
-                <div className="ide-runtime-grid">
-                  <textarea disabled rows={(result.error ? result.error : result.stdout)?.split('\n').length} value={(result == "loading" ? "Loading..." : (result.error ? result.error : result.stdout)) || ""} />
+              }
+              {
+                result &&
+                <div id="ide-runtime" className="ide-runtime tile">
+                  <div className="ide-runtime-title">
+                    <h4>Execuție</h4>
+                    {
+                      Utils.GetExecutionTimeElement(result, result == "loading")
+                    }
+                  </div>
+                  <div className="ide-runtime-grid">
+                    <textarea disabled rows={(result.error ? result.error : result.stdout)?.split('\n').length} value={(result == "loading" ? "Loading..." : (result.error ? result.error : result.stdout)) || ""} />
+                  </div>
                 </div>
-              </div>
-            }
+              }
+            </div>
             {
               result && result.tests &&
               <div className="ide-solutions tile">

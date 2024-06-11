@@ -30,10 +30,10 @@ const Navbar = (props) => {
         <div className="navbar tile">
             <Link className="home" to="/"><h3>CODELIST</h3></Link>
             <nav>
-                <NavLink to="/articles" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Articole</NavLink>
                 <NavLink to="/problems" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Probleme</NavLink>
-                <NavLink to="/quizzes" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Cursuri</NavLink>
-                <NavLink to="/users" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Utilizatori</NavLink>
+                <NavLink to="/articles" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Articole</NavLink>
+                <NavLink to="/courses" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Cursuri</NavLink>
+                <NavLink to="/quizzes" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Examene</NavLink>
                 {
                     user &&
                     <NavLink to="/newpost" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>Postează</NavLink>

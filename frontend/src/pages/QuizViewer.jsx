@@ -48,7 +48,7 @@ const QuizViewer = (props) => {
         fetchUserData(data.creator)
         console.log(data)
 
-        setCurrentTries(user? (user.quizzes? (user.quizzes[id]? user.quizzes[id].length : 0) : 0) : null)
+        setCurrentTries(user ? (user.quizzes ? (user.quizzes[id] ? user.quizzes[id].length : 0) : 0) : null)
       })
   }, [])
 
@@ -63,7 +63,7 @@ const QuizViewer = (props) => {
             <QuizElement {...quizData} />
           }
           {
-            quizData &&
+            quizData && false &&
             <div className="quizDetailsContainer tile">
               <div className="introData markdown">
                 <Renderer>{quizData.intro}</Renderer>
@@ -73,19 +73,21 @@ const QuizViewer = (props) => {
           {
             quizData &&
             <div className="quizStartContainer tile">
+              <IconButton text="START" icon="run" reverse={true} onClickHandle={() => navigate(`/quiz/solve/${id}`)} />
               <div className="stepDetails">
-                <p>100 puncte</p>
-                <p>30 min</p>
+                <p><span>{quizData.maxScore}</span> {quizData.maxScore>19? "de ":""}puncte</p>
+                {quizData.maxTime && <p><span>{quizData.maxTime}</span> min</p>}
               </div>
-              <div className="startButtonContainer">
+              <div className="tryDetails">
                 {
                   user &&
-                  <p><span className={quizData.maxTries && quizData.maxTries == currentTries? "out" : ""}>{currentTries}</span>/<span>{quizData.maxTries}</span> Încercări</p>
+                  <p><span className={quizData.maxTries && quizData.maxTries == currentTries ? "out" : ""}>{currentTries}</span>/<span>{quizData.maxTries}</span> Încercări</p>
                 }
-                
-                <IconButton text="START" icon="run" reverse={true} onClickHandle={() => navigate(`/solvequiz/${id}`)}/>
               </div>
-            </div>  
+              <div className="startButtonContainer">
+                <IconButton text="REZULTATE" icon="" reverse={true} onClickHandle={() => navigate(`/quiz/${id}/results`)} />
+              </div>
+            </div>
           }
           {
             quizData &&
@@ -95,17 +97,17 @@ const QuizViewer = (props) => {
                   <h4>Detalii</h4>
                 </div>
               </div>
-              
-              <div className="quizDetails">
-                  <div className="dateDetails">
-                    <p>Începe</p>
-                    <p>{quizData.startTime && Utils.StringToDateTime(quizData.startTime)}</p>
-                    <p>Se termină</p>
-                    <p>{quizData.startTime && Utils.StringToDateTime(quizData.endTime)}</p>
-                  </div>
-                </div>
 
-                <div className="detailsTable">
+              <div className="quizDetails">
+                <div className="dateDetails">
+                  <p>Începe</p>
+                  <p>{quizData.startTime && Utils.StringToDateTime(quizData.startTime)}</p>
+                  <p>Se termină</p>
+                  <p>{quizData.startTime && Utils.StringToDateTime(quizData.endTime)}</p>
+                </div>
+              </div>
+
+              <div className="detailsTable">
                 <div className="creator">
                   <p>Creator: </p>
                   <div className="creatorImg">

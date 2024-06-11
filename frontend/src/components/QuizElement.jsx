@@ -5,7 +5,7 @@ import { UserContext } from "../utils/UserContext";
 import Utils from "../utils/Utils"
 import StarsContainer from "./StarsContainer"
 
-const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
+const QuizElement = ({id, name, rating, preview, views, solved, solveTries, disableLink, disableLike}) => {
 
     const { user, setUser } = useContext(UserContext);
     const [liked, setLiked] = useState(user?.likedQuizzes?.includes(id) || false)
@@ -83,4 +83,4 @@ const ProblemElement = ({id, name, rating, preview, views, solved, solveTries, d
         </div>)
 }
 
-export default ProblemElement
+export default QuizElement

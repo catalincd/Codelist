@@ -4,7 +4,7 @@ const Quiz = new mongo.Schema({
     id: { type: Number, unique: true, required: true },
     name: { type: String, unique: true, required: true },
     preview: { type: String, required: true },
-    intro: { type: String, required: true, default: ""},
+    intro: { type: String, default: ""},
     views: { type: Number, required: true, default: 0 },
     solved: { type: Number, required: true, default: 0 },
     solveTries: { type: Number, required: true, default: 0 },
@@ -16,8 +16,10 @@ const Quiz = new mongo.Schema({
     endTime: { type: Date, default: null }, 
     maxTime: { type: Number, default: null },
     maxTries: { type: Number, default: null },
+    maxScore: { type: Number, default: null },
     password: { type: String, default: null },
     publicResults: { type: Boolean, default: true },
+    isCourse: { type: Boolean, default: false },
 }, {timestamps: true});
 
 module.exports = mongo.model('Quiz', Quiz);

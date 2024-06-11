@@ -9,6 +9,9 @@ const DataInput = ({ id, onDelete, onChangeHandle, inputName, inputValue, output
         onChangeHandle({ id, inputValue: iV, outputValue: oV })
     }, [iV, oV])
 
+    useEffect(() => {
+        setData({ iV: inputValue, oV: outputValue })
+    }, [inputValue, outputValue])
 
     return (
         <div className="dataInput">

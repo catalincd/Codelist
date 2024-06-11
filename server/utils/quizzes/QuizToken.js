@@ -27,6 +27,7 @@ const GetNewTry = async (user, quiz) => {
 
     const newTry = {
         userStartTime: dateNow,
+        expires: quiz.maxTime? new Date().setMinutes(dateNow.getMinutes() + quiz.maxTime): quiz.endTime,
         token, 
         solutionId
     }
@@ -39,9 +40,6 @@ const GetNewTry = async (user, quiz) => {
     user.quizzes = newQuizArray
     user.markModified("quizzes")
     await user.save()
-
-    console.log("QUZZ")
-    console.log(user.quizzes)
 
     return newTry
 }
@@ -73,12 +71,19 @@ const GetLatestTry = async (user, quiz) => {
 const GetQuizToken = async (user, quiz) => {
     var latestTry = await GetLatestTry(user, quiz)
 
+    
     // TO DO CHECK IF NEW TRIES AVAILABLE FOR THIS USER
     if(!latestTry){
-        if(quiz.maxTries && user.quizzes && user.quizzes[quiz.id] && user.quizzes[quiz.id].length > quiz.maxTries)
-            return { outOfTries: true }    
+        if(quiz.maxTries && user.quizzes && user.quizzes[quiz.id] && user.quizzes[quiz.id].length >= quiz.maxTries)
+        {
+            console.log("OUT OF TRIES")
+            return { outOfTries: true }  
+        }  
         else 
+        {
             latestTry = await GetNewTry(user, quiz)  
+        }
+            
     }
 
     /// ... TO DO SOMETHING

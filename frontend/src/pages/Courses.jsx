@@ -4,9 +4,9 @@ import QuizElement from "../components/QuizElement";
 
 import { UserContext } from "../utils/UserContext";
 
-const Quizzes = (props) => {
+const Courses = (props) => {
 
-    document.title = `Codelist - Exams`
+    document.title = `Codelist - Cursuri`
 
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
@@ -47,4 +47,4 @@ const Quizzes = (props) => {
     );
 }
 
-export default Quizzes;
+export default Courses;

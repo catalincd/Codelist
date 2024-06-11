@@ -11,10 +11,13 @@ const User = new mongo.Schema({
     description: { type: String, default: "Codelist user" },
     likedArticles: { type: Array, required: true, default: []},
     likedProblems: { type: Array, required: true, default: []},
+    likedQuizzes: { type: Array, required: true, default: []},
     ratedArticles: { type: Array, required: true, default: []},
     ratedProblems: { type: Array, required: true, default: []},
-    likedQuizzes: { type: Array, required: true, default: []},
     ratedQuizzes: { type: Array, required: true, default: []},
+    uploadedArticles: { type: Array, required: true, default: []},
+    uploadedProblems: { type: Array, required: true, default: []},
+    uploadedQuizzes: { type: Array, required: true, default: []},
     quizzes: { type: Object, required: true, default: {}},
 }, {timestamps: true});
 

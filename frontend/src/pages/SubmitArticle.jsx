@@ -45,7 +45,7 @@ const SubmitArticle = (props) => {
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    setErrorMessage("ERROR REQ FAILED")
+                    setErrorMessage(data.error)
                     setUploading(false)
                     return
                 }

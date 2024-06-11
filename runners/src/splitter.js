@@ -24,8 +24,8 @@ const InitCodeFolder = (source, username, language) => {
     // TO-DO: add exec lock
 
     const folder = `/runner/${username}`
-    execSync(`mkdir -p ${folder}`)
-    execSync(`rm -rf ${folder}/*`)
+    execSync(`mkdir -p ${folder}`, {uid: 1017})
+    execSync(`rm -rf ${folder}/*`, {uid: 1017})
 
     source.forEach(({name, code}) => {
         fs.writeFileSync(`${folder}/${name}`, code)
@@ -41,7 +41,7 @@ const GetTimeFromStderr = (output) => {
 }
 
 const ExecSync = (cmd, options = {}, input = null) => new Promise((resolve, reject) => {
-    const childProc = exec(cmd, options, (err, stdout, stderr) => {
+    const childProc = exec(cmd, {...options, uid: 1017}, (err, stdout, stderr) => {
         resolve({err, stdout, stderr})
     })
 

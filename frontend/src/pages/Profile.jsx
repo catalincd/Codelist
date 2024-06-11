@@ -203,7 +203,7 @@ const Profile = (props) => {
                             <div className="profileDetails">
                                 <h3>{userData.username}</h3>
                                 <p>{userData.description}</p>
-                                <p>Joined Codelist: {new Date(Date.parse(userData.created)).toLocaleDateString("RO-ro")}</p>
+                                <p>Joined Codelist: {new Date(Date.parse(userData.createdAt)).toLocaleDateString("RO-ro")}</p>
                             </div>
                             {
                                 editable && accountButtons
@@ -278,7 +278,7 @@ const Profile = (props) => {
                                 <div className="problemContainers">
                                     <div className="uploadedProblems">
                                         {
-                                            uploadedArticles.map(article => <UploadedElement key={article.id} id={article.id} name={article.name} views={article.views} link={`/article?id=${article.id}`} />)
+                                            uploadedArticles.map(article => <UploadedElement key={article.id} id={article.id} name={article.name} views={article.views} link={`/article/${article.id}`} />)
                                         }
                                     </div>
                                 </div>
@@ -293,17 +293,21 @@ const Profile = (props) => {
                                 <div className="problemContainers">
                                     <div className="solvedProblems">
                                         {
-                                            readArticles.map(article => <RatingElement key={article.id} id={article.id} name={article.name} rating={article.rating} solved={article.solved} link={`/article?id=${article.id}`}/>)
+                                            readArticles.map(article => <RatingElement key={article.id} id={article.id} name={article.name} rating={article.rating} solved={article.solved} link={`/article/${article.id}`}/>)
                                         }
                                     </div>
                                 </div>
                             </div>
                         }
+                        {
+                            (readArticles.length == 0 && uploadedArticles.length == 0 && solvedProblems.length == 0 && uploadedProblems.length == 0) &&
+                            <div className="profileProblems empty">
+                                <div className="problemsTitle">
+                                    <h3>Încă nu există activitate</h3>
+                                </div>
+                            </div>
+                        }
                     </div>
-
-
-
-
                 }
                 {
                     !userData && errorMessage &&

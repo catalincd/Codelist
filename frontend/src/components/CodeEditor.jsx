@@ -106,7 +106,16 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, inputFiles, inputExamples, cod
     const toggleFullscreen = () => {
         isFullscreen && document.exitFullscreen()
         isFullscreen || document.getElementById("main-ide").requestFullscreen()
+
+        isFullscreen && document.getElementById("main-ide").classList.remove("isFull")
+        isFullscreen || document.getElementById("main-ide").classList.add("isFull")
+
         setFullscreen(!isFullscreen)
+    }
+
+    const onSubmitPreHandle = () => {
+        if(isFullscreen) toggleFullscreen()
+        onSubmit(files, language)
     }
 
     useEffect(() => {
@@ -119,7 +128,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, inputFiles, inputExamples, cod
 
 
     return (
-        <div id="main-ide" className="ide-container">
+        <div className="ide-container">
             <div className="command-bar">
                 <div className="languageSelector">
                     <Dropdown name={languageName} items={[{ name: "C++", value: "cpp" }, { name: "Python", value: "py" }, { name: "JavaScript", value: "js" }, { name: "C#", value: "cs" }, { name: "Java", value: "java" }]} value={language} onChangeHandle={changeLanguage} />
@@ -127,7 +136,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, inputFiles, inputExamples, cod
                 <div className="command-container">
                     <div className="commands-left">
                         {enableRun && <IconButton text="Run" icon="start" onClickHandle={() => onRun(files, language)} />}
-                        {enableRun && <IconButton text="Submit" icon="submit" onClickHandle={() => onSubmit(files, language)} />}
+                        {enableRun && <IconButton text="Submit" icon="submit" onClickHandle={() => onSubmitPreHandle()} />}
                         <IconButton text="Save" icon="save" onClickHandle={() => onSave(files, language)} />
                     </div>
                     <div className="commands-right">
@@ -139,7 +148,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, inputFiles, inputExamples, cod
             </div>
 
             <div className="mirror-container">
-                <div className="file-container limited-width">
+                <div className={`file-container limited-width ${isFullscreen? "isFull":""}`}>
                     <div className={"file" + (currentFile == 0 ? " active" : "")} onClick={() => onSetCurrentFile(0)}>
                         <div className="editableField">
                             <p>{files[0].name}</p>
@@ -163,7 +172,7 @@ const CodeEditor = ({ enableRun, onRun, onSubmit, inputFiles, inputExamples, cod
                         </div>
                     }
                 </div>
-                <div className="code-container" style={{ fontSize: `${fontSize}px` }}>
+                <div className={`code-container ${isFullscreen? "isFull":""}`} style={{ fontSize: `${fontSize}px` }}>
                     <CodeMirror
                         value={code}
                         onChange={(e) => onCodeMod(e)}
