@@ -26,7 +26,7 @@ router.post('/', apiAuth, async (req, res) => {
 
         const id = await ConfigManager.GetNewArticleId()
 
-        const newArticle = new Article({id, name, preview, text: sanitizeArticleText(text), creator: req.user.username})
+        const newArticle = new Article({ id, name, preview, text: sanitizeArticleText(text), creator: req.user.username })
         await newArticle.save()
 
         res.status(201).json({ message: 'ARTICLE_REGISTER_SUCCESS', id })
@@ -59,9 +59,37 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/search', async (req, res) => {
+    try {
+        if (!(req.query.text) && !(req.query.code)) {
+            return res.status(406).json({ error: 'ID_OR_FILTER_NOT_FOUND' })
+        }
+
+        let searchedArticles = []
+
+        if (req.query.code) {
+            searchedArticles = (await Article.find({ id: parseInt(req.query.code) }).limit(10))
+        }
+        else {
+            searchedArticles = (await Article.find({
+                $or: [
+                    { name: new RegExp(req.query.text, 'i') },
+                    { preview: new RegExp(req.query.text, 'i') }
+                ]
+            }).limit(10))
+        }
+
+        res.status(200).json(searchedArticles)
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'ARTICLE_SERVER_ERROR' })
+    }
+})
+
 router.get('/homescreen', async (req, res) => {
     try {
-        var searchedArticles = (await Article.find({}).limit(5)) || []
+        var searchedArticles = (await Article.find({}).limit(10)) || []
         res.status(200).json(searchedArticles)
     }
     catch (error) {

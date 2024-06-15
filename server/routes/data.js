@@ -58,26 +58,33 @@ router.get('/user/full/:username/', async (req, res) => {
 
 router.get('/home', async (req, res) => {
 
-    const currentConfig = await ConfigManager.GetConfigFull()
-    const currentConfigObj = currentConfig.toObject()
-
-    const itemsCount = 4
-
-    const randomProblems = []
-    const randomArticles = []
-    
-    for(var i=0;i<itemsCount;i++)
+    try
     {
-        const randomProblem = await Problem.findOne({}).skip(Math.floor(Math.random() * currentConfigObj.problemsCount))
-        const randomProblemObj = randomProblem.toObject()
-        randomProblems.push(randomProblemObj)
+        const currentConfig = await ConfigManager.GetConfigFull()
+        const currentConfigObj = currentConfig.toObject()
 
-        const randomArticle = await Article.findOne({}).skip(Math.floor(Math.random() * currentConfigObj.articlesCount))
-        const randomArticleObj = randomArticle.toObject()
-        randomArticles.push(randomArticleObj)
+        const itemsCount = 4
+
+        const randomProblems = []
+        const randomArticles = []
+        
+        for(var i=0;i<itemsCount;i++)
+        {
+            const randomProblem = await Problem.findOne({}).skip(Math.floor(Math.random() * (currentConfigObj.problemsCount - 1)))
+            const randomProblemObj = randomProblem.toObject()
+            randomProblems.push(randomProblemObj)
+
+            const randomArticle = await Article.findOne({}).skip(Math.floor(Math.random() * (currentConfigObj.articlesCount - 1)))
+            const randomArticleObj = randomArticle.toObject()
+            randomArticles.push(randomArticleObj)
+        }
+
+        res.status(200).json({ ...currentConfigObj, randomProblems, randomArticles})
     }
-
-    res.status(200).json({ ...currentConfigObj, randomProblems, randomArticles})
+    catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'QUIZ_SERVER_ERROR' })
+    }
 })
 
 module.exports = router

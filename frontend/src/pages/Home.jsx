@@ -8,11 +8,14 @@ const Home = (props) => {
 
     document.title = `Codelist - Home`
 
+    console.log("START HOME")
+
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
     const [codelistData, setCodelistData] = useState(null);
 
     useEffect(() => {
+        console.log("FETCHING HOME DATA")
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/data/home`,
             {
                 method: "GET"

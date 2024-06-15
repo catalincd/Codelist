@@ -25,7 +25,7 @@ const SubmitQuiz = (props) => {
     // TO DO - PARSE STATES FROM STRING
 
     // ENV
-    const [preview, setPreview] = useState(false)
+    const [preview, setPreview] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
     const [uploading, setUploading] = useState(false)
 
@@ -76,6 +76,7 @@ const SubmitQuiz = (props) => {
             setErrorMessage("Completați toate câmpurile")
             return
         }
+        refreshCurrentStep()
         setUploading(true)
         fetch(`${process.env.REACT_APP_HOSTNAME}/api/quizzes/create`,
             {
@@ -89,6 +90,7 @@ const SubmitQuiz = (props) => {
                     endTime: endTimeEnabled? endTime : null,
                     maxTime: maxTimeEnabled? maxTime : null,
                     password: passwordEnabled? password : null,
+                    maxTries: maxTries? maxTries : 10,
                     publicResults
                     // intro
                 })

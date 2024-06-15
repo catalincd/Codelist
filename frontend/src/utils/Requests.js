@@ -83,6 +83,32 @@ const LoginFromCookie = async (setUserHook) => {
     setUserHook(body)
 } 
 
+const FetchItemData = async (item, setData, setError, query, code, password) => { 
+    try {
+        let endpoint = (query || code || password)? "search?" : "homescreen"
+
+        if(query) endpoint += `text=${query}&`
+        if(code) endpoint += `code=${code}&`
+        if(password) endpoint += `password=${password}&`
+
+        const response = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/${item}/${endpoint}`,
+            {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json'}
+            })
+
+        if (!response.ok) {
+            setError(response.error || "ERROR REQ FAILED")
+            return
+        }
+
+        const data = await response.json()
+        setData(data)
+    }
+    catch (error) {
+        setError(error)
+    }
+}
 
 const FetchDataPost = async (req_data, setData, setError) => { //setError
     try {
@@ -106,4 +132,4 @@ const FetchDataPost = async (req_data, setData, setError) => { //setError
     }
 }
 
-export default { FetchDataPost, LoginFromCookie, FetchRunRequest, FetchSubmitQuizProblemRequest}
+export default { FetchItemData, FetchDataPost, LoginFromCookie, FetchRunRequest, FetchSubmitQuizProblemRequest}

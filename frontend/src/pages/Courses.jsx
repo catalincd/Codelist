@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
 import QuizElement from "../components/QuizElement";
-
+import SearchBar from "../components/SearchBar"
+import Requests from "../utils/Requests"
 import { UserContext } from "../utils/UserContext";
 
 const Courses = (props) => {
@@ -10,37 +11,24 @@ const Courses = (props) => {
 
     const { user, setUser } = useContext(UserContext);
     const [errorMessage, setErrorMessage] = useState('')
-    const [problemList, setProblemList] = useState([]);
+    const [courseList, setCourseList] = useState([]);
 
     useEffect(() => {
-        const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/api/quizzes/homescreen`,
-                {
-                    method: "GET"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.log(data.error)
-                        setErrorMessage(data.error)
-                        return
-                    }
-                    setProblemList(data)
-                    console.log(data)
-                })
-                .catch(error => console.error(error));
-
-            console.log("FETCHED FROM PROBLEM")
-        }
-
-        fetchProblemData()
+        Requests.FetchItemData("courses", setCourseList, setErrorMessage)
     }, [])
+
+    const handleSearch = (query, code, password) => {
+        Requests.FetchItemData("courses", setCourseList, setErrorMessage, query, code)
+    }
 
     return (
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
+                <SearchBar onChange={handleSearch} onSearch={handleSearch} inputPlaceholder="Caută un articol" />
                 <div className="problemsPageContainer">
-                    {problemList.map(problem => <QuizElement key={problem.id} {...problem}/>)}
+                    {
+                        courseList.map(course => <QuizElement key={course.id} {...course} />)
+                    }
                 </div>
             </Layout>
         </div>

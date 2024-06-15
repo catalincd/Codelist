@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react"
 import Layout from "../components/Layout";
 import Problem from "../components/Problem";
 import ProblemElement from "../components/ProblemElement";
-
+import Requests from "../utils/Requests"
+import SearchBar from "../components/SearchBar"
 import { UserContext } from "../utils/UserContext";
 
 const Problems = (props) => {
@@ -14,34 +15,17 @@ const Problems = (props) => {
     const [problemList, setProblemList] = useState([]);
 
     useEffect(() => {
-        const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/homescreen`,
-                {
-                    method: "GET"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.log(data.error)
-                        setErrorMessage(data.error)
-                        return
-                    }
-                    setProblemList(data)
-                    console.log(data)
-                })
-                .catch(error => console.error(error));
-
-            console.log("FETCHED FROM PROBLEM")
-        }
-
-        fetchProblemData()
+        Requests.FetchItemData("problems", setProblemList, setErrorMessage)
     }, [])
 
-    var keyIterator = 0
+    const handleSearch = (query, code, password) => {
+        Requests.FetchItemData("problems", setProblemList, setErrorMessage, query, code)
+    }
 
     return (
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
+                <SearchBar onChange={handleSearch} onSearch={handleSearch} inputPlaceholder="Caută o problemă" />
                 <div className="problemsPageContainer">
                     {problemList.map(problem => <ProblemElement key={problem.id} {...problem}/>)}
                 </div>

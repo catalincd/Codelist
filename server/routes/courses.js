@@ -41,7 +41,7 @@ router.post('/create', apiAuth, async (req, res) => {
         const publicResults = req.body.publicResults || true
         const intro = req.body.intro ? req.body.intro : ""
 
-        const newQuiz = new Quiz({ id, name, preview, startTime, endTime, maxTime, maxTries, maxScore, password, publicResults, steps: cleanSteps, creator: req.user.username, intro })
+        const newQuiz = new Quiz({ id, name, preview, startTime, endTime, maxTime, maxTries, maxScore, password, publicResults, steps: cleanSteps, creator: req.user.username, intro, isCourse: true })
         await newQuiz.save()
 
         res.status(201).json({ message: 'QUIZ_REGISTER_SUCCESS', id })
@@ -58,7 +58,7 @@ router.post('/data', apiAuth, async (req, res) => {
             return res.status(406).json({ error: 'ID_OR_FILTER_NOT_FOUND' })
         }
 
-        const searchedQuiz = await Quiz.findOne({ id: req.body.id, isCourse: false })
+        const searchedQuiz = await Quiz.findOne({ id: req.body.id })
 
         if (!searchedQuiz) {
             return res.status(404).json({ error: 'QUIZ_NOT_FOUND' })
@@ -104,7 +104,7 @@ router.get('/', async (req, res) => {
             return res.status(406).json({ error: 'ID_OR_FILTER_NOT_FOUND' })
         }
 
-        const searchedQuiz = await Quiz.findOne({ id: req.query.id, isCourse: false })
+        const searchedQuiz = await Quiz.findOne({ id: req.query.id, isCourse: true })
 
         if (!searchedQuiz) {
             return res.status(404).json({ error: 'QUIZ_NOT_FOUND' })
@@ -137,16 +137,16 @@ router.get('/search', async (req, res) => {
         let searchedQuizzes = []
 
         if (req.query.password) {
-            searchedQuizzes = (await Quiz.find({ password: req.query.password, isCourse: false }).limit(1))
+            searchedQuizzes = (await Quiz.find({ password: req.query.password, isCourse: true }).limit(1))
         }
         else if (req.query.code) {
-            searchedQuizzes = (await Quiz.find({ id: parseInt(req.query.code), isCourse: false }).limit(10))
+            searchedQuizzes = (await Quiz.find({ id: parseInt(req.query.code), isCourse: true }).limit(10))
         }
         else {
             searchedQuizzes = (await Quiz.find({
                 $or: [
-                    { name: new RegExp(req.query.text, 'i'), isCourse: false },
-                    { preview: new RegExp(req.query.text, 'i'), isCourse: false }
+                    { name: new RegExp(req.query.text, 'i'), isCourse: true },
+                    { preview: new RegExp(req.query.text, 'i'), isCourse: true }
                 ]
             }).limit(10))
         }
@@ -161,7 +161,7 @@ router.get('/search', async (req, res) => {
 
 router.get('/homescreen', async (req, res) => {
     try {
-        var searchedQuizzes = (await Quiz.find({ password: null, isCourse: false }).limit(10)) || []
+        var searchedQuizzes = (await Quiz.find({ password: null, isCourse: true }).limit(10)) || []
 
         res.status(200).json(searchedQuizzes)
     }

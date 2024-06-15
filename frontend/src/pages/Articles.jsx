@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from "react"
-import Layout from "../components/Layout";
-import Article from "../components/Article";
-
-import { UserContext } from "../utils/UserContext";
-import ArticleElement from "../components/ArticleElement";
+import Layout from "../components/Layout"
+import Article from "../components/Article"
+import SearchBar from "../components/SearchBar"
+import Requests from "../utils/Requests"
+import { UserContext } from "../utils/UserContext"
+import ArticleElement from "../components/ArticleElement"
 
 const Articles = (props) => {
 
@@ -14,32 +15,17 @@ const Articles = (props) => {
     const [articlesList, setArticlesList] = useState([]);
 
     useEffect(() => {
-        const fetchProblemData = async () => {
-            fetch(`${process.env.REACT_APP_HOSTNAME}/api/articles/homescreen`,
-                {
-                    method: "GET"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.log(data.error)
-                        setErrorMessage(data.error)
-                        return
-                    }
-                    setArticlesList(data)
-                    console.log(data)
-                })
-                .catch(error => console.error(error));
-
-            console.log("FETCHED ARTICLES")
-        }
-
-        fetchProblemData()
+        Requests.FetchItemData("articles", setArticlesList, setErrorMessage)
     }, [])
+
+    const handleSearch = (query, code, password) => {
+        Requests.FetchItemData("articles", setArticlesList, setErrorMessage, query, code)
+    }
 
     return (
         <div className="mainContainer">
             <Layout error={errorMessage} setError={setErrorMessage}>
+                <SearchBar onChange={handleSearch} onSearch={handleSearch} inputPlaceholder="Caută un articol" />
                 <div className="problemsPageContainer">
                     {articlesList.map(problem => <ArticleElement key={problem.id} {...problem} />)}
                 </div>
