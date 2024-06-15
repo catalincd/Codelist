@@ -20,6 +20,7 @@ const Solver = (props) => {
   const { user, setUser } = useContext(UserContext);
 
   const { id } = useParams()
+  console.log(id)
 
   const [showLoadingResult, setShowLoadingResult] = useState(false)
   const [showLoadingRuntime, setShowLoadingRuntime] = useState(false)
@@ -208,8 +209,8 @@ const Solver = (props) => {
           <div id="main-ide" className="ide-full-container">
             <div className="ide-textarea tile">
               {
-                problemData &&
-                <CodeEditor enableRun={user != null} inputFiles={problemData.files} inputExamples={problemData.examples} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} />
+                problemData && id &&
+                <CodeEditor enableRun={user != null} inputFiles={problemData.files} inputExamples={problemData.examples} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={id} cachePrefix="P" />
               }
             </div>
             {(runtime || showLoadingRuntime) &&

@@ -81,7 +81,9 @@ const QuizSolver = (props) => {
           setTimeout(() => { navigate(`/quiz/${id}`) }, 3000)
           return
         }
-        setQuizData(data)
+        
+        console.log(data)
+
         setCompleted(data.steps.map(step => step.completed))
         setScores(data.steps.map(step => step.currentScore))
         setCurrentStep(data.steps[0])
@@ -112,7 +114,7 @@ const QuizSolver = (props) => {
 
         document.title = `Codelist - ${data.name}`
         fetchUserData(data.creator)
-        console.log(data)
+        setQuizData(data)
       })
   }, [])
 
@@ -216,9 +218,9 @@ const QuizSolver = (props) => {
             </div>
             <div id="main-ide" className="ide-full-container">
               {
-                currentStep.type == "problem" &&
+                quizData && currentStep.type == "problem" &&
                 <div className="codeEditorContainer tile">
-                  <CodeEditor key={quizData.steps.indexOf(currentStep)} enableRun={true} inputFiles={currentStep.files} inputExamples={null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={`${id}_${quizData.steps.indexOf(currentStep)}`} />
+                  <CodeEditor key={quizData.steps.indexOf(currentStep)} enableRun={true} inputFiles={currentStep.files} inputExamples={null} onRun={onRunHandle} onSubmit={onSubmitHandle} codeId={`${id}_${quizData.steps.indexOf(currentStep)}`} cachePrefix="Q" />
                 </div>
               }
               {

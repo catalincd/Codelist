@@ -76,13 +76,6 @@ const GetLoadingResultElement = (results) => {
 }
 
 
-const GetCodeFile = (files, examples) => {
-    if (files && !(files.stdin))
-        return { id: 1, name: files.inputName, code: examples ? examples[0].inputValue : "" }
-
-    return { id: 9999, name: "__stdin", code: examples ? examples[0].inputValue : "" }
-}
-
 const GetStarsFromRating = (rating) => {
     const stars = []
     let keyIterator = 0
@@ -158,4 +151,4 @@ const LoginWithGoogle = () => {
     window.location.href = authUrl
 }
 
-export default { LoginWithGoogle, GetUserPicture, StringToDateTime, StringToDate, Clamp, CountdownRenderer, GetSolveRating, GetStarsFromRating, GetCodeFile, ScrollToRuntime, DefaultProfileImage, GetLanguageExtension, GetLoadingResultElement, GetExecutionTimeElement, GetMemString, GetProgressBar }
+export default { LoginWithGoogle, GetUserPicture, StringToDateTime, StringToDate, Clamp, CountdownRenderer, GetSolveRating, GetStarsFromRating, ScrollToRuntime, DefaultProfileImage, GetLanguageExtension, GetLoadingResultElement, GetExecutionTimeElement, GetMemString, GetProgressBar }
