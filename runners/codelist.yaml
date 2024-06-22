@@ -4,7 +4,7 @@ metadata:
    name: codelist-deployment
    namespace: default
 spec:
-   replicas: 1
+   replicas: 5
    selector:
       matchLabels:
          bb: web
@@ -24,7 +24,7 @@ metadata:
    name: codelist-entrypoint
    namespace: default
 spec:
-   type: NodePort
+   type: LoadBalancer
    selector:
       bb: web
    ports:
