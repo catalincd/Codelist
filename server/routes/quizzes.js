@@ -137,10 +137,10 @@ router.get('/search', async (req, res) => {
         let searchedQuizzes = []
 
         if (req.query.password) {
-            searchedQuizzes = (await Quiz.find({ password: req.query.password, isCourse: false }).limit(1))
+            searchedQuizzes = (await Quiz.find({ password: req.query.password, isCourse: false }).sort({rating: "descending"}).limit(1))
         }
         else if (req.query.code) {
-            searchedQuizzes = (await Quiz.find({ id: parseInt(req.query.code), isCourse: false }).limit(10))
+            searchedQuizzes = (await Quiz.find({ id: parseInt(req.query.code), isCourse: false }).sort({rating: "descending"}).limit(10))
         }
         else {
             searchedQuizzes = (await Quiz.find({
@@ -148,7 +148,7 @@ router.get('/search', async (req, res) => {
                     { name: new RegExp(req.query.text, 'i'), isCourse: false },
                     { preview: new RegExp(req.query.text, 'i'), isCourse: false }
                 ]
-            }).limit(10))
+            }).sort({rating: "descending"}).limit(10))
         }
 
         res.status(200).json(searchedQuizzes)
@@ -161,7 +161,7 @@ router.get('/search', async (req, res) => {
 
 router.get('/homescreen', async (req, res) => {
     try {
-        var searchedQuizzes = (await Quiz.find({ password: null, isCourse: false }).limit(10)) || []
+        var searchedQuizzes = (await Quiz.find({ password: null, isCourse: false }).sort({rating: "descending"}).limit(10)) || []
 
         res.status(200).json(searchedQuizzes)
     }

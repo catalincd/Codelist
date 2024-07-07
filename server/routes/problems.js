@@ -64,7 +64,7 @@ router.get('/search', async (req, res) => {
         let searchedProblems = []
 
         if (req.query.code) {
-            searchedProblems = (await Problem.find({ id: parseInt(req.query.code) }).limit(10))
+            searchedProblems = (await Problem.find({ id: parseInt(req.query.code) }).sort({rating: "descending"}).limit(10))
         }
         else {
             searchedProblems = (await Problem.find({
@@ -72,7 +72,7 @@ router.get('/search', async (req, res) => {
                     { name: new RegExp(req.query.text, 'i') },
                     { preview: new RegExp(req.query.text, 'i') }
                 ]
-            }).limit(10))
+            }).sort({rating: "descending"}).limit(10))
         }
 
         res.status(200).json(searchedProblems)
@@ -85,7 +85,7 @@ router.get('/search', async (req, res) => {
 
 router.get('/homescreen', async (req, res) => {
     try {
-        var searchedProblems = (await Problem.find({}).limit(10)) || []
+        var searchedProblems = (await Problem.find({}).sort({rating: "descending"}).limit(10)) || []
 
         // searchedProblems = searchedProblems.flatMap(problem => [problem, problem, problem])
 
