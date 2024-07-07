@@ -2,7 +2,7 @@ from locust import HttpUser, task, between
 import json
 
 class RunnerUser(HttpUser):
-    wait_time = between(3, 5)
+    wait_time = between(5, 10)
 
     def __init__(self, parent):
         super(RunnerUser, self).__init__(parent)

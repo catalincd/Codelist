@@ -61,12 +61,12 @@ const FetchSubmitQuizProblemRequest = async (user, files, language, quizData, st
     }
 }
 
-
+var loginFromHookTries = 10
 const LoginFromCookie = async (setUserHook) => {
     const cookies = new Cookies(null, { path: '/', sameSite: "strict", expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }) // one week later
     const token = cookies.get("USER_COOKIE")
 
-    if(!token) return null
+    if(!token || loginFromHookTries < 0) return null
 
     const data = await fetch(`${process.env.REACT_APP_HOSTNAME}/api/auth/token`,
     {

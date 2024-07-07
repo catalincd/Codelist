@@ -44,7 +44,7 @@ const SubmitProblem = (props) => {
             return
         }
         setUploading(true)
-        fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems/create`,
+        fetch(`${process.env.REACT_APP_HOSTNAME}/api/problems`,
             {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json', 'Authorization': user.token },
